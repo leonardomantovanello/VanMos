@@ -1,8 +1,11 @@
 import React from 'react'
+import Nav from './Nav'
 
 const App = () => {
     return (
-        <div>em andamento</div>
+        <div>
+            <Nav />
+        </div>
     )
 }
 
