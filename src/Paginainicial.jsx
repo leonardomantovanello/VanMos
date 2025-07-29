@@ -1,8 +1,13 @@
 import React from 'react';
 
 
-function App () {
-    return <h1>Pagina inicia</h1>
+function App() {
+  return (
+    <div>
+      <Paginainicial />
+      <h1>sssd</h1>
+    </div>
+  );
 }
 
-export default App
+export default App;
