@@ -11,8 +11,8 @@ const Nav = () => {
         <Link to="/">Pagina Principal</Link>
         <Link to="/quem-somos">Quem somos</Link>
         <Link to="/contato">Contate-nos</Link>
-        <Link to="/login">Login Motorista</Link>
-        </nav>
+    <Link to="/login">Login Motorista</Link>
+</nav>
             </nav>
         </header>
     )
