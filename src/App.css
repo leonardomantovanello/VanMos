@@ -1,0 +1,42 @@
+/* Global App Styles */
+.page-content {
+    min-height: 100vh;
+    padding-top: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #200026 0%, #1a001a 50%, #0d0013 100%);
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(26, 0, 26, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #6d1a6d, #4b004b);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #8b2a8b, #6d1a6d);
+}
+
+/* Selection color */
+::selection {
+    background: rgba(179, 143, 198, 0.3);
+    color: #ffffff;
+}
+
+/* Focus styles */
+*:focus {
+    outline: 2px solid #b38fc6;
+    outline-offset: 2px;
+}

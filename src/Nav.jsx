@@ -1,19 +1,38 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Nav.css'
 
 const Nav = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+
     return (
         <header className="header">
-            <Link to="/" className="logo">VANMOS</Link>
-            <nav className="navbar">
-                <nav className="navbar">
-        <Link to="/">Pagina Principal</Link>
-        <Link to="/quem-somos">Quem somos</Link>
-        <Link to="/contato">Contate-nos</Link>
-    <Link to="/login">Login Motorista</Link>
-</nav>
+            <Link to="/" className="logo">
+                <span className="logo-text">VANMOS</span>
+                <span className="logo-subtitle">Transport</span>
+            </Link>
+            <nav className={`navbar ${isMenuOpen ? 'navbar-open' : ''}`}>
+                <Link to="/" className="nav-link">
+                    <span>Página Principal</span>
+                </Link>
+                <Link to="/quem-somos" className="nav-link">
+                    <span>Quem Somos</span>
+                </Link>
+                <Link to="/contato" className="nav-link">
+                    <span>Contate-nos</span>
+                </Link>
+                <Link to="/login" className="nav-link login-btn">
+                    <span>Login Motorista</span>
+                </Link>
             </nav>
+            <button 
+                className={`menu-toggle ${isMenuOpen ? 'menu-open' : ''}`}
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </header>
     )
 }
