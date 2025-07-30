@@ -26,14 +26,6 @@ const PaginaInicial = () => {
                             Conectamos você ao melhor transporte urbano com tecnologia de ponta, 
                             segurança garantida e conforto excepcional.
                         </p>
-                        <div className="hero-buttons">
-                            <Link to="/register" className="cta-button primary">
-                                Criar Conta
-                            </Link>
-                            <Link to="/login" className="cta-button secondary">
-                                Fazer Login
-                            </Link>
-                        </div>
                     </div>
                     <div className="hero-visual">
                         <div className="floating-card">
@@ -80,10 +72,6 @@ const PaginaInicial = () => {
             <section className="stats-section">
                 <div className="container">
                     <div className="stats-grid">
-                        <div className="stat-item">
-                            <div className="stat-number">10K+</div>
-                            <div className="stat-label">Viagens Realizadas</div>
-                        </div>
                         <div className="stat-item">
                             <div className="stat-number">500+</div>
                             <div className="stat-label">Motoristas Ativos</div>
