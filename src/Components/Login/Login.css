@@ -1,3 +1,7 @@
+body {
+  background: #1a001a;
+}
+
 .voltar-btn {
   position: absolute;
   top: 32px;
@@ -6,11 +10,12 @@
   background: #4b004b;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   font-size: 1rem;
   cursor: pointer;
   font-weight: 500;
   z-index: 10;
+  transition: background 0.2s;
 }
 
 .voltar-btn:hover {
@@ -21,35 +26,180 @@
   position: relative;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 320px;
+  background: #2d0036; /* Roxo escuro */
+  padding: 32px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+}
+
+.login-title {
+  margin-top: 48px;
+  margin-bottom: 48px;
+  font-size: 2.8rem;
+  font-weight: 900;
+  text-align: center;
+  width: 100%;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 24px #4b004b80, 0 1px 0 #fff;
+  background: linear-gradient(90deg, #fff 60%, #b38fc6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 8px #4b004b40);
+  transition: text-shadow 0.3s, filter 0.3s;
+}
+
+.login-title:hover {
+  filter: drop-shadow(0 6px 24px #6d1a6d80);
+  text-shadow: 0 6px 32px #6d1a6d80, 0 1px 0 #fff;
+}
+
+form input,
+.password-field input {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background: #1a001a;
+  color: #fff;
+  padding: 16px 20px;      /* igual para ambos */
+  font-size: 1.1rem;       /* igual para ambos */
+  margin-bottom: 0;        /* evita duplo espaçamento */
+}
+
+form input::placeholder,
+.password-field input::placeholder {
+  color: #b38fc6;
 }
 
 .voltar-btn,
 .show-password-btn,
 form button[type="submit"] {
- border-radius: 20px;
+  border-radius: 20px;
   border: 2px solid transparent;
+  background: #4b004b;
+  color: #fff;
+  transition: background 0.2s;
 }
 
+.voltar-btn:hover,
+.show-password-btn:hover,
+form button[type="submit"]:hover {
+  background: #6d1a6d;
+}
 
-input,
-.password-field input {
-  border-radius: 20px;
-    border: 2px solid transparent;
+.show-password-btn:hover,
+.show-password-btn:focus {
+  background: linear-gradient(90deg, #4b004b 0%, #6d1a6d 100%);
+  transform: translateY(-2px) scale(1.05);
 }
 
 .password-field {
   display: flex;
   align-items: center;
-  gap: 12px; 
+  gap: 12px;
   margin-bottom: 20px;
+  width: 100%;
 }
 
+.password-field input {
+  padding: 16px 20px;
+  /* Remova o min-width */
+  font-size: 1.1rem;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background: #1a001a;
+  color: #fff;
+  flex: 1;
+  width: 100%; /* Garante que ocupa toda a largura disponível */
+  box-sizing: border-box;
+}
+
+
 form button[type="submit"] {
-  margin-top: 12px; 
+  margin-top: 12px;
+  align-self: center;
+  border-width: 0;
+  background: linear-gradient(90deg, #6d1a6d 0%, #4b004b 100%);
+  color: #fff;
+  border-radius: 20px;
+  padding: 14px 36px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(76,0,76,0.10);
+  transition: background 0.2s, transform 0.2s;
+  outline: none;
+  letter-spacing: 1px;
+}
+
+form button[type="submit"]:hover,
+form button[type="submit"]:focus {
+  background: linear-gradient(90deg, #4b004b 0%, #6d1a6d 100%);
+  transform: translateY(-2px) scale(1.05);
 }
 
 .show-password-btn {
   margin-left: 8px;
+  background: linear-gradient(90deg, #6d1a6d 0%, #4b004b 100%);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 16px 24px;      /* altura igual ao input */
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(76,0,76,0.10);
+  transition: background 0.2s, transform 0.2s;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+form input {
+  margin-bottom: 18px;
+}
+
+form input:not(:last-child) {
+  margin-bottom: 18px
+
+}
+
+.register-btn {
+  background: transparent;
+  color: #b38fc6;
+  border: 2px solid #4b004b;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: center;
+  transition: background 0.2s, color 0.2s;
+  margin-top: 16px;
+}
+
+.register-btn:hover {
+  background: #4b004b;
+  color: #fff;
+
+}
+
+.password-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  width: 100%;
 }
