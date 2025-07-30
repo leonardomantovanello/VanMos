@@ -146,13 +146,13 @@ const QuemSomos = () => {
                         
                         <div className="team-member">
                             <div className="member-avatar">
-                                <span>👨‍💻</span>
+                                <span>👩🏻‍🎨</span>
                             </div>
                             <h4>Matheus Fernandes</h4>
-                            <p className="role">CTO</p>
+                            <p className="role">CDO</p>
                             <p className="bio">
-                                Expert em inteligência artificial e machine learning aplicada à otimização 
-                                de rotas e experiência do usuário.
+                                Responsável pelos designs do site,  inovação da empresa
+                                 e por supervisar todos os designs 
                             </p>
                         </div>
                         
