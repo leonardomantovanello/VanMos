@@ -67,26 +67,6 @@ const PaginaInicial = () => {
                     </div>
                 </div>
             </section>
-
-            {/* Stats Section */}
-            <section className="stats-section">
-                <div className="container">
-                    <div className="stats-grid">
-                        <div className="stat-item">
-                            <div className="stat-number">500+</div>
-                            <div className="stat-label">Motoristas Ativos</div>
-                        </div>
-                        <div className="stat-item">
-                            <div className="stat-number">50+</div>
-                            <div className="stat-label">Cidades Atendidas</div>
-                        </div>
-                        <div className="stat-item">
-                            <div className="stat-number">4.9★</div>
-                            <div className="stat-label">Avaliação Média</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
     )
 }
