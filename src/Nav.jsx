@@ -22,7 +22,7 @@ const Nav = () => {
                     <span>Contate-nos</span>
                 </Link>
                 <Link to="/login" className="nav-link login-btn">
-                    <span>Login Motorista</span>
+                    <span>Login para Motoristas</span>
                 </Link>
             </nav>
             <button 

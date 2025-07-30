@@ -27,11 +27,11 @@ const PaginaInicial = () => {
                             segurança garantida e conforto excepcional.
                         </p>
                         <div className="hero-buttons">
-                            <Link to="/login" className="cta-button primary">
-                                Começar Agora
+                            <Link to="/register" className="cta-button primary">
+                                Criar Conta
                             </Link>
-                            <Link to="/quem-somos" className="cta-button secondary">
-                                Saiba Mais
+                            <Link to="/login" className="cta-button secondary">
+                                Fazer Login
                             </Link>
                         </div>
                     </div>
