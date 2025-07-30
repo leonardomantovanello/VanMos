@@ -1,4 +1,34 @@
 .header {
     position: fixed;
     top: 0;
+    left: 0;
+    width:100% ;
+    padding: 20px 10%;
+    background: rgba(83, 1, 83, 0.884);
+    display: flex;
+    justify-content: space-between;
+    z-index: 100;
+}
+
+.logo {
+         font-size: 2.5rem;
+        font-weight: bold;
+        color: #fff;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;            
+  padding: 0 40px;
+  background: #4b004b;
+  height: 90px;
+}
+
+.navbar a {
+    position: relative;
+    font-size: 18px;
+    color: white;
+    font-weight: 500;
+    margin-left: 40px;
 }

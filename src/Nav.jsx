@@ -4,7 +4,7 @@ import './Nav.css'
 const Nav = () => {
     return (
     <header className="header">
-        <a href="/" className="logo">Logo</a>
+        <a href="/" className="logo">VANMOS</a>
 
         <nav className="navbar">
             <a href="/">Pagina Principal</a>
