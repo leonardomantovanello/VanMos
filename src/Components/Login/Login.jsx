@@ -21,7 +21,17 @@ const Login = () => {
     e.preventDefault()
     console.log('Login attempt:', formData)
     // Aqui você pode adicionar a lógica de autenticação
+
+    // ...existing code...
+const handleSubmit = (e) => {
+  e.preventDefault()
+  console.log('Login attempt:', formData)
+  // Aqui você pode adicionar a lógica de autenticação
+  navigate('/motorista')
+}
+// ...existing code...
   }
+  
 
   return (
     <div className="login-container">
@@ -90,7 +100,7 @@ const Login = () => {
             </label>
             <a href="#" className="forgot-password">Esqueceu a senha?</a>
           </div>
-
+        
           <button type="submit" className="login-btn">
             Entrar na plataforma
           </button>

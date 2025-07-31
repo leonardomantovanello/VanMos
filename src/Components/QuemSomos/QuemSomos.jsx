@@ -160,7 +160,7 @@ const QuemSomos = () => {
                             <div className="member-avatar">
                                 <span>👨‍🔧</span>
                             </div>
-                            <h4>Pedro Silva</h4>
+                            <h4>Pedro Souza</h4>
                             <p className="role">Diretor de Operações</p>
                             <p className="bio">
                                 Responsável pela qualidade dos serviços e relacionamento com motoristas parceiros 
