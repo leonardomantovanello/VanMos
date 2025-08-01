@@ -58,7 +58,7 @@ const QuemSomos = () => {
                         </div>
                         <div className="image-content">
                             <div className="story-card">
-                                <div className="card-icon">🚐</div>
+                                <div className="card-icon">🎆</div>
                                 <h3>2025</h3>
                                 <p>Fundação da VanMos</p>
                             </div>
@@ -72,7 +72,7 @@ const QuemSomos = () => {
                 <div className="container">
                     <div className="mvv-grid">
                         <div className="mvv-card">
-                            <div className="mvv-icon">🎯</div>
+                            <div className="mvv-icon">🎢</div>
                             <h3>Missão</h3>
                             <p>
                                 Conectar pessoas através de um transporte seguro, eficiente e sustentável, 
@@ -80,7 +80,7 @@ const QuemSomos = () => {
                             </p>
                         </div>
                         <div className="mvv-card">
-                            <div className="mvv-icon">👁️</div>
+                            <div className="mvv-icon">🔮</div>
                             <h3>Visão</h3>
                             <p>
                                 Ser a principal plataforma de mobilidade urbana do Brasil, reconhecida pela 
@@ -88,7 +88,7 @@ const QuemSomos = () => {
                             </p>
                         </div>
                         <div className="mvv-card">
-                            <div className="mvv-icon">⭐</div>
+                            <div className="mvv-icon">🌟</div>
                             <h3>Valores</h3>
                             <p>
                                 Segurança, transparência, sustentabilidade, inovação e compromisso com a 
@@ -110,7 +110,7 @@ const QuemSomos = () => {
                     <div className="team-grid">
                         <div className="team-member">
                             <div className="member-avatar">
-                                <span>👨‍💼</span>
+                                <span>🧑‍💼</span>
                             </div>
                             <h4>José Matheus</h4>
                             <p className="role">CEO</p>
@@ -122,7 +122,7 @@ const QuemSomos = () => {
                         
                         <div className="team-member">
                             <div className="member-avatar">
-                                <span>👨‍💼</span>
+                                <span>🧑‍🚀</span>
                             </div>
                             <h4>Jonathan Gabriel</h4>
                             <p className="role">Co-CEO</p>
@@ -134,7 +134,7 @@ const QuemSomos = () => {
                         
                         <div className="team-member">
                             <div className="member-avatar">
-                                <span>👨‍💻</span>
+                                <span>🧑‍🔧</span>
                             </div>
                             <h4>Leonardo Mantovanello</h4>
                             <p className="role">CTO</p>
@@ -146,7 +146,7 @@ const QuemSomos = () => {
                         
                         <div className="team-member">
                             <div className="member-avatar">
-                                <span>👩🏻‍🎨</span>
+                                <span>🧑‍🎨</span>
                             </div>
                             <h4>Matheus Fernandes</h4>
                             <p className="role">CDO</p>
@@ -158,7 +158,7 @@ const QuemSomos = () => {
                         
                         <div className="team-member">
                             <div className="member-avatar">
-                                <span>👨‍🔧</span>
+                                <span>🧑‍⚙️</span>
                             </div>
                             <h4>Pedro Souza</h4>
                             <p className="role">Diretor de Operações</p>
@@ -177,37 +177,37 @@ const QuemSomos = () => {
                     <h2 className="section-title">Nossos Diferenciais</h2>
                     <div className="diferenciais-grid">
                         <div className="diferencial-item">
-                            <div className="diferencial-icon">🛡️</div>
+                            <div className="diferencial-icon">🔰</div>
                             <h4>Segurança Avançada</h4>
                             <p>Verificação rigorosa de motoristas, GPS em tempo real e sistema de emergência 24/7</p>
                         </div>
                         
                         <div className="diferencial-item">
-                            <div className="diferencial-icon">🤖</div>
+                            <div className="diferencial-icon">🧠</div>
                             <h4>Tecnologia de Ponta</h4>
                             <p>IA para otimização de rotas, app intuitivo e sistema de pagamento integrado</p>
                         </div>
                         
                         <div className="diferencial-item">
-                            <div className="diferencial-icon">🌱</div>
+                            <div className="diferencial-icon">🌍</div>
                             <h4>Sustentabilidade</h4>
                             <p>Frota de veículos eco-friendly e compromisso com a redução de emissões</p>
                         </div>
                         
                         <div className="diferencial-item">
-                            <div className="diferencial-icon">💰</div>
+                            <div className="diferencial-icon">💸</div>
                             <h4>Preços Justos</h4>
                             <p>Tarifas transparentes, sem taxa de cancelamento e promoções regulares</p>
                         </div>
                         
                         <div className="diferencial-item">
-                            <div className="diferencial-icon">⚡</div>
+                            <div className="diferencial-icon">🏁</div>
                             <h4>Rapidez</h4>
                             <p>Tempo médio de espera de 3 minutos e rotas otimizadas em tempo real</p>
                         </div>
                         
                         <div className="diferencial-item">
-                            <div className="diferencial-icon">🎯</div>
+                            <div className="diferencial-icon">🎆</div>
                             <h4>Foco no Cliente</h4>
                             <p>Suporte 24/7, avaliação de motoristas e programa de fidelidade</p>
                         </div>

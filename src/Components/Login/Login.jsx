@@ -21,15 +21,7 @@ const Login = () => {
     e.preventDefault()
     console.log('Login attempt:', formData)
     // Aqui você pode adicionar a lógica de autenticação
-
-    // ...existing code...
-const handleSubmit = (e) => {
-  e.preventDefault()
-  console.log('Login attempt:', formData)
-  // Aqui você pode adicionar a lógica de autenticação
-  navigate('/motorista')
-}
-// ...existing code...
+    navigate('/motorista')
   }
   
 

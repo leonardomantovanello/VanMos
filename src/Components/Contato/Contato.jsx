@@ -64,7 +64,7 @@ const Contato = () => {
                         {/* Cartão Email */}
                         <div className="contato-card">
                             <div className="contato-icon">
-                                <span>📧</span>
+                                <span>📬</span>
                             </div>
                             <h3>E-mail</h3>
                             <p className="contato-info">contato@vanmos.com.br</p>
@@ -82,7 +82,7 @@ const Contato = () => {
                         {/* Cartão WhatsApp */}
                         <div className="contato-card">
                             <div className="contato-icon">
-                                <span>💬</span>
+                                <span>🗨️</span>
                             </div>
                             <h3>WhatsApp</h3>
                             <p className="contato-info">(11) 99999-8888</p>
@@ -100,7 +100,7 @@ const Contato = () => {
                         {/* Cartão Telefone */}
                         <div className="contato-card">
                             <div className="contato-icon">
-                                <span>📞</span>
+                                <span>☎️</span>
                             </div>
                             <h3>Telefone</h3>
                             <p className="contato-info">(11) 3333-4444</p>

@@ -5,12 +5,13 @@ import Login from './Components/Login/Login'
 import Register from './Components/Register/Register'
 import QuemSomos from './Components/QuemSomos/QuemSomos'
 import Contato from './Components/Contato/Contato'
+import Motorista from './Components/Motorista/Motorista'
 import PaginaInicial from './Paginainicial'
 import './App.css'
 
 const AppContent = () => {
     const location = useLocation()
-    const hideNav = location.pathname === '/login' || location.pathname === '/register'
+    const hideNav = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/motorista'
 
     return (
         <>
@@ -21,6 +22,7 @@ const AppContent = () => {
                 <Route path="/contato" element={<Contato />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/motorista" element={<Motorista />} />
             </Routes>
         </>
     )

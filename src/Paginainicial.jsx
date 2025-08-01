@@ -29,7 +29,7 @@ const PaginaInicial = () => {
                     </div>
                     <div className="hero-visual">
                         <div className="floating-card">
-                            <div className="card-icon">🚐</div>
+                            <div className="card-icon">🚌</div>
                             <h3>VanMos Transport</h3>
                             <p>Sua jornada começa aqui</p>
                         </div>
@@ -50,17 +50,17 @@ const PaginaInicial = () => {
                     <h2 className="section-title">Por que escolher VanMos?</h2>
                     <div className="features-grid">
                         <div className="feature-card">
-                            <div className="feature-icon">⚡</div>
+                            <div className="feature-icon">🚀</div>
                             <h3>Rápido & Eficiente</h3>
                             <p>Otimização de rotas em tempo real para chegar ao seu destino mais rapidamente.</p>
                         </div>
                         <div className="feature-card">
-                            <div className="feature-icon">🛡️</div>
+                            <div className="feature-icon">🔒</div>
                             <h3>Seguro & Confiável</h3>
                             <p>Motoristas verificados e veículos monitorados para sua total segurança.</p>
                         </div>
                         <div className="feature-card">
-                            <div className="feature-icon">💰</div>
+                            <div className="feature-icon">💎</div>
                             <h3>Preços Justos</h3>
                             <p>Tarifas transparentes e competitivas sem taxas ocultas.</p>
                         </div>

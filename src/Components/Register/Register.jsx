@@ -47,6 +47,7 @@ const Register = () => {
     console.log('Dados do cadastro:', formData)
     // Aqui você pode adicionar a lógica de cadastro
     // Por exemplo, enviar para uma API
+    navigate('/motorista')
   }
 
   return (
