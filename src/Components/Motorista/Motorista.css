@@ -488,6 +488,29 @@
     transform: scale(1.1);
 }
 
+/* Drag and Drop */
+.drag-handle {
+    cursor: grab;
+    font-size: 1.2rem;
+    color: #b38fc6;
+    padding: 5px;
+    transition: all 0.3s ease;
+}
+
+.drag-handle:hover {
+    color: #ffffff;
+    transform: scale(1.2);
+}
+
+.ponto-item.dragging {
+    opacity: 0.5;
+    transform: rotate(2deg);
+}
+
+.ponto-item[draggable="true"]:active .drag-handle {
+    cursor: grabbing;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .header-content {

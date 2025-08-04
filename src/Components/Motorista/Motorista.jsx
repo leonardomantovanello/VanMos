@@ -27,6 +27,7 @@ const Motorista = () => {
     const [selectedRotas, setSelectedRotas] = useState([])
     const [showEditRota, setShowEditRota] = useState(false)
     const [editingRota, setEditingRota] = useState(null)
+    const [draggedItem, setDraggedItem] = useState(null)
 
     const handleLogout = () => {
         navigate('/')
@@ -106,6 +107,29 @@ const Motorista = () => {
         })
     }
 
+    const handleDragStart = (e, index) => {
+        setDraggedItem(index)
+        e.dataTransfer.effectAllowed = 'move'
+    }
+
+    const handleDragOver = (e) => {
+        e.preventDefault()
+        e.dataTransfer.dropEffect = 'move'
+    }
+
+    const handleDrop = (e, dropIndex) => {
+        e.preventDefault()
+        if (draggedItem === null) return
+        
+        const newRotas = [...rotas]
+        const draggedRota = newRotas[draggedItem]
+        newRotas.splice(draggedItem, 1)
+        newRotas.splice(dropIndex, 0, draggedRota)
+        
+        setRotas(newRotas)
+        setDraggedItem(null)
+    }
+
     const handleRotaInputChange = (e) => {
         setNovaRota({
             ...novaRota,
@@ -119,11 +143,11 @@ const Motorista = () => {
             <header className="motorista-header">
                 <div className="header-content">
                     <div className="logo-section">
-                        <h1>🚐 VanMos Motorista</h1>
+                        <h1>🚌 VanMos Motorista</h1>
                         <span className="driver-name">João Motorista</span>
                     </div>
                     <button className="logout-btn" onClick={handleLogout}>
-                        Sair 🔓
+                        Sair 🚪
                     </button>
                 </div>
             </header>
@@ -134,19 +158,19 @@ const Motorista = () => {
                     className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
                     onClick={() => setActiveTab('dashboard')}
                 >
-                    📈 Dashboard
+                    📊 Dashboard
                 </button>
                 <button 
                     className={`nav-btn ${activeTab === 'passageiros' ? 'active' : ''}`}
                     onClick={() => setActiveTab('passageiros')}
                 >
-                    🧑‍🤝‍🧑 Passageiros
+                    👥 Passageiros
                 </button>
                 <button 
                     className={`nav-btn ${activeTab === 'rota' ? 'active' : ''}`}
                     onClick={() => setActiveTab('rota')}
                 >
-                    🛣️ Rota
+                    🗺️ Rota
                 </button>
             </nav>
 
@@ -157,28 +181,28 @@ const Motorista = () => {
                         <h2>Dashboard</h2>
                         <div className="stats-grid">
                             <div className="stat-card">
-                                <div className="stat-icon">🧒</div>
+                                <div className="stat-icon">👥</div>
                                 <div className="stat-info">
                                     <h3>{passageiros.length}</h3>
                                     <p>Passageiros Ativos</p>
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon">📍</div>
+                                <div className="stat-icon">🚏</div>
                                 <div className="stat-info">
                                     <h3>{rotas.length}</h3>
                                     <p>Pontos de Parada</p>
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon">⏱️</div>
+                                <div className="stat-icon">⏰</div>
                                 <div className="stat-info">
                                     <h3>{rotas.length * 10}min</h3>
                                     <p>Tempo Médio</p>
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon">💵</div>
+                                <div className="stat-icon">💰</div>
                                 <div className="stat-info">
                                     <h3>R$ 850</h3>
                                     <p>Receita Mensal</p>
@@ -190,12 +214,12 @@ const Motorista = () => {
                             <h3>Atividade Recente</h3>
                             <div className="activity-list">
                                 <div className="activity-item">
-                                    <span className="activity-icon">✅</span>
+                                    <span className="activity-icon">✓️</span>
                                     <span>Viagem concluída - Centro → Bairro A</span>
                                     <span className="activity-time">10:30</span>
                                 </div>
                                 <div className="activity-item">
-                                    <span className="activity-icon">🚀</span>
+                                    <span className="activity-icon">🚌</span>
                                     <span>Iniciada rota matinal</span>
                                     <span className="activity-time">07:00</span>
                                 </div>
@@ -221,11 +245,16 @@ const Motorista = () => {
                                 <div key={passageiro.id} className="passageiro-card">
                                     <div className="passageiro-info">
                                         <h4>{passageiro.nome}</h4>
-                                        <p>📱 {passageiro.telefone}</p>
-                                        <p>🏠 {passageiro.endereco}</p>
-                                        <p>📍 {passageiro.ponto}</p>
+                                        <p>📞 {passageiro.telefone}</p>
+                                        <p>📍 {passageiro.endereco}</p>
+                                        <p>🚏 {passageiro.ponto}</p>
                                     </div>
-                                
+                                    <button 
+                                        className="remove-btn"
+                                        onClick={() => handleRemovePassenger(passageiro.id)}
+                                    >
+                                        🗑️
+                                    </button>
                                 </div>
                             ))}
                         </div>
@@ -298,7 +327,7 @@ const Motorista = () => {
                                     className="add-btn"
                                     onClick={() => setShowAddRota(true)}
                                 >
-                                    🎆 Adicionar Rota
+                                    ➕ Adicionar Rota
                                 </button>
                                 {selectedRotas.length > 0 && (
                                     <button 
@@ -313,7 +342,7 @@ const Motorista = () => {
                         
                         <div className="rota-info">
                             <div className="rota-card">
-                                <h3>🌍 Rota Principal</h3>
+                                <h3>🗺️ Rota Principal</h3>
                                 <div className="rota-details">
                                     <p><strong>Origem:</strong> {rotas[0]?.nome || 'Terminal Central'}</p>
                                     <p><strong>Destino:</strong> {rotas[rotas.length - 1]?.nome || 'Bairro Residencial'}</p>
@@ -323,10 +352,18 @@ const Motorista = () => {
                             </div>
 
                             <div className="pontos-parada">
-                                <h3>📍 Pontos de Parada</h3>
+                                <h3>🚏 Pontos de Parada</h3>
                                 <div className="pontos-list">
                                     {rotas.map((rota, index) => (
-                                        <div key={rota.id} className={`ponto-item ${selectedRotas.includes(rota.id) ? 'selected' : ''}`}>
+                                        <div 
+                                            key={rota.id} 
+                                            className={`ponto-item ${selectedRotas.includes(rota.id) ? 'selected' : ''} ${draggedItem === index ? 'dragging' : ''}`}
+                                            draggable
+                                            onDragStart={(e) => handleDragStart(e, index)}
+                                            onDragOver={handleDragOver}
+                                            onDrop={(e) => handleDrop(e, index)}
+                                        >
+                                            <div className="drag-handle">↕️</div>
                                             <input 
                                                 type="checkbox"
                                                 className="rota-checkbox"
@@ -345,7 +382,7 @@ const Motorista = () => {
                                                 >
                                                     ✏️
                                                 </button>
-                                               
+                                            
                                             </div>
                                         </div>
                                     ))}
@@ -353,7 +390,7 @@ const Motorista = () => {
                             </div>
 
                             <div className="horarios-card">
-                                <h3>⌚️ Horários de Operação</h3>
+                                <h3>🕰️ Horários de Operação</h3>
                                 <div className="horarios-grid">
                                     <div className="horario-item">
                                         <strong>Manhã:</strong> 07:00 - 12:00
