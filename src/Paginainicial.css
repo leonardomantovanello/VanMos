@@ -1,4 +1,10 @@
 /* Home Page Styles */
+@font-face {
+    font-family: "akira";
+    src: url("../dist/assets/fonts/Akira\ Expanded\ Demo.otf");
+    font-weight: normal;
+    font-style: normal;
+}
 .home-container {
     width: 100%;
     overflow-x: hidden;

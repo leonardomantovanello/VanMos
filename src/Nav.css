@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "akira";
+    src: url("../dist/assets/fonts/Akira\ Expanded\ Demo.otf");
+    font-weight: normal;
+    font-style: normal;
+}
+
 .header {
     position: fixed;
     top: 0;
@@ -41,6 +48,7 @@
     letter-spacing: 2px;
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
     filter: drop-shadow(0 2px 8px rgba(76, 0, 76, 0.8));
+    font-family: 'akira';
 }
 
 .logo-subtitle {
