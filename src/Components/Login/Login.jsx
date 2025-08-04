@@ -17,10 +17,69 @@ const Login = () => {
     })
   }
 
+  const validateCPF = (cpf) => {
+    cpf = cpf.replace(/[^\d]/g, '')
+    if (cpf.length !== 11) return false
+    if (/^(\d)\1{10}$/.test(cpf)) return false
+    
+    let sum = 0
+    for (let i = 0; i < 9; i++) {
+      sum += parseInt(cpf.charAt(i)) * (10 - i)
+    }
+    let remainder = (sum * 10) % 11
+    if (remainder === 10 || remainder === 11) remainder = 0
+    if (remainder !== parseInt(cpf.charAt(9))) return false
+    
+    sum = 0
+    for (let i = 0; i < 10; i++) {
+      sum += parseInt(cpf.charAt(i)) * (11 - i)
+    }
+    remainder = (sum * 10) % 11
+    if (remainder === 10 || remainder === 11) remainder = 0
+    return remainder === parseInt(cpf.charAt(10))
+  }
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const validatePassword = (password) => {
+    return password.length >= 8 && 
+           /[A-Z]/.test(password) && 
+           /[a-z]/.test(password) && 
+           /\d/.test(password)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('Login attempt:', formData)
-    // Aqui você pode adicionar a lógica de autenticação
+    
+    const isValidCPF = validateCPF(formData.email)
+    const isValidEmail = validateEmail(formData.email)
+    
+    if (!isValidCPF && !isValidEmail) {
+      alert('Por favor, insira um CPF ou e-mail válido')
+      return
+    }
+    
+    if (!validatePassword(formData.password)) {
+      alert('A senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número')
+      return
+    }
+    
+    // Verificar se usuário está cadastrado
+    const users = JSON.parse(localStorage.getItem('vanmos_users') || '[]')
+    const user = users.find(u => 
+      (u.cpf === formData.email || u.email === formData.email) && 
+      u.senha === formData.password
+    )
+    
+    if (!user) {
+      alert('Usuário não encontrado. Por favor, realize o cadastro primeiro.')
+      return
+    }
+    
+    console.log('Login successful:', user)
     navigate('/motorista')
   }
   
@@ -90,7 +149,13 @@ const Login = () => {
               <span className="checkmark"></span>
               Lembrar-me
             </label>
-            <a href="#" className="forgot-password">Esqueceu a senha?</a>
+            <button 
+              type="button"
+              className="forgot-password"
+              onClick={() => navigate('/forgot-password')}
+            >
+              Esqueceu a senha?
+            </button>
           </div>
         
           <button type="submit" className="login-btn">

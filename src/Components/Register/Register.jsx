@@ -42,11 +42,72 @@ const Register = () => {
     })
   }
 
+  const validateCPF = (cpf) => {
+    cpf = cpf.replace(/[^\d]/g, '')
+    if (cpf.length !== 11) return false
+    if (/^(\d)\1{10}$/.test(cpf)) return false
+    
+    let sum = 0
+    for (let i = 0; i < 9; i++) {
+      sum += parseInt(cpf.charAt(i)) * (10 - i)
+    }
+    let remainder = (sum * 10) % 11
+    if (remainder === 10 || remainder === 11) remainder = 0
+    if (remainder !== parseInt(cpf.charAt(9))) return false
+    
+    sum = 0
+    for (let i = 0; i < 10; i++) {
+      sum += parseInt(cpf.charAt(i)) * (11 - i)
+    }
+    remainder = (sum * 10) % 11
+    if (remainder === 10 || remainder === 11) remainder = 0
+    return remainder === parseInt(cpf.charAt(10))
+  }
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const validatePassword = (password) => {
+    return password.length >= 8 && 
+           /[A-Z]/.test(password) && 
+           /[a-z]/.test(password) && 
+           /\d/.test(password)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
+    
+    if (!validateCPF(formData.cpf)) {
+      alert('Por favor, insira um CPF válido')
+      return
+    }
+    
+    if (!validateEmail(formData.email)) {
+      alert('Por favor, insira um e-mail válido')
+      return
+    }
+    
+    if (!validatePassword(formData.senha)) {
+      alert('A senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número')
+      return
+    }
+    
+    // Salvar usuário no localStorage
+    const users = JSON.parse(localStorage.getItem('vanmos_users') || '[]')
+    const newUser = {
+      id: Date.now(),
+      nome: formData.nome,
+      cpf: formData.cpf,
+      email: formData.email,
+      senha: formData.senha
+    }
+    users.push(newUser)
+    localStorage.setItem('vanmos_users', JSON.stringify(users))
+    
     console.log('Dados do cadastro:', formData)
-    // Aqui você pode adicionar a lógica de cadastro
-    // Por exemplo, enviar para uma API
+    alert('Cadastro realizado com sucesso!')
     navigate('/motorista')
   }
 
