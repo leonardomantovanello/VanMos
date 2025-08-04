@@ -26,6 +26,11 @@ const PaginaInicial = () => {
                             Conectamos você ao melhor transporte urbano com tecnologia de ponta, 
                             segurança garantida e conforto excepcional.
                         </p>
+                        <div className="hero-actions">
+                            <Link to="/motoristas" className="cta-btn">
+                                👥 Ver Motoristas
+                            </Link>
+                        </div>
                     </div>
                     <div className="hero-visual">
                         <div className="floating-card">

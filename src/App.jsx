@@ -7,6 +7,7 @@ import ForgotPassword from './Components/ForgotPassword/ForgotPassword'
 import QuemSomos from './Components/QuemSomos/QuemSomos'
 import Contato from './Components/Contato/Contato'
 import Motorista from './Components/Motorista/Motorista'
+import Motoristas from './Components/Motoristas/Motoristas'
 import PaginaInicial from './Paginainicial'
 import './App.css'
 
@@ -21,6 +22,7 @@ const AppContent = () => {
                 <Route path="/" element={<PaginaInicial />} />
                 <Route path="/quem-somos" element={<QuemSomos />} />
                 <Route path="/contato" element={<Contato />} />
+                <Route path="/motoristas" element={<Motoristas />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
