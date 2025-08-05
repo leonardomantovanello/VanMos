@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faVanShuttle } from '@fortawesome/free-solid-svg-icons'
+import { faBolt, faMoneyBillTrendUp, faShield, faVanShuttle } from '@fortawesome/free-solid-svg-icons'
+import { faPeopleGroup } from '@fortawesome/free-solid-svg-icons'
+
 import './Paginainicial.css'
 
 const PaginaInicial = () => {
@@ -30,7 +32,7 @@ const PaginaInicial = () => {
                         </p>
                         <div className="hero-actions">
                             <Link to="/motoristas" className="cta-btn">
-                                👥 Ver Motoristas
+                                <FontAwesomeIcon icon={faPeopleGroup} style={{color: "#B197FC",}} /> Ver Motoristas
                             </Link>
                         </div>
                     </div>
@@ -57,17 +59,17 @@ const PaginaInicial = () => {
                     <h2 className="section-title">Por que escolher VanMos?</h2>
                     <div className="features-grid">
                         <div className="feature-card">
-                            <div className="feature-icon">🚀</div>
+                            <div className="feature-icon"><FontAwesomeIcon icon={faBolt} style={{color: "#913b91ff",}} /></div>
                             <h3>Rápido & Eficiente</h3>
                             <p>Otimização de rotas em tempo real para chegar ao seu destino mais rapidamente.</p>
                         </div>
                         <div className="feature-card">
-                            <div className="feature-icon">🔒</div>
+                            <div className="feature-icon"><FontAwesomeIcon icon={faShield} style={{color: "#913b91ff",}} /></div>
                             <h3>Seguro & Confiável</h3>
                             <p>Motoristas verificados e veículos monitorados para sua total segurança.</p>
                         </div>
                         <div className="feature-card">
-                            <div className="feature-icon">💎</div>
+                            <div className="feature-icon"><FontAwesomeIcon icon={faMoneyBillTrendUp} style={{color: "#913b91ff",}} /></div>
                             <h3>Preços Justos</h3>
                             <p>Tarifas transparentes e competitivas sem taxas ocultas.</p>
                         </div>

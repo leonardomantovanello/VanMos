@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useTheme } from './contexts/ThemeContext'
 import './Nav.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faVanShuttle } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faMoon, faSun, faVanShuttle } from '@fortawesome/free-solid-svg-icons'
 
 const Nav = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -35,7 +35,7 @@ const Nav = () => {
                         className="settings-btn"
                         onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                     >
-                        ⚙️
+                        <FontAwesomeIcon icon={faGear} style={{color: "#e6ccff",}} />
                     </button>
                     {isSettingsOpen && (
                         <div className="settings-dropdown">
@@ -43,7 +43,7 @@ const Nav = () => {
                                 className="theme-toggle"
                                 onClick={toggleTheme}
                             >
-                                {isDark ? '☀️' : '🌙'} {isDark ? 'Modo Claro' : 'Modo Escuro'}
+                                {isDark ? <FontAwesomeIcon icon={faSun} style={{color: "#B197FC",}}/> : <FontAwesomeIcon icon={faMoon} style={{color: "#B197FC",}}/>} {isDark ? 'Modo Claro' : 'Modo Escuro'}
                             </button>
                         </div>
                     )}

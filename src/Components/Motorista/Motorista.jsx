@@ -2,22 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../../contexts/ThemeContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartSimple } from '@fortawesome/free-solid-svg-icons'
-import { faSun } from '@fortawesome/free-solid-svg-icons'
-import { faGear } from '@fortawesome/free-solid-svg-icons'
-import { faUsers } from '@fortawesome/free-solid-svg-icons'
-import { faMap } from '@fortawesome/free-solid-svg-icons'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
-import { faLocationPin } from '@fortawesome/free-solid-svg-icons'
-import { faClock } from '@fortawesome/free-solid-svg-icons'
-import { faMoneyBill } from '@fortawesome/free-solid-svg-icons'
-import { faVanShuttle } from '@fortawesome/free-solid-svg-icons'
-import { faDoorClosed } from '@fortawesome/free-solid-svg-icons'
-import { faMoon } from '@fortawesome/free-solid-svg-icons'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { faPhone } from '@fortawesome/free-solid-svg-icons'
-import { faMapPin } from '@fortawesome/free-solid-svg-icons'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faChartSimple, faSun, faGear, faUsers, faMap, faUser, faLocationPin, faClock, faMoneyBill, faVanShuttle, faDoorClosed,
+faMoon, faCheck, faPhone, faMapPin, faTrashCan, faPlus, faArrowsUpDown, faPencil, faMapLocation} from '@fortawesome/free-solid-svg-icons'
+
 
 
 import './Motorista.css'
@@ -280,7 +267,7 @@ const Motorista = () => {
                                 className="add-btn"
                                 onClick={() => setShowAddPassenger(true)}
                             >
-                                ➕ Adicionar Passageiro
+                                <FontAwesomeIcon icon={faPlus} /> Adicionar Passageiro
                             </button>
                         </div>
 
@@ -371,7 +358,7 @@ const Motorista = () => {
                                     className="add-btn"
                                     onClick={() => setShowAddRota(true)}
                                 >
-                                    ➕ Adicionar Rota
+                                    <FontAwesomeIcon icon={faPlus} />  Adicionar Rota
                                 </button>
                                 {selectedRotas.length > 0 && (
                                     <button 
@@ -386,7 +373,7 @@ const Motorista = () => {
                         
                         <div className="rota-info">
                             <div className="rota-card">
-                                <h3>🗺️ Rota Principal</h3>
+                                <h3><FontAwesomeIcon icon={faMapLocation} /> Rota Principal</h3>
                                 <div className="rota-details">
                                     <p><strong>Origem:</strong> {rotas[0]?.nome || 'Terminal Central'}</p>
                                     <p><strong>Destino:</strong> {rotas[rotas.length - 1]?.nome || 'Bairro Residencial'}</p>
@@ -396,7 +383,7 @@ const Motorista = () => {
                             </div>
 
                             <div className="pontos-parada">
-                                <h3>🚏 Pontos de Parada</h3>
+                                <h3><FontAwesomeIcon icon={faMapPin} /> Pontos de Parada</h3>
                                 <div className="pontos-list">
                                     {rotas.map((rota, index) => (
                                         <div 
@@ -407,7 +394,7 @@ const Motorista = () => {
                                             onDragOver={handleDragOver}
                                             onDrop={(e) => handleDrop(e, index)}
                                         >
-                                            <div className="drag-handle">↕️</div>
+                                            <div className="drag-handle"><FontAwesomeIcon icon={faArrowsUpDown} /></div>
                                             <input 
                                                 type="checkbox"
                                                 className="rota-checkbox"
@@ -424,7 +411,7 @@ const Motorista = () => {
                                                     className="edit-btn"
                                                     onClick={() => handleEditRota(rota)}
                                                 >
-                                                    ✏️
+                                                    <FontAwesomeIcon icon={faPencil} />
                                                 </button>
                                             
                                             </div>
@@ -434,7 +421,7 @@ const Motorista = () => {
                             </div>
 
                             <div className="horarios-card">
-                                <h3>🕰️ Horários de Operação</h3>
+                                <h3><FontAwesomeIcon icon={faClock} /> Horários de Operação</h3>
                                 <div className="horarios-grid">
                                     <div className="horario-item">
                                         <strong>Manhã:</strong> 07:00 - 12:00

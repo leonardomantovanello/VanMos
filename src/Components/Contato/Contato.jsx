@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Contato.css'
+import { faEnvelope, faMessage, faPhone } from '@fortawesome/free-solid-svg-icons'
 
 const Contato = () => {
     const [isVisible, setIsVisible] = useState(false)
@@ -64,7 +66,7 @@ const Contato = () => {
                         {/* Cartão Email */}
                         <div className="contato-card">
                             <div className="contato-icon">
-                                <span>📬</span>
+                                <span><FontAwesomeIcon icon={faEnvelope} style={{color: "#9243bdff",}} /></span>
                             </div>
                             <h3>E-mail</h3>
                             <p className="contato-info">contato@vanmos.com.br</p>
@@ -82,7 +84,7 @@ const Contato = () => {
                         {/* Cartão WhatsApp */}
                         <div className="contato-card">
                             <div className="contato-icon">
-                                <span>🗨️</span>
+                                <span><FontAwesomeIcon icon={faMessage} style={{color: "#9243bdff",}} /></span>
                             </div>
                             <h3>WhatsApp</h3>
                             <p className="contato-info">(11) 99999-8888</p>
@@ -100,7 +102,7 @@ const Contato = () => {
                         {/* Cartão Telefone */}
                         <div className="contato-card">
                             <div className="contato-icon">
-                                <span>☎️</span>
+                                <span><FontAwesomeIcon icon={faPhone} style={{color: "#9243bdff",}} /></span>
                             </div>
                             <h3>Telefone</h3>
                             <p className="contato-info">(11) 3333-4444</p>
