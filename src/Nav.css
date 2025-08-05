@@ -222,3 +222,116 @@
 .logo-text {
     animation: glow 3s ease-in-out infinite;
 }
+
+/* Settings Button */
+.settings-container {
+    position: relative;
+}
+
+.settings-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+}
+
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(90deg);
+}
+
+.settings-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: linear-gradient(135deg, rgba(76, 0, 76, 0.95) 0%, rgba(32, 0, 38, 0.98) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    min-width: 150px;
+    box-shadow: 0 8px 32px rgba(76, 0, 76, 0.3);
+}
+
+.theme-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* Light Theme */
+[data-theme="light"] .header {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.98) 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .logo-text {
+    background: linear-gradient(135deg, #4b004b 0%, #6d1a6d 50%, #8b2a8b 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .logo-subtitle {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .nav-link {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="light"] .nav-link:hover {
+    color: #4b004b;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .settings-btn {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="light"] .settings-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .settings-dropdown {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.98) 100%);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .theme-toggle {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="light"] .theme-toggle:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #4b004b;
+}
+
+[data-theme="light"] .menu-toggle span {
+    background: linear-gradient(90deg, #4b004b, #6d1a6d);
+}
+
+[data-theme="light"] .navbar {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 240, 240, 0.98) 100%);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}

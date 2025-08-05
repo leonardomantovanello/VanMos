@@ -258,3 +258,46 @@
         font-size: 0.9rem;
     }
 }
+
+/* Light Theme Styles */
+[data-theme="light"] .motoristas-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+    color: #212529;
+}
+
+[data-theme="light"] .hero-title {
+    color: #212529;
+}
+
+[data-theme="light"] .highlight {
+    background: linear-gradient(135deg, #6d1a6d 0%, #4b004b 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .hero-description {
+    color: rgba(33, 37, 41, 0.8);
+}
+
+[data-theme="light"] .motorista-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.8) 100%);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .motorista-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .motorista-info h3 {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .info-item {
+    color: rgba(33, 37, 41, 0.9);
+}
+
+[data-theme="light"] .floating-shape {
+    background: linear-gradient(135deg, rgba(109, 26, 109, 0.1), rgba(75, 0, 75, 0.05));
+}

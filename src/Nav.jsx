@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useTheme } from './contexts/ThemeContext'
 import './Nav.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faVanShuttle } from '@fortawesome/free-solid-svg-icons'
 
 const Nav = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+    const { isDark, toggleTheme } = useTheme()
 
     return (
         <header className="header">
             <Link to="/" className="logo">
-                <span className="logo-text">VANMOS</span>
+         
+                <span className="logo-text"><FontAwesomeIcon icon={faVanShuttle} style={{color: "#e6ccff"}} />VANMOS</span>
                 <span className="logo-subtitle">Transport</span>
             </Link>
             <nav className={`navbar ${isMenuOpen ? 'navbar-open' : ''}`}>
@@ -24,6 +30,24 @@ const Nav = () => {
                 <Link to="/login" className="nav-link login-btn">
                     <span>Login para Motoristas</span>
                 </Link>
+                <div className="settings-container">
+                    <button 
+                        className="settings-btn"
+                        onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                    >
+                        ⚙️
+                    </button>
+                    {isSettingsOpen && (
+                        <div className="settings-dropdown">
+                            <button 
+                                className="theme-toggle"
+                                onClick={toggleTheme}
+                            >
+                                {isDark ? '☀️' : '🌙'} {isDark ? 'Modo Claro' : 'Modo Escuro'}
+                            </button>
+                        </div>
+                    )}
+                </div>
             </nav>
             <button 
                 className={`menu-toggle ${isMenuOpen ? 'menu-open' : ''}`}

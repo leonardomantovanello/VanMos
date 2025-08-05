@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
+import { ThemeProvider } from './contexts/ThemeContext'
 import Nav from './Nav'
 import Login from './Components/Login/Login'
 import Register from './Components/Register/Register'
@@ -33,9 +34,11 @@ const AppContent = () => {
 }
 
 const App = () => (
-    <Router>
-        <AppContent />
-    </Router>
+    <ThemeProvider>
+        <Router>
+            <AppContent />
+        </Router>
+    </ThemeProvider>
 )
 
 export default App

@@ -377,3 +377,109 @@
     height: 100px;
   }
 }
+
+/* Light Theme Styles */
+[data-theme="light"] .login-container {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+}
+
+[data-theme="light"] .voltar-btn {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 249, 250, 0.8));
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #212529;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .voltar-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.9));
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .login-content {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.8) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .login-title {
+  background: linear-gradient(135deg, #212529 0%, #6d1a6d 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .login-subtitle {
+  color: rgba(33, 37, 41, 0.7);
+}
+
+[data-theme="light"] .input-group label {
+  color: rgba(33, 37, 41, 0.9);
+}
+
+[data-theme="light"] .input-group input {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(109, 26, 109, 0.2);
+  color: #212529;
+}
+
+[data-theme="light"] .input-group input:focus {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: #6d1a6d;
+  box-shadow: 0 0 0 4px rgba(109, 26, 109, 0.1);
+}
+
+[data-theme="light"] .input-group input::placeholder {
+  color: rgba(109, 26, 109, 0.6);
+}
+
+[data-theme="light"] .show-password-btn {
+  color: #6d1a6d;
+}
+
+[data-theme="light"] .show-password-btn:hover {
+  background: rgba(109, 26, 109, 0.1);
+}
+
+[data-theme="light"] .checkbox-container {
+  color: rgba(33, 37, 41, 0.8);
+}
+
+[data-theme="light"] .forgot-password {
+  color: #6d1a6d;
+}
+
+[data-theme="light"] .forgot-password:hover {
+  color: #4b004b;
+}
+
+[data-theme="light"] .register-btn {
+  border: 2px solid rgba(109, 26, 109, 0.3);
+  color: #6d1a6d;
+}
+
+[data-theme="light"] .register-btn:hover {
+  background: rgba(109, 26, 109, 0.1);
+  color: #4b004b;
+  border-color: #6d1a6d;
+}
+
+[data-theme="light"] .divider span {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.8) 100%);
+  color: rgba(33, 37, 41, 0.6);
+}
+
+[data-theme="light"] .login-footer p {
+  color: rgba(33, 37, 41, 0.5);
+}
+
+[data-theme="light"] .login-footer a {
+  color: #6d1a6d;
+}
+
+[data-theme="light"] .login-footer a:hover {
+  color: #4b004b;
+}
+
+[data-theme="light"] .bg-circle {
+  background: linear-gradient(135deg, rgba(109, 26, 109, 0.1), rgba(75, 0, 75, 0.05));
+}

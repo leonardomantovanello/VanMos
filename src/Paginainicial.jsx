@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faVanShuttle } from '@fortawesome/free-solid-svg-icons'
 import './Paginainicial.css'
 
 const PaginaInicial = () => {
@@ -34,7 +36,7 @@ const PaginaInicial = () => {
                     </div>
                     <div className="hero-visual">
                         <div className="floating-card">
-                            <div className="card-icon">🚌</div>
+                            <div className="card-icon"><FontAwesomeIcon icon={faVanShuttle} style={{color: "#6d1a6d"}} /></div>
                             <h3>VanMos Transport</h3>
                             <p>Sua jornada começa aqui</p>
                         </div>

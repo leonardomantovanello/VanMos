@@ -38,21 +38,7 @@
     margin-left: 10px;
 }
 
-.logout-btn {
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #6d1a6d 0%, #4b004b 100%);
-    border: none;
-    border-radius: 12px;
-    color: #fff;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
 
-.logout-btn:hover {
-    background: linear-gradient(135deg, #8b2a8b 0%, #6d1a6d 100%);
-    transform: translateY(-2px);
-}
 
 /* Navigation */
 .motorista-nav {
@@ -580,4 +566,223 @@
     .horarios-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Settings Button */
+.settings-container {
+    position: relative;
+}
+
+.settings-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(90deg);
+}
+
+.settings-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: linear-gradient(135deg, rgba(179, 143, 198, 0.1) 0%, rgba(76, 0, 76, 0.15) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 10px;
+    min-width: 160px;
+    box-shadow: 0 8px 32px rgba(76, 0, 76, 0.3);
+}
+
+.theme-toggle,
+.logout-option {
+    width: 100%;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.theme-toggle:hover,
+.logout-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.logout-option:last-child {
+    margin-bottom: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 5px;
+    padding-top: 12px;
+}
+
+/* Light Theme Styles */
+[data-theme="light"] .motorista-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+    color: #212529;
+}
+
+[data-theme="light"] .motorista-header {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.8) 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .logo-section h1 {
+    background: linear-gradient(135deg, #212529 0%, #6d1a6d 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .driver-name {
+    color: rgba(33, 37, 41, 0.7);
+}
+
+[data-theme="light"] .settings-btn {
+    color: rgba(33, 37, 41, 0.9);
+}
+
+[data-theme="light"] .settings-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .settings-dropdown {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.8) 100%);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .theme-toggle,
+[data-theme="light"] .logout-option {
+    color: rgba(33, 37, 41, 0.9);
+}
+
+[data-theme="light"] .theme-toggle:hover,
+[data-theme="light"] .logout-option:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #212529;
+}
+
+[data-theme="light"] .logout-option {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .motorista-nav {
+    background: rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .nav-btn {
+    border: 2px solid rgba(109, 26, 109, 0.3);
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .nav-btn:hover,
+[data-theme="light"] .nav-btn.active {
+    background: rgba(109, 26, 109, 0.1);
+    color: #4b004b;
+    border-color: #6d1a6d;
+}
+
+[data-theme="light"] .dashboard-section h2,
+[data-theme="light"] .passageiros-section h2,
+[data-theme="light"] .rota-section h2 {
+    color: #212529;
+}
+
+[data-theme="light"] .stat-card,
+[data-theme="light"] .recent-activity,
+[data-theme="light"] .passageiro-card,
+[data-theme="light"] .rota-card,
+[data-theme="light"] .pontos-parada,
+[data-theme="light"] .horarios-card,
+[data-theme="light"] .modal {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.8) 100%);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .stat-info h3,
+[data-theme="light"] .recent-activity h3,
+[data-theme="light"] .passageiro-info h4,
+[data-theme="light"] .rota-card h3,
+[data-theme="light"] .pontos-parada h3,
+[data-theme="light"] .horarios-card h3,
+[data-theme="light"] .ponto-info h4,
+[data-theme="light"] .modal h3 {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .stat-info p,
+[data-theme="light"] .passageiro-info p,
+[data-theme="light"] .rota-details p,
+[data-theme="light"] .ponto-info p,
+[data-theme="light"] .activity-item,
+[data-theme="light"] .horario-item {
+    color: rgba(33, 37, 41, 0.8);
+}
+
+[data-theme="light"] .activity-time {
+    color: rgba(33, 37, 41, 0.6);
+}
+
+[data-theme="light"] .activity-item,
+[data-theme="light"] .ponto-item,
+[data-theme="light"] .horario-item {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] .ponto-item.selected {
+    background: rgba(109, 26, 109, 0.1);
+    border: 2px solid rgba(109, 26, 109, 0.3);
+}
+
+[data-theme="light"] .modal input,
+[data-theme="light"] .modal select {
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(109, 26, 109, 0.2);
+    color: #212529;
+}
+
+[data-theme="light"] .modal input:focus,
+[data-theme="light"] .modal select:focus {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: #6d1a6d;
+}
+
+[data-theme="light"] .modal input::placeholder {
+    color: rgba(109, 26, 109, 0.6);
+}
+
+[data-theme="light"] .cancel-btn {
+    border: 2px solid rgba(109, 26, 109, 0.3);
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .cancel-btn:hover {
+    background: rgba(109, 26, 109, 0.1);
+    color: #4b004b;
+}
+
+[data-theme="light"] .drag-handle {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .drag-handle:hover {
+    color: #4b004b;
 }

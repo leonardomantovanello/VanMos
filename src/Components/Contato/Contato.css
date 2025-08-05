@@ -470,3 +470,118 @@
         font-size: 1rem;
     }
 }
+
+/* Light Theme Styles */
+[data-theme="light"] .hero-contato {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+}
+
+[data-theme="light"] .hero-contato .hero-title {
+    color: #212529;
+}
+
+[data-theme="light"] .hero-contato .highlight {
+    background: linear-gradient(135deg, #6d1a6d 0%, #4b004b 50%, #8b2a8b 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .hero-contato .hero-description {
+    color: rgba(33, 37, 41, 0.9);
+}
+
+[data-theme="light"] .info-contato,
+[data-theme="light"] .formulario-contato,
+[data-theme="light"] .horarios-atendimento {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+}
+
+[data-theme="light"] .contato-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .contato-card:hover {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    border-color: rgba(109, 26, 109, 0.3);
+}
+
+[data-theme="light"] .contato-card h3 {
+    color: #212529;
+}
+
+[data-theme="light"] .contato-info {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .contato-desc {
+    color: rgba(33, 37, 41, 0.8);
+}
+
+[data-theme="light"] .form-wrapper {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .form-header h2 {
+    color: #212529;
+}
+
+[data-theme="light"] .form-header p {
+    color: rgba(33, 37, 41, 0.8);
+}
+
+[data-theme="light"] .input-group label {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .input-group input,
+[data-theme="light"] .input-group select,
+[data-theme="light"] .input-group textarea {
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(109, 26, 109, 0.3);
+    color: #212529;
+}
+
+[data-theme="light"] .input-group input::placeholder,
+[data-theme="light"] .input-group textarea::placeholder {
+    color: rgba(33, 37, 41, 0.6);
+}
+
+[data-theme="light"] .input-group select option {
+    background: #ffffff;
+    color: #212529;
+}
+
+[data-theme="light"] .horarios-content h2 {
+    color: #212529;
+}
+
+[data-theme="light"] .horario-item {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(109, 26, 109, 0.2);
+}
+
+[data-theme="light"] .horario-item:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="light"] .dia {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .hora {
+    color: rgba(33, 37, 41, 0.9);
+}
+
+[data-theme="light"] .horario-obs {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .floating-shape {
+    background: linear-gradient(135deg, rgba(109, 26, 109, 0.1), rgba(230, 204, 255, 0.1));
+}

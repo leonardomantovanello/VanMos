@@ -1,12 +1,35 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from '../../contexts/ThemeContext'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChartSimple } from '@fortawesome/free-solid-svg-icons'
+import { faSun } from '@fortawesome/free-solid-svg-icons'
+import { faGear } from '@fortawesome/free-solid-svg-icons'
+import { faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faMap } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faLocationPin } from '@fortawesome/free-solid-svg-icons'
+import { faClock } from '@fortawesome/free-solid-svg-icons'
+import { faMoneyBill } from '@fortawesome/free-solid-svg-icons'
+import { faVanShuttle } from '@fortawesome/free-solid-svg-icons'
+import { faDoorClosed } from '@fortawesome/free-solid-svg-icons'
+import { faMoon } from '@fortawesome/free-solid-svg-icons'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faPhone } from '@fortawesome/free-solid-svg-icons'
+import { faMapPin } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+
+
 import './Motorista.css'
+
 
 const Motorista = () => {
     const navigate = useNavigate()
+    const { isDark, toggleTheme } = useTheme()
     const [activeTab, setActiveTab] = useState('dashboard')
     const [showAddPassenger, setShowAddPassenger] = useState(false)
     const [showAddRota, setShowAddRota] = useState(false)
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false)
     const [passageiros, setPassageiros] = useState([
         { id: 1, nome: 'Ana Silva', telefone: '(11) 99999-1111', endereco: 'Rua A, 123', ponto: 'Ponto 1', status: 'ativo' },
         { id: 2, nome: 'Carlos Santos', telefone: '(11) 99999-2222', endereco: 'Rua B, 456', ponto: 'Ponto 2', status: 'ativo' },
@@ -143,12 +166,33 @@ const Motorista = () => {
             <header className="motorista-header">
                 <div className="header-content">
                     <div className="logo-section">
-                        <h1>🚌 VanMos Motorista</h1>
+                        <h1><FontAwesomeIcon icon={faVanShuttle} style={{color: "#b38fc6"}} /> VanMos Motorista</h1>
                         <span className="driver-name">João Motorista</span>
                     </div>
-                    <button className="logout-btn" onClick={handleLogout}>
-                        Sair 🚪
-                    </button>
+                    <div className="settings-container">
+                        <button 
+                            className="settings-btn"
+                            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                        >
+                            <FontAwesomeIcon icon={faGear} style={{color: "#B197FC",}} />
+                        </button>
+                        {isSettingsOpen && (
+                            <div className="settings-dropdown">
+                                <button 
+                                    className="theme-toggle"
+                                    onClick={toggleTheme}
+                                >
+                                    {isDark ? <FontAwesomeIcon icon={faSun} style={{color: "#b852b8ff",}}/> : <FontAwesomeIcon icon={faMoon} style={{color: "#b852b8ff",}} />} {isDark ? 'Modo Claro' : 'Modo Escuro'}
+                                </button>
+                                <button 
+                                    className="logout-option"
+                                    onClick={handleLogout}
+                                >
+                                    <FontAwesomeIcon icon={faDoorClosed} style={{color: "#b852b8ff",}} /> Sair
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </header>
 
@@ -158,19 +202,19 @@ const Motorista = () => {
                     className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
                     onClick={() => setActiveTab('dashboard')}
                 >
-                    📊 Dashboard
+                   <FontAwesomeIcon icon={faChartSimple} style={{ color: "#691569ff",}} /> Dashboard
                 </button>
                 <button 
                     className={`nav-btn ${activeTab === 'passageiros' ? 'active' : ''}`}
                     onClick={() => setActiveTab('passageiros')}
                 >
-                    👥 Passageiros
+                    <FontAwesomeIcon icon={faUsers} style={{color: "#691569ff",}} /> Passageiros
                 </button>
                 <button 
                     className={`nav-btn ${activeTab === 'rota' ? 'active' : ''}`}
                     onClick={() => setActiveTab('rota')}
                 >
-                    🗺️ Rota
+                    <FontAwesomeIcon icon={faMap} style={{color: "#691569ff",}} /> Rota
                 </button>
             </nav>
 
@@ -181,28 +225,28 @@ const Motorista = () => {
                         <h2>Dashboard</h2>
                         <div className="stats-grid">
                             <div className="stat-card">
-                                <div className="stat-icon">👥</div>
+                                <div className="stat-icon"><FontAwesomeIcon icon={faUser} style={{color: "#b852b8ff",}} /></div>
                                 <div className="stat-info">
                                     <h3>{passageiros.length}</h3>
                                     <p>Passageiros Ativos</p>
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon">🚏</div>
+                                <div className="stat-icon"><FontAwesomeIcon icon={faLocationPin} style={{color: "#b852b8ff",}} /></div>
                                 <div className="stat-info">
                                     <h3>{rotas.length}</h3>
                                     <p>Pontos de Parada</p>
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon">⏰</div>
+                                <div className="stat-icon"><FontAwesomeIcon icon={faClock} style={{color: "#b852b8ff",}} /></div>
                                 <div className="stat-info">
                                     <h3>{rotas.length * 10}min</h3>
                                     <p>Tempo Médio</p>
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon">💰</div>
+                                <div className="stat-icon"><FontAwesomeIcon icon={faMoneyBill} style={{color: "#b852b8ff",}} /></div>
                                 <div className="stat-info">
                                     <h3>R$ 850</h3>
                                     <p>Receita Mensal</p>
@@ -214,12 +258,12 @@ const Motorista = () => {
                             <h3>Atividade Recente</h3>
                             <div className="activity-list">
                                 <div className="activity-item">
-                                    <span className="activity-icon">✓️</span>
+                                    <span className="activity-icon"><FontAwesomeIcon icon={faCheck} style={{color: "#b852b8ff",}} /></span>
                                     <span>Viagem concluída - Centro → Bairro A</span>
                                     <span className="activity-time">10:30</span>
                                 </div>
                                 <div className="activity-item">
-                                    <span className="activity-icon">🚌</span>
+                                    <span className="activity-icon"><FontAwesomeIcon icon={faVanShuttle} style={{color: "#b852b8ff"}} /></span>
                                     <span>Iniciada rota matinal</span>
                                     <span className="activity-time">07:00</span>
                                 </div>
@@ -245,15 +289,15 @@ const Motorista = () => {
                                 <div key={passageiro.id} className="passageiro-card">
                                     <div className="passageiro-info">
                                         <h4>{passageiro.nome}</h4>
-                                        <p>📞 {passageiro.telefone}</p>
-                                        <p>📍 {passageiro.endereco}</p>
-                                        <p>🚏 {passageiro.ponto}</p>
+                                        <p><FontAwesomeIcon icon={faPhone} style={{color: "#8b258bff",}} /> {passageiro.telefone}</p>
+                                        <p><FontAwesomeIcon icon={faMapPin} style={{color: "#8b258bff",}} />{passageiro.endereco}</p>
+                                        <p><FontAwesomeIcon icon={faLocationPin} style={{color: "#8b258bff",}} />{passageiro.ponto}</p>
                                     </div>
                                     <button 
                                         className="remove-btn"
                                         onClick={() => handleRemovePassenger(passageiro.id)}
                                     >
-                                        🗑️
+                                        <FontAwesomeIcon icon={faTrashCan} style={{color: "#b852b8ff",}} />
                                     </button>
                                 </div>
                             ))}

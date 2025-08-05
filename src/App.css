@@ -40,3 +40,30 @@
     outline: 2px solid #b38fc6;
     outline-offset: 2px;
 }
+
+/* Light Theme Global Styles */
+[data-theme="light"] .page-content {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+    color: #212529;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #6d1a6d, #8b2a8b);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #4b004b, #6d1a6d);
+}
+
+[data-theme="light"] ::selection {
+    background: rgba(107, 26, 107, 0.2);
+    color: #212529;
+}
+
+[data-theme="light"] *:focus {
+    outline: 2px solid #6d1a6d;
+}
