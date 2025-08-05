@@ -2,11 +2,28 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../../contexts/ThemeContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartSimple, faSun, faGear, faUsers, faMap, faUser, faLocationPin, faClock, faMoneyBill, faVanShuttle, faDoorClosed,
-faMoon, faCheck, faPhone, faMapPin, faTrashCan, faPlus, faArrowsUpDown, faPencil, faMapLocation} from '@fortawesome/free-solid-svg-icons'
-
-
-
+import { 
+    faChartSimple, 
+    faSun, 
+    faGear, 
+    faUsers, 
+    faMap, 
+    faUser, 
+    faLocationPin, 
+    faClock, 
+    faMoneyBill, 
+    faVanShuttle, 
+    faDoorClosed,
+    faMoon, 
+    faCheck, 
+    faPhone, 
+    faMapPin, 
+    faTrashCan, 
+    faPlus, 
+    faArrowsUpDown, 
+    faPencil, 
+    faMapLocation
+} from '@fortawesome/free-solid-svg-icons'
 import './Motorista.css'
 
 
@@ -161,7 +178,7 @@ const Motorista = () => {
                             className="settings-btn"
                             onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                         >
-                            <FontAwesomeIcon icon={faGear} style={{color: "#B197FC",}} />
+                            <FontAwesomeIcon icon={faGear} style={{color: "#B197FC"}} />
                         </button>
                         {isSettingsOpen && (
                             <div className="settings-dropdown">
@@ -169,13 +186,13 @@ const Motorista = () => {
                                     className="theme-toggle"
                                     onClick={toggleTheme}
                                 >
-                                    {isDark ? <FontAwesomeIcon icon={faSun} style={{color: "#b852b8ff",}}/> : <FontAwesomeIcon icon={faMoon} style={{color: "#b852b8ff",}} />} {isDark ? 'Modo Claro' : 'Modo Escuro'}
+                                    {isDark ? <FontAwesomeIcon icon={faSun} style={{color: "#b852b8ff"}} /> : <FontAwesomeIcon icon={faMoon} style={{color: "#b852b8ff"}} />} {isDark ? 'Modo Claro' : 'Modo Escuro'}
                                 </button>
                                 <button 
                                     className="logout-option"
                                     onClick={handleLogout}
                                 >
-                                    <FontAwesomeIcon icon={faDoorClosed} style={{color: "#b852b8ff",}} /> Sair
+                                    <FontAwesomeIcon icon={faDoorClosed} style={{color: "#b852b8ff"}} /> Sair
                                 </button>
                             </div>
                         )}
@@ -189,19 +206,19 @@ const Motorista = () => {
                     className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
                     onClick={() => setActiveTab('dashboard')}
                 >
-                   <FontAwesomeIcon icon={faChartSimple} style={{ color: "#691569ff",}} /> Dashboard
+                   <FontAwesomeIcon icon={faChartSimple} style={{color: "#691569ff"}} /> Dashboard
                 </button>
                 <button 
                     className={`nav-btn ${activeTab === 'passageiros' ? 'active' : ''}`}
                     onClick={() => setActiveTab('passageiros')}
                 >
-                    <FontAwesomeIcon icon={faUsers} style={{color: "#691569ff",}} /> Passageiros
+                    <FontAwesomeIcon icon={faUsers} style={{color: "#691569ff"}} /> Passageiros
                 </button>
                 <button 
                     className={`nav-btn ${activeTab === 'rota' ? 'active' : ''}`}
                     onClick={() => setActiveTab('rota')}
                 >
-                    <FontAwesomeIcon icon={faMap} style={{color: "#691569ff",}} /> Rota
+                    <FontAwesomeIcon icon={faMap} style={{color: "#691569ff"}} /> Rota
                 </button>
             </nav>
 
@@ -212,28 +229,28 @@ const Motorista = () => {
                         <h2>Dashboard</h2>
                         <div className="stats-grid">
                             <div className="stat-card">
-                                <div className="stat-icon"><FontAwesomeIcon icon={faUser} style={{color: "#b852b8ff",}} /></div>
+                                <div className="stat-icon"><FontAwesomeIcon icon={faUser} style={{color: "#b852b8ff"}} /></div>
                                 <div className="stat-info">
                                     <h3>{passageiros.length}</h3>
                                     <p>Passageiros Ativos</p>
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon"><FontAwesomeIcon icon={faLocationPin} style={{color: "#b852b8ff",}} /></div>
+                                <div className="stat-icon"><FontAwesomeIcon icon={faLocationPin} style={{color: "#b852b8ff"}} /></div>
                                 <div className="stat-info">
                                     <h3>{rotas.length}</h3>
                                     <p>Pontos de Parada</p>
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon"><FontAwesomeIcon icon={faClock} style={{color: "#b852b8ff",}} /></div>
+                                <div className="stat-icon"><FontAwesomeIcon icon={faClock} style={{color: "#b852b8ff"}} /></div>
                                 <div className="stat-info">
                                     <h3>{rotas.length * 10}min</h3>
                                     <p>Tempo Médio</p>
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon"><FontAwesomeIcon icon={faMoneyBill} style={{color: "#b852b8ff",}} /></div>
+                                <div className="stat-icon"><FontAwesomeIcon icon={faMoneyBill} style={{color: "#b852b8ff"}} /></div>
                                 <div className="stat-info">
                                     <h3>R$ 850</h3>
                                     <p>Receita Mensal</p>
@@ -245,7 +262,7 @@ const Motorista = () => {
                             <h3>Atividade Recente</h3>
                             <div className="activity-list">
                                 <div className="activity-item">
-                                    <span className="activity-icon"><FontAwesomeIcon icon={faCheck} style={{color: "#b852b8ff",}} /></span>
+                                    <span className="activity-icon"><FontAwesomeIcon icon={faCheck} style={{color: "#b852b8ff"}} /></span>
                                     <span>Viagem concluída - Centro → Bairro A</span>
                                     <span className="activity-time">10:30</span>
                                 </div>
@@ -276,15 +293,15 @@ const Motorista = () => {
                                 <div key={passageiro.id} className="passageiro-card">
                                     <div className="passageiro-info">
                                         <h4>{passageiro.nome}</h4>
-                                        <p><FontAwesomeIcon icon={faPhone} style={{color: "#8b258bff",}} /> {passageiro.telefone}</p>
-                                        <p><FontAwesomeIcon icon={faMapPin} style={{color: "#8b258bff",}} />{passageiro.endereco}</p>
-                                        <p><FontAwesomeIcon icon={faLocationPin} style={{color: "#8b258bff",}} />{passageiro.ponto}</p>
+                                        <p><FontAwesomeIcon icon={faPhone} style={{color: "#8b258bff"}} /> {passageiro.telefone}</p>
+                                        <p><FontAwesomeIcon icon={faMapPin} style={{color: "#8b258bff"}} /> {passageiro.endereco}</p>
+                                        <p><FontAwesomeIcon icon={faLocationPin} style={{color: "#8b258bff"}} /> {passageiro.ponto}</p>
                                     </div>
                                     <button 
                                         className="remove-btn"
                                         onClick={() => handleRemovePassenger(passageiro.id)}
                                     >
-                                        <FontAwesomeIcon icon={faTrashCan} style={{color: "#b852b8ff",}} />
+                                        <FontAwesomeIcon icon={faTrashCan} style={{color: "#b852b8ff"}} />
                                     </button>
                                 </div>
                             ))}
@@ -358,14 +375,14 @@ const Motorista = () => {
                                     className="add-btn"
                                     onClick={() => setShowAddRota(true)}
                                 >
-                                    <FontAwesomeIcon icon={faPlus} />  Adicionar Rota
+                                    <FontAwesomeIcon icon={faPlus} /> Adicionar Rota
                                 </button>
                                 {selectedRotas.length > 0 && (
                                     <button 
                                         className="remove-selected-btn"
                                         onClick={handleRemoveSelectedRotas}
                                     >
-                                        🗑️ Remover Selecionadas ({selectedRotas.length})
+                                        <FontAwesomeIcon icon={faTrashCan} /> Remover Selecionadas ({selectedRotas.length})
                                     </button>
                                 )}
                             </div>
@@ -373,7 +390,7 @@ const Motorista = () => {
                         
                         <div className="rota-info">
                             <div className="rota-card">
-                                <h3><FontAwesomeIcon icon={faMapLocation} /> Rota Principal</h3>
+                                <h3><FontAwesomeIcon icon={faMapLocation} style={{color: "#b38fc6"}} /> Rota Principal</h3>
                                 <div className="rota-details">
                                     <p><strong>Origem:</strong> {rotas[0]?.nome || 'Terminal Central'}</p>
                                     <p><strong>Destino:</strong> {rotas[rotas.length - 1]?.nome || 'Bairro Residencial'}</p>
@@ -383,7 +400,7 @@ const Motorista = () => {
                             </div>
 
                             <div className="pontos-parada">
-                                <h3><FontAwesomeIcon icon={faMapPin} /> Pontos de Parada</h3>
+                                <h3><FontAwesomeIcon icon={faMapPin} style={{color: "#b38fc6"}} /> Pontos de Parada</h3>
                                 <div className="pontos-list">
                                     {rotas.map((rota, index) => (
                                         <div 
@@ -394,7 +411,7 @@ const Motorista = () => {
                                             onDragOver={handleDragOver}
                                             onDrop={(e) => handleDrop(e, index)}
                                         >
-                                            <div className="drag-handle"><FontAwesomeIcon icon={faArrowsUpDown} /></div>
+                                            <div className="drag-handle"><FontAwesomeIcon icon={faArrowsUpDown} style={{color: "#b38fc6"}} /></div>
                                             <input 
                                                 type="checkbox"
                                                 className="rota-checkbox"
@@ -411,7 +428,7 @@ const Motorista = () => {
                                                     className="edit-btn"
                                                     onClick={() => handleEditRota(rota)}
                                                 >
-                                                    <FontAwesomeIcon icon={faPencil} />
+                                                    <FontAwesomeIcon icon={faPencil} style={{color: "#28a745"}} />
                                                 </button>
                                             
                                             </div>
@@ -421,7 +438,7 @@ const Motorista = () => {
                             </div>
 
                             <div className="horarios-card">
-                                <h3><FontAwesomeIcon icon={faClock} /> Horários de Operação</h3>
+                                <h3><FontAwesomeIcon icon={faClock} style={{color: "#b38fc6"}} /> Horários de Operação</h3>
                                 <div className="horarios-grid">
                                     <div className="horario-item">
                                         <strong>Manhã:</strong> 07:00 - 12:00
