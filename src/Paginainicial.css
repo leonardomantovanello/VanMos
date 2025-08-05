@@ -1,7 +1,7 @@
 /* Home Page Styles */
 @font-face {
     font-family: "akira";
-    src: url("../dist/assets/fonts/Akira\ Expanded\ Demo.otf");
+    src: url("../src/assets/Akira\ Expanded\ Demo.otf");
     font-weight: normal;
     font-style: normal;
 }
@@ -233,6 +233,7 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-family: "akira";
 }
 
 .features-grid {
@@ -252,6 +253,7 @@
     position: relative;
     overflow: hidden;
 }
+
 
 .feature-card::before {
     content: '';
