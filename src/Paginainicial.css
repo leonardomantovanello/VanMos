@@ -5,6 +5,18 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: "edge";
+    src: url("../src/assets/Edges.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "exo";
+    src: url("../src/assets/Exo2-Regular.otf");
+    font-weight: normal;
+    font-style: normal;
+}
 .home-container {
     width: 100%;
     overflow-x: hidden;
@@ -253,6 +265,11 @@
     position: relative;
     overflow: hidden;
 }
+.feature-card h3{
+    font-family: "edge";
+     letter-spacing: 2px;
+     text-shadow: 2px 2px 4px #2d024d
+}
 
 
 .feature-card::before {
@@ -279,8 +296,8 @@
 .feature-icon {
     font-size: 3rem;
     margin-bottom: 20px;
+    
 }
-
 .feature-card h3 {
     color: #ffffff;
     font-size: 1.4rem;
@@ -325,6 +342,7 @@
     
     .hero-title {
         font-size: 2.5rem !important;
+        
     }
     
     .hero-description {
@@ -358,6 +376,7 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    
 }
 
 [data-theme="light"] .hero-description {
