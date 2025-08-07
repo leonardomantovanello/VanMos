@@ -73,6 +73,18 @@
     animation: float 8s ease-in-out infinite;
 }
 
+.cursor-glow {
+    position: fixed;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(179, 143, 198, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    transition: all 0.1s ease;
+    opacity: 0.5;
+}
+
 .shape-1 {
     width: 200px;
     height: 200px;
@@ -157,6 +169,11 @@
     padding: 0 2rem;
 }
 
+.contato-card-wrapper {
+    text-align: center;
+    padding: 2.5rem 2rem !important;
+}
+
 .contato-card {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(15px);
@@ -187,6 +204,11 @@
     background: rgba(255, 255, 255, 0.08);
 }
 
+.contato-card-wrapper:hover .contato-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 15px 40px rgba(179, 143, 198, 0.6);
+}
+
 .contato-icon {
     width: 80px;
     height: 80px;
@@ -198,6 +220,22 @@
     margin: 0 auto 1.5rem;
     font-size: 2rem;
     box-shadow: 0 10px 30px rgba(179, 143, 198, 0.4);
+    transition: all 0.3s ease;
+}
+
+.pulse-icon {
+    animation: pulseIcon 2s ease-in-out infinite;
+}
+
+@keyframes pulseIcon {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 10px 30px rgba(179, 143, 198, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 15px 40px rgba(179, 143, 198, 0.6);
+    }
 }
 
 .contato-card h3 {
@@ -218,6 +256,24 @@
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 2rem;
     line-height: 1.6;
+}
+
+.whatsapp-btn {
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%) !important;
+    color: white !important;
+    border-color: #25d366 !important;
+}
+
+.whatsapp-btn:hover {
+    background: linear-gradient(135deg, #128c7e 0%, #25d366 100%) !important;
+    color: white !important;
+    border-color: #128c7e !important;
+}
+
+.submit-btn-interactive {
+    margin-top: 1rem;
+    align-self: center;
+    min-width: 200px;
 }
 
 .contato-btn {
@@ -584,4 +640,14 @@
 
 [data-theme="light"] .floating-shape {
     background: linear-gradient(135deg, rgba(109, 26, 109, 0.1), rgba(230, 204, 255, 0.1));
+}
+
+[data-theme="light"] .cursor-glow {
+    background: radial-gradient(circle, rgba(109, 26, 109, 0.05) 0%, transparent 70%);
+}
+
+@media (max-width: 768px) {
+    .cursor-glow {
+        display: none;
+    }
 }

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Contato.css'
-import { faEnvelope, faMessage, faPhone } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope, faMessage, faPhone, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import InteractiveButton from '../InteractiveButton/InteractiveButton'
+import AnimatedCard from '../AnimatedCard/AnimatedCard'
+import Toast from '../Toast/Toast'
 
 const Contato = () => {
     const [isVisible, setIsVisible] = useState(false)
@@ -12,9 +15,21 @@ const Contato = () => {
         assunto: '',
         mensagem: ''
     })
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+    const [showToast, setShowToast] = useState(false)
+    const [toastMessage, setToastMessage] = useState('')
+    const [toastType, setToastType] = useState('success')
 
     useEffect(() => {
         setIsVisible(true)
+        
+        const handleMouseMove = (e) => {
+            setMousePosition({ x: e.clientX, y: e.clientY })
+        }
+        
+        window.addEventListener('mousemove', handleMouseMove)
+        return () => window.removeEventListener('mousemove', handleMouseMove)
     }, [])
 
     const handleInputChange = (e) => {
@@ -24,18 +39,34 @@ const Contato = () => {
         })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log('Formulário enviado:', formData)
-        // Aqui você pode adicionar a lógica de envio
-        alert('Mensagem enviada com sucesso! Entraremos em contato em breve.')
-        setFormData({
-            nome: '',
-            email: '',
-            telefone: '',
-            assunto: '',
-            mensagem: ''
-        })
+        setIsSubmitting(true)
+        
+        try {
+            // Simula envio do formulário
+            await new Promise(resolve => setTimeout(resolve, 2000))
+            
+            console.log('Formulário enviado:', formData)
+            
+            setFormData({
+                nome: '',
+                email: '',
+                telefone: '',
+                assunto: '',
+                mensagem: ''
+            })
+            
+            setToastMessage('Mensagem enviada com sucesso! Entraremos em contato em breve.')
+            setToastType('success')
+            setShowToast(true)
+        } catch (error) {
+            setToastMessage('Erro ao enviar mensagem. Tente novamente.')
+            setToastType('error')
+            setShowToast(true)
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     return (
@@ -56,6 +87,11 @@ const Contato = () => {
                     <div className="floating-shape shape-1"></div>
                     <div className="floating-shape shape-2"></div>
                     <div className="floating-shape shape-3"></div>
+                    <div className="cursor-glow" 
+                         style={{
+                             left: mousePosition.x - 100,
+                             top: mousePosition.y - 100
+                         }}></div>
                 </div>
             </section>
 
@@ -64,56 +100,56 @@ const Contato = () => {
                 <div className="container">
                     <div className="contato-grid">
                         {/* Cartão Email */}
-                        <div className="contato-card">
-                            <div className="contato-icon">
-                                <span><FontAwesomeIcon icon={faEnvelope} style={{color: "#9243bdff",}} /></span>
+                        <AnimatedCard variant="glass" className="contato-card-wrapper">
+                            <div className="contato-icon pulse-icon">
+                                <FontAwesomeIcon icon={faEnvelope} style={{color: "#9243bdff"}} />
                             </div>
                             <h3>E-mail</h3>
                             <p className="contato-info">contato@vanmos.com.br</p>
                             <p className="contato-desc">Envie sua dúvida ou sugestão</p>
-                            <a 
-                                href="mailto:contato@vanmos.com.br" 
-                                className="contato-btn"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <InteractiveButton 
+                                variant="primary"
+                                icon={faEnvelope}
+                                onClick={() => window.open('mailto:contato@vanmos.com.br', '_blank')}
                             >
                                 Enviar E-mail
-                            </a>
-                        </div>
+                            </InteractiveButton>
+                        </AnimatedCard>
 
                         {/* Cartão WhatsApp */}
-                        <div className="contato-card">
-                            <div className="contato-icon">
-                                <span><FontAwesomeIcon icon={faMessage} style={{color: "#9243bdff",}} /></span>
+                        <AnimatedCard variant="glass" className="contato-card-wrapper">
+                            <div className="contato-icon pulse-icon">
+                                <FontAwesomeIcon icon={faMessage} style={{color: "#9243bdff"}} />
                             </div>
                             <h3>WhatsApp</h3>
                             <p className="contato-info">(11) 99999-8888</p>
                             <p className="contato-desc">Atendimento rápido e direto</p>
-                            <a 
-                                href="https://wa.me/5511999998888?text=Olá! Gostaria de saber mais sobre a VanMos." 
-                                className="contato-btn whatsapp"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <InteractiveButton 
+                                variant="secondary"
+                                icon={faMessage}
+                                className="whatsapp-btn"
+                                onClick={() => window.open('https://wa.me/5511999998888?text=Olá! Gostaria de saber mais sobre a VanMos.', '_blank')}
                             >
                                 Abrir WhatsApp
-                            </a>
-                        </div>
+                            </InteractiveButton>
+                        </AnimatedCard>
 
                         {/* Cartão Telefone */}
-                        <div className="contato-card">
-                            <div className="contato-icon">
-                                <span><FontAwesomeIcon icon={faPhone} style={{color: "#9243bdff",}} /></span>
+                        <AnimatedCard variant="glass" className="contato-card-wrapper">
+                            <div className="contato-icon pulse-icon">
+                                <FontAwesomeIcon icon={faPhone} style={{color: "#9243bdff"}} />
                             </div>
                             <h3>Telefone</h3>
                             <p className="contato-info">(11) 3333-4444</p>
                             <p className="contato-desc">Seg à Sex: 8h às 18h</p>
-                            <a 
-                                href="tel:+551133334444" 
-                                className="contato-btn"
+                            <InteractiveButton 
+                                variant="ghost"
+                                icon={faPhone}
+                                onClick={() => window.open('tel:+551133334444')}
                             >
                                 Ligar Agora
-                            </a>
-                        </div>
+                            </InteractiveButton>
+                        </AnimatedCard>
                     </div>
                 </div>
             </section>
@@ -202,9 +238,17 @@ const Contato = () => {
                                 ></textarea>
                             </div>
 
-                            <button type="submit" className="submit-btn">
-                                Enviar Mensagem
-                            </button>
+                            <InteractiveButton 
+                                type="submit"
+                                variant="primary"
+                                size="large"
+                                icon={faPaperPlane}
+                                loading={isSubmitting}
+                                disabled={isSubmitting}
+                                className="submit-btn-interactive"
+                            >
+                                {isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}
+                            </InteractiveButton>
                         </form>
                     </div>
                 </div>
@@ -235,6 +279,16 @@ const Contato = () => {
                     </div>
                 </div>
             </section>
+            
+            {showToast && (
+                <Toast 
+                    message={toastMessage}
+                    type={toastType}
+                    onClose={() => setShowToast(false)}
+                    position="top-right"
+                    duration={5000}
+                />
+            )}
         </div>
     )
 }

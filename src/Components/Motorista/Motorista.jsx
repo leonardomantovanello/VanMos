@@ -22,9 +22,11 @@ import {
     faPlus, 
     faArrowsUpDown, 
     faPencil, 
-    faMapLocation
+    faMapLocation,
+    faArrowRight
 } from '@fortawesome/free-solid-svg-icons'
 import './Motorista.css'
+import { buscarEscolasPorNome } from '../../services/googlePlaces'
 
 
 const Motorista = () => {
@@ -34,10 +36,11 @@ const Motorista = () => {
     const [showAddPassenger, setShowAddPassenger] = useState(false)
     const [showAddRota, setShowAddRota] = useState(false)
     const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+    const [driverName, setDriverName] = useState('Motorista')
     const [passageiros, setPassageiros] = useState([
-        { id: 1, nome: 'Ana Silva', telefone: '(11) 99999-1111', endereco: 'Rua A, 123', ponto: 'Ponto 1', status: 'ativo' },
-        { id: 2, nome: 'Carlos Santos', telefone: '(11) 99999-2222', endereco: 'Rua B, 456', ponto: 'Ponto 2', status: 'ativo' },
-        { id: 3, nome: 'Maria Oliveira', telefone: '(11) 99999-3333', endereco: 'Rua C, 789', ponto: 'Ponto 3', status: 'ativo' }
+        { id: 1, nome: 'Ana Silva', telefone: '(11) 99999-1111', endereco: 'Rua A, 123', pontoEmbarque: 'Terminal Central', escola: 'Escola Municipal A', pontoDesembarque: 'Bairro Residencial', status: 'ativo' },
+        { id: 2, nome: 'Carlos Santos', telefone: '(11) 99999-2222', endereco: 'Rua B, 456', pontoEmbarque: 'Avenida Principal', escola: 'Colégio Estadual B', pontoDesembarque: 'Centro Comercial', status: 'ativo' },
+        { id: 3, nome: 'Maria Oliveira', telefone: '(11) 99999-3333', endereco: 'Rua C, 789', pontoEmbarque: 'Centro Comercial', escola: 'Escola Particular C', pontoDesembarque: 'Terminal Central', status: 'ativo' }
     ])
     const [rotas, setRotas] = useState([
         { id: 1, nome: 'Terminal Central', endereco: 'Av. Central, 100', horario: '07:00' },
@@ -46,8 +49,19 @@ const Motorista = () => {
         { id: 4, nome: 'Bairro Residencial', endereco: 'Rua Residencial, 300', horario: '07:45' }
     ])
     const [novoPassageiro, setNovoPassageiro] = useState({
-        nome: '', telefone: '', endereco: '', ponto: ''
+        nome: '', telefone: '', endereco: '', pontoEmbarque: '', escola: '', pontoDesembarque: ''
     })
+    const [escolas, setEscolas] = useState([
+        { nome: 'Escola Municipal A', endereco: 'Rua das Flores, 123 - Centro' },
+        { nome: 'Colégio Estadual B', endereco: 'Av. Principal, 456 - Bairro Norte' },
+        { nome: 'Escola Particular C', endereco: 'Rua da Educação, 789 - Vila Sul' },
+        { nome: 'Instituto Federal', endereco: 'Av. Tecnológica, 100 - Campus' },
+        { nome: 'Universidade Local', endereco: 'Rua Universitária, 500 - Centro Acadêmico' }
+    ])
+    const [showAddEscola, setShowAddEscola] = useState(false)
+    const [novaEscola, setNovaEscola] = useState({ nome: '', endereco: '' })
+    const [escolasSugeridas, setEscolasSugeridas] = useState([])
+    const [buscandoEscolas, setBuscandoEscolas] = useState(false)
     const [novaRota, setNovaRota] = useState({
         nome: '', endereco: '', horario: ''
     })
@@ -55,8 +69,61 @@ const Motorista = () => {
     const [showEditRota, setShowEditRota] = useState(false)
     const [editingRota, setEditingRota] = useState(null)
     const [draggedItem, setDraggedItem] = useState(null)
+    const [bgElements, setBgElements] = useState([
+        { id: 1, x: 5, y: 10, size: 300, speedX: 0.5, speedY: 0.3 },
+        { id: 2, x: 80, y: 60, size: 200, speedX: -0.3, speedY: 0.4 },
+        { id: 3, x: 15, y: 80, size: 150, speedX: 0.4, speedY: -0.2 },
+        { id: 4, x: 70, y: 30, size: 100, speedX: -0.2, speedY: 0.5 },
+        { id: 5, x: 85, y: 60, size: 80, speedX: 0.3, speedY: -0.4 }
+    ])
+
+    useEffect(() => {
+        // Obter dados do usuário logado
+        const loggedUser = JSON.parse(localStorage.getItem('vanmos_logged_user') || '{}')
+        if (!loggedUser.nome) {
+            navigate('/login')
+            return
+        }
+        
+        const nomes = loggedUser.nome.trim().split(' ')
+        const primeiroNome = nomes[0]
+        const ultimoNome = nomes.length > 1 ? nomes[nomes.length - 1] : ''
+        setDriverName(ultimoNome ? `${primeiroNome} ${ultimoNome}` : primeiroNome)
+
+        // Animação dos elementos de fundo
+        const animateElements = () => {
+            setBgElements(prev => prev.map(element => {
+                let newX = element.x + element.speedX
+                let newY = element.y + element.speedY
+                let newSpeedX = element.speedX
+                let newSpeedY = element.speedY
+
+                // Rebater nas bordas
+                if (newX <= 0 || newX >= 95) {
+                    newSpeedX = -element.speedX
+                    newX = Math.max(0, Math.min(95, newX))
+                }
+                if (newY <= 0 || newY >= 90) {
+                    newSpeedY = -element.speedY
+                    newY = Math.max(0, Math.min(90, newY))
+                }
+
+                return {
+                    ...element,
+                    x: newX,
+                    y: newY,
+                    speedX: newSpeedX,
+                    speedY: newSpeedY
+                }
+            }))
+        }
+
+        const interval = setInterval(animateElements, 50)
+        return () => clearInterval(interval)
+    }, [navigate])
 
     const handleLogout = () => {
+        localStorage.removeItem('vanmos_logged_user')
         navigate('/')
     }
 
@@ -68,7 +135,7 @@ const Motorista = () => {
             id: newId, 
             status: 'ativo' 
         }])
-        setNovoPassageiro({ nome: '', telefone: '', endereco: '', ponto: '' })
+        setNovoPassageiro({ nome: '', telefone: '', endereco: '', pontoEmbarque: '', escola: '', pontoDesembarque: '' })
         setShowAddPassenger(false)
     }
 
@@ -164,15 +231,91 @@ const Motorista = () => {
         })
     }
 
+    const handleAddEscola = (e) => {
+        e.preventDefault()
+        if (novaEscola.nome.trim() && !escolas.find(e => e.nome === novaEscola.nome.trim())) {
+            setEscolas([...escolas, { nome: novaEscola.nome.trim(), endereco: novaEscola.endereco.trim() }])
+            setNovaEscola({ nome: '', endereco: '' })
+            setShowAddEscola(false)
+            setEscolasSugeridas([])
+        }
+    }
+
+    const buscarEscolas = async (query) => {
+        if (query.length < 3) {
+            setEscolasSugeridas([])
+            return
+        }
+        
+        setBuscandoEscolas(true)
+        try {
+            const resultados = await buscarEscolasPorNome(query)
+            setEscolasSugeridas(resultados)
+        } catch (error) {
+            console.error('Erro ao buscar escolas:', error)
+            setEscolasSugeridas([])
+        } finally {
+            setBuscandoEscolas(false)
+        }
+    }
+
+    const selecionarEscola = (escola) => {
+        setNovaEscola(escola)
+        setEscolasSugeridas([])
+    }
+
+    const handleRemoveEscola = (escolaNome) => {
+        setEscolas(escolas.filter(e => e.nome !== escolaNome))
+    }
+
     return (
         <div className="motorista-container">
-            {/* Header */}
+            {/* Background Elements */}
+            <div className="motorista-bg-elements">
+                {bgElements.map(element => (
+                    <div
+                        key={element.id}
+                        className="motorista-floating-shape"
+                        style={{
+                            left: `${element.x}%`,
+                            top: `${element.y}%`,
+                            width: `${element.size}px`,
+                            height: `${element.size}px`,
+                            transition: 'all 0.05s linear'
+                        }}
+                    ></div>
+                ))}
+            </div>
+            
+            {/* Unified Header and Navigation */}
             <header className="motorista-header">
                 <div className="header-content">
                     <div className="logo-section">
                         <h1><FontAwesomeIcon icon={faVanShuttle} style={{color: "#b38fc6"}} /> VanMos Motorista</h1>
-                        <span className="driver-name">João Motorista</span>
+                        <span className="driver-name">{driverName}</span>
                     </div>
+                    
+                    <nav className="motorista-nav">
+                        <button 
+                            className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('dashboard')}
+                        >
+                           <FontAwesomeIcon icon={faChartSimple} style={{color: "#691569ff"}} /> Dashboard
+                        </button>
+                        <button 
+                            className={`nav-btn ${activeTab === 'passageiros' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('passageiros')}
+                        >
+                            <FontAwesomeIcon icon={faUsers} style={{color: "#691569ff"}} /> Passageiros
+                        </button>
+                        <button 
+                            className={`nav-btn ${activeTab === 'rota' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('rota')}
+                        >
+                            <FontAwesomeIcon icon={faMap} style={{color: "#691569ff"}} /> Rota
+                        </button>
+                    </nav>
+                    
                     <div className="settings-container">
                         <button 
                             className="settings-btn"
@@ -200,39 +343,22 @@ const Motorista = () => {
                 </div>
             </header>
 
-            {/* Navigation */}
-            <nav className="motorista-nav">
-                <button 
-                    className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('dashboard')}
-                >
-                   <FontAwesomeIcon icon={faChartSimple} style={{color: "#691569ff"}} /> Dashboard
-                </button>
-                <button 
-                    className={`nav-btn ${activeTab === 'passageiros' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('passageiros')}
-                >
-                    <FontAwesomeIcon icon={faUsers} style={{color: "#691569ff"}} /> Passageiros
-                </button>
-                <button 
-                    className={`nav-btn ${activeTab === 'rota' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('rota')}
-                >
-                    <FontAwesomeIcon icon={faMap} style={{color: "#691569ff"}} /> Rota
-                </button>
-            </nav>
-
             {/* Content */}
             <main className="motorista-content">
                 {activeTab === 'dashboard' && (
                     <div className="dashboard-section">
-                        <h2>Dashboard</h2>
+                        <div className="section-header-dashboard">
+                            <h2>Painel de Controle</h2>
+                            <p>Visão geral das suas atividades</p>
+                        </div>
+                        
                         <div className="stats-grid">
                             <div className="stat-card">
                                 <div className="stat-icon"><FontAwesomeIcon icon={faUser} style={{color: "#b852b8ff"}} /></div>
                                 <div className="stat-info">
                                     <h3>{passageiros.length}</h3>
                                     <p>Passageiros Ativos</p>
+                                    <span className="stat-trend">+2 esta semana</span>
                                 </div>
                             </div>
                             <div className="stat-card">
@@ -240,6 +366,7 @@ const Motorista = () => {
                                 <div className="stat-info">
                                     <h3>{rotas.length}</h3>
                                     <p>Pontos de Parada</p>
+                                    <span className="stat-trend">Rota otimizada</span>
                                 </div>
                             </div>
                             <div className="stat-card">
@@ -247,6 +374,7 @@ const Motorista = () => {
                                 <div className="stat-info">
                                     <h3>{rotas.length * 10}min</h3>
                                     <p>Tempo Médio</p>
+                                    <span className="stat-trend">-5min hoje</span>
                                 </div>
                             </div>
                             <div className="stat-card">
@@ -254,22 +382,61 @@ const Motorista = () => {
                                 <div className="stat-info">
                                     <h3>R$ 850</h3>
                                     <p>Receita Mensal</p>
+                                    <span className="stat-trend">+12% vs mês anterior</span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div className="recent-activity">
-                            <h3>Atividade Recente</h3>
-                            <div className="activity-list">
-                                <div className="activity-item">
-                                    <span className="activity-icon"><FontAwesomeIcon icon={faCheck} style={{color: "#b852b8ff"}} /></span>
-                                    <span>Viagem concluída - Centro → Bairro A</span>
-                                    <span className="activity-time">10:30</span>
+                        <div className="dashboard-grid">
+                            <div className="recent-activity">
+                                <div className="card-header">
+                                    <h3><FontAwesomeIcon icon={faClock} style={{color: "#b38fc6"}} /> Atividades Recentes</h3>
                                 </div>
-                                <div className="activity-item">
-                                    <span className="activity-icon"><FontAwesomeIcon icon={faVanShuttle} style={{color: "#b852b8ff"}} /></span>
-                                    <span>Iniciada rota matinal</span>
-                                    <span className="activity-time">07:00</span>
+                                <div className="activity-list">
+                                    <div className="activity-item">
+                                        <div className="activity-icon success"><FontAwesomeIcon icon={faCheck} /></div>
+                                        <div className="activity-content">
+                                            <span className="activity-title">Viagem concluída</span>
+                                            <span className="activity-desc">Centro → Bairro A</span>
+                                        </div>
+                                        <span className="activity-time">10:30</span>
+                                    </div>
+                                    <div className="activity-item">
+                                        <div className="activity-icon info"><FontAwesomeIcon icon={faVanShuttle} /></div>
+                                        <div className="activity-content">
+                                            <span className="activity-title">Rota iniciada</span>
+                                            <span className="activity-desc">Turno matinal</span>
+                                        </div>
+                                        <span className="activity-time">07:00</span>
+                                    </div>
+                                    <div className="activity-item">
+                                        <div className="activity-icon warning"><FontAwesomeIcon icon={faUser} /></div>
+                                        <div className="activity-content">
+                                            <span className="activity-title">Novo passageiro</span>
+                                            <span className="activity-desc">Maria Silva cadastrada</span>
+                                        </div>
+                                        <span className="activity-time">Ontem</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="quick-actions">
+                                <div className="card-header">
+                                    <h3><FontAwesomeIcon icon={faPlus} style={{color: "#b38fc6"}} /> Ações Rápidas</h3>
+                                </div>
+                                <div className="actions-grid">
+                                    <button className="quick-action-btn" onClick={() => setActiveTab('passageiros')}>
+                                        <FontAwesomeIcon icon={faUser} />
+                                        <span>Adicionar Passageiro</span>
+                                    </button>
+                                    <button className="quick-action-btn" onClick={() => setActiveTab('rota')}>
+                                        <FontAwesomeIcon icon={faMapPin} />
+                                        <span>Nova Rota</span>
+                                    </button>
+                                    <button className="quick-action-btn" onClick={() => setActiveTab('rota')}>
+                                        <FontAwesomeIcon icon={faMapLocation} />
+                                        <span>Adicionar Escola</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -279,30 +446,102 @@ const Motorista = () => {
                 {activeTab === 'passageiros' && (
                     <div className="passageiros-section">
                         <div className="section-header">
-                            <h2>Gerenciar Passageiros</h2>
+                            <div className="section-title-group">
+                                <h2><FontAwesomeIcon icon={faUsers} style={{color: "#b38fc6"}} /> Meus Passageiros</h2>
+                                <p>Gerencie todos os seus passageiros cadastrados</p>
+                            </div>
                             <button 
                                 className="add-btn"
                                 onClick={() => setShowAddPassenger(true)}
                             >
-                                <FontAwesomeIcon icon={faPlus} /> Adicionar Passageiro
+                                <FontAwesomeIcon icon={faPlus} /> Novo Passageiro
                             </button>
+                        </div>
+
+                        <div className="passageiros-stats">
+                            <div className="mini-stat">
+                                <span className="mini-stat-number">{passageiros.length}</span>
+                                <span className="mini-stat-label">Total</span>
+                            </div>
+                            <div className="mini-stat">
+                                <span className="mini-stat-number">{passageiros.filter(p => p.status === 'ativo').length}</span>
+                                <span className="mini-stat-label">Ativos</span>
+                            </div>
+                            <div className="mini-stat">
+                                <span className="mini-stat-number">{new Set(passageiros.map(p => p.escola)).size}</span>
+                                <span className="mini-stat-label">Escolas</span>
+                            </div>
                         </div>
 
                         <div className="passageiros-grid">
                             {passageiros.map(passageiro => (
                                 <div key={passageiro.id} className="passageiro-card">
-                                    <div className="passageiro-info">
-                                        <h4>{passageiro.nome}</h4>
-                                        <p><FontAwesomeIcon icon={faPhone} style={{color: "#8b258bff"}} /> {passageiro.telefone}</p>
-                                        <p><FontAwesomeIcon icon={faMapPin} style={{color: "#8b258bff"}} /> {passageiro.endereco}</p>
-                                        <p><FontAwesomeIcon icon={faLocationPin} style={{color: "#8b258bff"}} /> {passageiro.ponto}</p>
+                                    <div className="passageiro-header">
+                                        <div className="passageiro-avatar">
+                                            <FontAwesomeIcon icon={faUser} />
+                                        </div>
+                                        <div className="passageiro-basic">
+                                            <h4>{passageiro.nome}</h4>
+                                            <span className="status-badge active">Ativo</span>
+                                        </div>
+                                        <button 
+                                            className="remove-btn"
+                                            onClick={() => handleRemovePassenger(passageiro.id)}
+                                        >
+                                            <FontAwesomeIcon icon={faTrashCan} />
+                                        </button>
                                     </div>
-                                    <button 
-                                        className="remove-btn"
-                                        onClick={() => handleRemovePassenger(passageiro.id)}
-                                    >
-                                        <FontAwesomeIcon icon={faTrashCan} style={{color: "#b852b8ff"}} />
-                                    </button>
+                                    
+                                    <div className="passageiro-details">
+                                        <div className="detail-item">
+                                            <FontAwesomeIcon icon={faPhone} className="detail-icon" />
+                                            <span>{passageiro.telefone}</span>
+                                        </div>
+                                        <div className="detail-item">
+                                            <FontAwesomeIcon icon={faMapPin} className="detail-icon" />
+                                            <span>{passageiro.endereco}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="rota-info">
+                                        <div className="rota-step">
+                                            <div className="step-icon embarque">
+                                                <FontAwesomeIcon icon={faLocationPin} />
+                                            </div>
+                                            <div className="step-content">
+                                                <span className="step-label">Embarque</span>
+                                                <span className="step-value">{passageiro.pontoEmbarque}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="rota-arrow">
+                                            <FontAwesomeIcon icon={faArrowRight} />
+                                        </div>
+                                        
+                                        <div className="rota-step">
+                                            <div className="step-icon escola">
+                                                <FontAwesomeIcon icon={faMapLocation} />
+                                            </div>
+                                            <div className="step-content">
+                                                <span className="step-label">Escola</span>
+                                                <span className="step-value">{passageiro.escola}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="rota-arrow">
+                                            <FontAwesomeIcon icon={faArrowRight} />
+                                        </div>
+                                        
+                                        <div className="rota-step">
+                                            <div className="step-icon desembarque">
+                                                <FontAwesomeIcon icon={faLocationPin} />
+                                            </div>
+                                            <div className="step-content">
+                                                <span className="step-label">Retorno</span>
+                                                <span className="step-value">{passageiro.pontoDesembarque}</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -337,12 +576,38 @@ const Motorista = () => {
                                             required
                                         />
                                         <select
-                                            name="ponto"
-                                            value={novoPassageiro.ponto}
+                                            name="pontoEmbarque"
+                                            value={novoPassageiro.pontoEmbarque}
                                             onChange={handleInputChange}
                                             required
                                         >
-                                            <option value="">Selecione o ponto</option>
+                                            <option value="">Ponto de embarque (ida)</option>
+                                            {rotas.map(rota => (
+                                                <option key={rota.id} value={rota.nome}>
+                                                    {rota.nome} - {rota.horario}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <select
+                                            name="escola"
+                                            value={novoPassageiro.escola}
+                                            onChange={handleInputChange}
+                                            required
+                                        >
+                                            <option value="">Selecione a escola</option>
+                                            {escolas.map(escola => (
+                                                <option key={escola.nome} value={escola.nome}>
+                                                    {escola.nome}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <select
+                                            name="pontoDesembarque"
+                                            value={novoPassageiro.pontoDesembarque}
+                                            onChange={handleInputChange}
+                                            required
+                                        >
+                                            <option value="">Ponto de desembarque (volta)</option>
                                             {rotas.map(rota => (
                                                 <option key={rota.id} value={rota.nome}>
                                                     {rota.nome} - {rota.horario}
@@ -369,13 +634,19 @@ const Motorista = () => {
                 {activeTab === 'rota' && (
                     <div className="rota-section">
                         <div className="section-header">
-                            <h2>Gerenciar Rotas</h2>
+                            <h2>Gerenciar Rotas e Escolas</h2>
                             <div className="header-buttons">
                                 <button 
                                     className="add-btn"
                                     onClick={() => setShowAddRota(true)}
                                 >
                                     <FontAwesomeIcon icon={faPlus} /> Adicionar Rota
+                                </button>
+                                <button 
+                                    className="add-btn escola-btn"
+                                    onClick={() => setShowAddEscola(true)}
+                                >
+                                    <FontAwesomeIcon icon={faPlus} /> Adicionar Escola
                                 </button>
                                 {selectedRotas.length > 0 && (
                                     <button 
@@ -430,8 +701,33 @@ const Motorista = () => {
                                                 >
                                                     <FontAwesomeIcon icon={faPencil} style={{color: "#28a745"}} />
                                                 </button>
-                                            
+                                                <button 
+                                                    className="remove-btn"
+                                                    onClick={() => handleRemoveRota(rota.id)}
+                                                >
+                                                    <FontAwesomeIcon icon={faTrashCan} style={{color: "#dc3545"}} />
+                                                </button>
                                             </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="escolas-card">
+                                <h3><FontAwesomeIcon icon={faMapLocation} style={{color: "#b38fc6"}} /> Escolas Cadastradas</h3>
+                                <div className="escolas-list">
+                                    {escolas.map(escola => (
+                                        <div key={escola.nome} className="escola-item">
+                                            <div className="escola-info">
+                                                <strong>{escola.nome}</strong>
+                                                <small>{escola.endereco}</small>
+                                            </div>
+                                            <button 
+                                                className="remove-escola-btn"
+                                                onClick={() => handleRemoveEscola(escola.nome)}
+                                            >
+                                                <FontAwesomeIcon icon={faTrashCan} style={{color: "#dc3545"}} />
+                                            </button>
                                         </div>
                                     ))}
                                 </div>
@@ -537,6 +833,64 @@ const Motorista = () => {
                                                 onClick={() => {
                                                     setShowEditRota(false)
                                                     setEditingRota(null)
+                                                }}
+                                            >
+                                                Cancelar
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        )}
+
+                        {showAddEscola && (
+                            <div className="modal-overlay">
+                                <div className="modal escola-modal">
+                                    <h3>Adicionar Nova Escola</h3>
+                                    <form onSubmit={handleAddEscola}>
+                                        <div className="search-container">
+                                            <input
+                                                type="text"
+                                                placeholder="Digite o nome da escola para buscar..."
+                                                value={novaEscola.nome}
+                                                onChange={(e) => {
+                                                    setNovaEscola({ ...novaEscola, nome: e.target.value })
+                                                    buscarEscolas(e.target.value)
+                                                }}
+                                                required
+                                            />
+                                            {buscandoEscolas && <div className="loading-search">Buscando...</div>}
+                                            {escolasSugeridas.length > 0 && (
+                                                <div className="sugestoes-lista">
+                                                    {escolasSugeridas.map((escola, index) => (
+                                                        <div 
+                                                            key={index} 
+                                                            className="sugestao-item"
+                                                            onClick={() => selecionarEscola(escola)}
+                                                        >
+                                                            <strong>{escola.nome}</strong>
+                                                            <small>{escola.endereco}</small>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <input
+                                            type="text"
+                                            placeholder="Endereço da escola"
+                                            value={novaEscola.endereco}
+                                            onChange={(e) => setNovaEscola({ ...novaEscola, endereco: e.target.value })}
+                                            required
+                                        />
+                                        <div className="modal-actions">
+                                            <button type="submit" className="confirm-btn">Adicionar</button>
+                                            <button 
+                                                type="button" 
+                                                className="cancel-btn"
+                                                onClick={() => {
+                                                    setShowAddEscola(false)
+                                                    setNovaEscola({ nome: '', endereco: '' })
+                                                    setEscolasSugeridas([])
                                                 }}
                                             >
                                                 Cancelar

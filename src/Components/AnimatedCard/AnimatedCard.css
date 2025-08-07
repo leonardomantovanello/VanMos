@@ -1,0 +1,136 @@
+.animated-card {
+    position: relative;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    transform-style: preserve-3d;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.animated-card--default {
+    background: linear-gradient(135deg, rgba(179, 143, 198, 0.05) 0%, rgba(76, 0, 76, 0.1) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px rgba(76, 0, 76, 0.2);
+}
+
+.animated-card--glass {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 25px 70px rgba(76, 0, 76, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.animated-card--solid {
+    background: linear-gradient(135deg, #6d1a6d 0%, #4b004b 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(76, 0, 76, 0.3);
+}
+
+.card-content {
+    position: relative;
+    z-index: 2;
+    padding: 30px;
+    height: 100%;
+}
+
+/* Hover Effects */
+.animated-card.hovered {
+    box-shadow: 0 20px 60px rgba(76, 0, 76, 0.4);
+    border-color: rgba(179, 143, 198, 0.3);
+}
+
+.animated-card--glass.hovered {
+    box-shadow: 0 35px 90px rgba(76, 0, 76, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.animated-card--solid.hovered {
+    box-shadow: 0 25px 70px rgba(76, 0, 76, 0.5);
+    background: linear-gradient(135deg, #8b2a8b 0%, #6d1a6d 100%);
+}
+
+/* Glow Effect */
+.glow-effect .card-glow-overlay {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(179, 143, 198, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.glow-effect.hovered .card-glow-overlay {
+    opacity: 1;
+}
+
+/* Shine Effect */
+.card-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.animated-card:hover .card-shine {
+    left: 100%;
+}
+
+/* Animations */
+@keyframes cardFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animated-card.floating {
+    animation: cardFloat 3s ease-in-out infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card-content {
+        padding: 20px;
+    }
+    
+    .animated-card {
+        transform: none !important;
+    }
+}
+
+/* Light Theme */
+[data-theme="light"] .animated-card--default {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 249, 250, 0.9) 100%);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .animated-card--default.hovered {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    border-color: rgba(109, 26, 109, 0.2);
+}
+
+[data-theme="light"] .animated-card--glass {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(109, 26, 109, 0.08) 50%, rgba(240, 240, 240, 0.15) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 25px 70px rgba(109, 26, 109, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="light"] .animated-card--glass.hovered {
+    box-shadow: 0 35px 90px rgba(109, 26, 109, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .glow-effect .card-glow-overlay {
+    background: radial-gradient(circle, rgba(109, 26, 109, 0.05) 0%, transparent 70%);
+}

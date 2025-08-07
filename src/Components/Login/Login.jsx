@@ -10,10 +10,21 @@ const Login = () => {
     password: ''
   })
 
+  const formatCPF = (value) => {
+    const numbers = value.replace(/\D/g, '')
+    return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+  }
+
   const handleInputChange = (e) => {
+    let value = e.target.value
+    
+    if (e.target.name === 'email' && /^\d/.test(value)) {
+      value = formatCPF(value)
+    }
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: value
     })
   }
 
@@ -79,6 +90,8 @@ const Login = () => {
       return
     }
     
+    // Salvar dados do usuário logado
+    localStorage.setItem('vanmos_logged_user', JSON.stringify(user))
     console.log('Login successful:', user)
     navigate('/motorista')
   }

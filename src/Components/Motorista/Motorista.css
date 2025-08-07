@@ -1,16 +1,66 @@
 /* Motorista Container */
 .motorista-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #200026 0%, #1a001a 50%, #0d0013 100%);
+    background: #000000;
     color: #ffffff;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.motorista-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(179, 143, 198, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(109, 26, 109, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 40% 60%, rgba(230, 204, 255, 0.08) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Background Elements */
+.motorista-bg-elements {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.motorista-floating-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(179, 143, 198, 0.1), rgba(109, 26, 109, 0.08));
+    filter: blur(2px);
+    opacity: 0.7;
+}
+
+@keyframes motoristafloat {
+    0%, 100% {
+        transform: translateY(0px) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-30px) scale(1.1);
+        opacity: 0.9;
+    }
 }
 
 /* Header */
 .motorista-header {
-    background: linear-gradient(135deg, rgba(179, 143, 198, 0.1) 0%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
+    backdrop-filter: blur(25px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
     padding: 20px 0;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 8px 32px rgba(76, 0, 76, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .header-content {
@@ -20,16 +70,30 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 40px;
 }
 
 .logo-section h1 {
-    font-size: 1.8rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #ffffff 0%, #b38fc6 100%);
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffffff 0%, #e6ccff 50%, #b38fc6 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0;
+    letter-spacing: 2px;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    filter: drop-shadow(0 2px 8px rgba(76, 0, 76, 0.8));
+    animation: glow 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% {
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 40px rgba(255, 255, 255, 0.5), 0 0 60px rgba(179, 143, 198, 0.3);
+    }
 }
 
 .driver-name {
@@ -42,43 +106,139 @@
 
 /* Navigation */
 .motorista-nav {
-    background: rgba(26, 0, 26, 0.6);
-    padding: 15px 0;
     display: flex;
-    justify-content: center;
     gap: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: center;
+    flex: 1;
+    justify-content: center;
 }
 
 .nav-btn {
     padding: 12px 24px;
-    background: transparent;
-    border: 2px solid rgba(179, 143, 198, 0.3);
-    border-radius: 12px;
-    color: #b38fc6;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(179, 143, 198, 0.08) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 0.9rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.nav-btn:hover::before {
+    left: 100%;
 }
 
 .nav-btn:hover, .nav-btn.active {
-    background: rgba(179, 143, 198, 0.1);
+    background: linear-gradient(135deg, rgba(179, 143, 198, 0.15) 0%, rgba(76, 0, 76, 0.2) 100%);
     color: #ffffff;
-    border-color: #b38fc6;
+    border-color: rgba(179, 143, 198, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(76, 0, 76, 0.3), 0 0 20px rgba(179, 143, 198, 0.4);
 }
 
 /* Content */
 .motorista-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 30px 20px;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 2;
 }
 
 /* Dashboard */
-.dashboard-section h2 {
-    font-size: 2rem;
-    margin-bottom: 30px;
+.section-header-dashboard {
     text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-header-dashboard h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #ffffff 0%, #b38fc6 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-header-dashboard p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.card-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-header h3 {
+    color: #b38fc6;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.stat-trend {
+    font-size: 0.8rem;
+    color: #4ade80;
+    font-weight: 500;
+}
+
+.quick-actions {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 20px;
+    padding: 30px;
+}
+
+.actions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.quick-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.quick-action-btn:hover {
+    background: rgba(179, 143, 198, 0.1);
+    border-color: rgba(179, 143, 198, 0.3);
+    transform: translateX(5px);
 }
 
 .stats-grid {
@@ -89,19 +249,39 @@
 }
 
 .stat-card {
-    background: linear-gradient(135deg, rgba(179, 143, 198, 0.1) 0%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 25px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 20px;
+    padding: 30px;
     display: flex;
     align-items: center;
     gap: 20px;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 70px rgba(76, 0, 76, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+    transition: left 0.5s ease;
+}
+
+.stat-card:hover::before {
+    left: 100%;
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 35px 90px rgba(76, 0, 76, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(179, 143, 198, 0.3);
 }
 
 .stat-icon {
@@ -150,9 +330,57 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 15px;
+    padding: 20px;
     background: rgba(26, 0, 26, 0.6);
     border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+    background: rgba(26, 0, 26, 0.8);
+    transform: translateX(5px);
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.activity-icon.success {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+.activity-icon.info {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+}
+
+.activity-icon.warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.activity-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.activity-title {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.activity-desc {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .activity-icon {
@@ -166,10 +394,174 @@
 }
 
 /* Passageiros */
-.passageiros-section h2 {
-    font-size: 2rem;
+.section-title-group h2 {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ffffff 0%, #b38fc6 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-title-group p {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.passageiros-stats {
+    display: flex;
+    gap: 20px;
     margin-bottom: 30px;
+    justify-content: center;
+}
+
+.mini-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 25px;
+    background: rgba(179, 143, 198, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mini-stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #b38fc6;
+}
+
+.mini-stat-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.passageiro-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.passageiro-avatar {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #6d1a6d, #b38fc6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.passageiro-basic {
+    flex: 1;
+}
+
+.passageiro-basic h4 {
+    margin: 0 0 5px 0;
+    color: #b38fc6;
+    font-size: 1.2rem;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-badge.active {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+.passageiro-details {
+    margin-bottom: 20px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.detail-icon {
+    color: #b38fc6;
+    width: 16px;
+}
+
+.rota-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(26, 0, 26, 0.4);
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.rota-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 80px;
+}
+
+.step-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.step-icon.embarque {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+.step-icon.escola {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+}
+
+.step-icon.desembarque {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.step-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.step-label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.step-value {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.9);
     text-align: center;
+    font-weight: 500;
+}
+
+.rota-arrow {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8rem;
 }
 
 .section-header {
@@ -180,19 +572,48 @@
 }
 
 .add-btn {
-    padding: 12px 24px;
+    padding: 16px 32px;
     background: linear-gradient(135deg, #6d1a6d 0%, #4b004b 100%);
     border: none;
-    border-radius: 12px;
+    border-radius: 50px;
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    box-shadow: 0 8px 25px rgba(76, 0, 76, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.add-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.add-btn:hover::before {
+    left: 100%;
 }
 
 .add-btn:hover {
     background: linear-gradient(135deg, #8b2a8b 0%, #6d1a6d 100%);
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(76, 0, 76, 0.4);
+}
+
+.escola-btn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.escola-btn:hover {
+    background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
 }
 
 .passageiros-grid {
@@ -202,17 +623,36 @@
 }
 
 .passageiro-card {
-    background: linear-gradient(135deg, rgba(179, 143, 198, 0.1) 0%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 20px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 20px;
+    padding: 25px;
     position: relative;
-    transition: transform 0.3s ease;
+    overflow: hidden;
+    box-shadow: 0 25px 70px rgba(76, 0, 76, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.passageiro-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+    transition: left 0.5s ease;
+}
+
+.passageiro-card:hover::before {
+    left: 100%;
 }
 
 .passageiro-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 35px 90px rgba(76, 0, 76, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(179, 143, 198, 0.3);
 }
 
 .passageiro-info h4 {
@@ -335,12 +775,140 @@
     gap: 30px;
 }
 
-.rota-card, .pontos-parada, .horarios-card {
-    background: linear-gradient(135deg, rgba(179, 143, 198, 0.1) 0%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 25px;
+.rota-card, .pontos-parada, .horarios-card, .escolas-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 70px rgba(76, 0, 76, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.rota-card::before, .pontos-parada::before, .horarios-card::before, .escolas-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+    transition: left 0.5s ease;
+}
+
+.rota-card:hover::before, .pontos-parada:hover::before, .horarios-card:hover::before, .escolas-card:hover::before {
+    left: 100%;
+}
+
+.rota-card:hover, .pontos-parada:hover, .horarios-card:hover, .escolas-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 35px 90px rgba(76, 0, 76, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(179, 143, 198, 0.3);
+}
+
+.escolas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.escola-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: rgba(26, 0, 26, 0.6);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.escola-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.escola-info strong {
+    color: #b38fc6;
+}
+
+.escola-info small {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+}
+
+.escola-modal {
+    max-width: 600px;
+}
+
+.search-container {
+    position: relative;
+}
+
+.loading-search {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #b38fc6;
+    font-size: 0.8rem;
+}
+
+.sugestoes-lista {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(26, 0, 26, 0.95);
+    border: 1px solid rgba(179, 143, 198, 0.3);
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: 5px;
+}
+
+.sugestao-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(179, 143, 198, 0.1);
+}
+
+.sugestao-item:hover {
+    background: rgba(179, 143, 198, 0.1);
+}
+
+.sugestao-item:last-child {
+    border-bottom: none;
+}
+
+.sugestao-item strong {
+    display: block;
+    color: #b38fc6;
+    margin-bottom: 4px;
+}
+
+.sugestao-item small {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+}
+
+.remove-escola-btn {
+    background: rgba(220, 53, 69, 0.2);
+    border: 1px solid rgba(220, 53, 69, 0.5);
+    border-radius: 6px;
+    color: #dc3545;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.remove-escola-btn:hover {
+    background: rgba(220, 53, 69, 0.3);
+    transform: scale(1.1);
 }
 
 .rota-card h3, .pontos-parada h3, .horarios-card h3 {
@@ -475,6 +1043,23 @@
     display: flex;
     gap: 10px;
     margin-left: auto;
+    align-items: center;
+}
+
+.ponto-actions .remove-btn {
+    position: static;
+    background: rgba(220, 53, 69, 0.2);
+    border: 1px solid rgba(220, 53, 69, 0.5);
+    border-radius: 8px;
+    color: #dc3545;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ponto-actions .remove-btn:hover {
+    background: rgba(220, 53, 69, 0.3);
+    transform: scale(1.1);
 }
 
 .edit-btn {
@@ -519,16 +1104,32 @@
 @media (max-width: 768px) {
     .header-content {
         padding: 0 15px;
+        flex-direction: column;
+        gap: 20px;
     }
     
     .motorista-nav {
-        flex-direction: column;
+        flex-direction: row;
         gap: 10px;
-        padding: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     
     .nav-btn {
-        width: 100%;
+        padding: 10px 16px;
+        font-size: 0.8rem;
+    }
+    
+    .logo-section {
+        text-align: center;
+    }
+    
+    .settings-container {
+        order: 3;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
     }
     
     .motorista-content {
@@ -711,10 +1312,49 @@
 [data-theme="light"] .rota-card,
 [data-theme="light"] .pontos-parada,
 [data-theme="light"] .horarios-card,
+[data-theme="light"] .escolas-card,
 [data-theme="light"] .modal {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.8) 100%);
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .escola-item {
+    background: rgba(255, 255, 255, 0.6);
+    color: rgba(33, 37, 41, 0.9);
+}
+
+[data-theme="light"] .escola-info strong {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .escola-info small {
+    color: rgba(33, 37, 41, 0.7);
+}
+
+[data-theme="light"] .loading-search {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .sugestoes-lista {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(109, 26, 109, 0.3);
+}
+
+[data-theme="light"] .sugestao-item {
+    border-bottom: 1px solid rgba(109, 26, 109, 0.1);
+}
+
+[data-theme="light"] .sugestao-item:hover {
+    background: rgba(109, 26, 109, 0.1);
+}
+
+[data-theme="light"] .sugestao-item strong {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .sugestao-item small {
+    color: rgba(33, 37, 41, 0.7);
 }
 
 [data-theme="light"] .stat-info h3,
@@ -723,6 +1363,7 @@
 [data-theme="light"] .rota-card h3,
 [data-theme="light"] .pontos-parada h3,
 [data-theme="light"] .horarios-card h3,
+[data-theme="light"] .escolas-card h3,
 [data-theme="light"] .ponto-info h4,
 [data-theme="light"] .modal h3 {
     color: #6d1a6d;
@@ -785,4 +1426,9 @@
 
 [data-theme="light"] .drag-handle:hover {
     color: #4b004b;
+}
+
+[data-theme="light"] .motorista-floating-shape {
+    background: linear-gradient(135deg, rgba(109, 26, 109, 0.05), rgba(75, 0, 75, 0.03));
+    filter: blur(1px);
 }

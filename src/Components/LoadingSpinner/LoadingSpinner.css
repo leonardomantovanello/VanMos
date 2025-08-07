@@ -1,0 +1,149 @@
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.loading-spinner {
+    position: relative;
+    display: inline-block;
+}
+
+/* Sizes */
+.loading-spinner--small {
+    width: 30px;
+    height: 30px;
+}
+
+.loading-spinner--medium {
+    width: 50px;
+    height: 50px;
+}
+
+.loading-spinner--large {
+    width: 80px;
+    height: 80px;
+}
+
+/* Spinner Rings */
+.spinner-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    animation: spin 2s linear infinite;
+}
+
+.loading-spinner--small .spinner-ring {
+    border-width: 2px;
+}
+
+.loading-spinner--medium .spinner-ring {
+    border-width: 3px;
+}
+
+.loading-spinner--large .spinner-ring {
+    border-width: 4px;
+}
+
+.spinner-ring:nth-child(1) {
+    width: 100%;
+    height: 100%;
+    border-top-color: currentColor;
+    animation-duration: 2s;
+}
+
+.spinner-ring:nth-child(2) {
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+    border-right-color: currentColor;
+    animation-duration: 1.5s;
+    animation-direction: reverse;
+}
+
+.spinner-ring:nth-child(3) {
+    width: 60%;
+    height: 60%;
+    top: 20%;
+    left: 20%;
+    border-bottom-color: currentColor;
+    animation-duration: 1s;
+}
+
+.spinner-core {
+    position: absolute;
+    width: 40%;
+    height: 40%;
+    top: 30%;
+    left: 30%;
+    background: currentColor;
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Variants */
+.loading-spinner--primary {
+    color: #b38fc6;
+}
+
+.loading-spinner--secondary {
+    color: #6d1a6d;
+}
+
+.loading-spinner--accent {
+    color: #e6ccff;
+}
+
+.loading-spinner--white {
+    color: #ffffff;
+}
+
+/* Loading Text */
+.loading-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0;
+    text-align: center;
+}
+
+/* Animations */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* Light Theme */
+[data-theme="light"] .loading-text {
+    color: rgba(33, 37, 41, 0.8);
+}
+
+[data-theme="light"] .loading-spinner--primary {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .loading-spinner--secondary {
+    color: #4b004b;
+}
+
+[data-theme="light"] .loading-spinner--accent {
+    color: #8b2a8b;
+}

@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBolt, faMoneyBillTrendUp, faShield, faVanShuttle } from '@fortawesome/free-solid-svg-icons'
+import { faBolt, faMoneyBillTrendUp, faShield, faVanShuttle, faArrowRight, faStar } from '@fortawesome/free-solid-svg-icons'
 import { faPeopleGroup } from '@fortawesome/free-solid-svg-icons'
 
 import './Paginainicial.css'
 
 const PaginaInicial = () => {
     const [isVisible, setIsVisible] = useState(false)
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+    const [hoveredCard, setHoveredCard] = useState(null)
 
     useEffect(() => {
         setIsVisible(true)
+        
+        const handleMouseMove = (e) => {
+            setMousePosition({ x: e.clientX, y: e.clientY })
+        }
+        
+        window.addEventListener('mousemove', handleMouseMove)
+        return () => window.removeEventListener('mousemove', handleMouseMove)
     }, [])
 
     return (
@@ -31,16 +40,39 @@ const PaginaInicial = () => {
                             segurança garantida e conforto excepcional.
                         </p>
                         <div className="hero-actions">
-                            <Link to="/motoristas" className="cta-btn">
-                                <FontAwesomeIcon icon={faPeopleGroup} style={{color: "#B197FC",}} /> Ver Motoristas
+                            <Link to="/motoristas" className="cta-btn pulse-btn">
+                                <FontAwesomeIcon icon={faPeopleGroup} style={{color: "#B197FC",}} /> 
+                                <span>Ver Motoristas</span>
+                                <FontAwesomeIcon icon={faArrowRight} className="arrow-icon" />
                             </Link>
+                            <div className="stats-mini">
+                                <div className="stat-item">
+                                    <FontAwesomeIcon icon={faStar} style={{color: "#FFD700"}} />
+                                    <span>4.9/5 Avaliação</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="hero-visual">
-                        <div className="floating-card">
-                            <div className="card-icon"><FontAwesomeIcon icon={faVanShuttle} style={{color: "#6d1a6d"}} /></div>
+                        <div className="floating-card interactive-card" 
+                             onMouseEnter={() => setHoveredCard('main')}
+                             onMouseLeave={() => setHoveredCard(null)}>
+                            <div className="card-icon pulse-icon">
+                                <FontAwesomeIcon icon={faVanShuttle} style={{color: "#6d1a6d"}} />
+                            </div>
                             <h3>VanMos Transport</h3>
                             <p>Sua jornada começa aqui</p>
+                            <div className="card-glow"></div>
+                        </div>
+                        <div className="floating-stats">
+                            <div className="stat-bubble">
+                                <span className="stat-number">500+</span>
+                                <span className="stat-label">Viagens</span>
+                            </div>
+                            <div className="stat-bubble">
+                                <span className="stat-number">50+</span>
+                                <span className="stat-label">Motoristas</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -50,6 +82,11 @@ const PaginaInicial = () => {
                     <div className="floating-shape shape-1"></div>
                     <div className="floating-shape shape-2"></div>
                     <div className="floating-shape shape-3"></div>
+                    <div className="cursor-glow" 
+                         style={{
+                             left: mousePosition.x - 100,
+                             top: mousePosition.y - 100
+                         }}></div>
                 </div>
             </section>
 
@@ -58,20 +95,41 @@ const PaginaInicial = () => {
                 <div className="container">
                     <h2 className="section-title">Por que escolher VanMos?</h2>
                     <div className="features-grid">
-                        <div className="feature-card">
-                            <div className="feature-icon"><FontAwesomeIcon icon={faBolt} style={{color: "#913b91ff",}} /></div>
+                        <div className="feature-card interactive-feature" 
+                             onMouseEnter={() => setHoveredCard('speed')}
+                             onMouseLeave={() => setHoveredCard(null)}>
+                            <div className="feature-icon bounce-icon">
+                                <FontAwesomeIcon icon={faBolt} style={{color: "#913b91ff"}} />
+                            </div>
                             <h3>Rápido & Eficiente</h3>
                             <p>Otimização de rotas em tempo real para chegar ao seu destino mais rapidamente.</p>
+                            <div className="feature-progress">
+                                <div className="progress-bar" style={{width: '95%'}}></div>
+                            </div>
                         </div>
-                        <div className="feature-card">
-                            <div className="feature-icon"><FontAwesomeIcon icon={faShield} style={{color: "#913b91ff",}} /></div>
+                        <div className="feature-card interactive-feature" 
+                             onMouseEnter={() => setHoveredCard('security')}
+                             onMouseLeave={() => setHoveredCard(null)}>
+                            <div className="feature-icon bounce-icon">
+                                <FontAwesomeIcon icon={faShield} style={{color: "#913b91ff"}} />
+                            </div>
                             <h3>Seguro & Confiável</h3>
                             <p>Motoristas verificados e veículos monitorados para sua total segurança.</p>
+                            <div className="feature-progress">
+                                <div className="progress-bar" style={{width: '98%'}}></div>
+                            </div>
                         </div>
-                        <div className="feature-card">
-                            <div className="feature-icon"><FontAwesomeIcon icon={faMoneyBillTrendUp} style={{color: "#913b91ff",}} /></div>
+                        <div className="feature-card interactive-feature" 
+                             onMouseEnter={() => setHoveredCard('price')}
+                             onMouseLeave={() => setHoveredCard(null)}>
+                            <div className="feature-icon bounce-icon">
+                                <FontAwesomeIcon icon={faMoneyBillTrendUp} style={{color: "#913b91ff"}} />
+                            </div>
                             <h3>Preços Justos</h3>
                             <p>Tarifas transparentes e competitivas sem taxas ocultas.</p>
+                            <div className="feature-progress">
+                                <div className="progress-bar" style={{width: '92%'}}></div>
+                            </div>
                         </div>
                     </div>
                 </div>
