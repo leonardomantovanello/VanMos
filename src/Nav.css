@@ -11,15 +11,15 @@
     left: 0;
     width: 100%;
     padding: 15px 5%;
-    background: linear-gradient(135deg, rgba(76, 0, 76, 0.95) 0%, rgba(32, 0, 38, 0.98) 100%);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(76, 0, 76, 0.12) 50%, rgba(32, 0, 38, 0.15) 100%);
+    backdrop-filter: blur(25px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 32px rgba(76, 0, 76, 0.3);
+    box-shadow: 0 8px 32px rgba(76, 0, 76, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .header:hover {
@@ -111,7 +111,8 @@
     color: #ffffff;
     background: rgba(255, 255, 255, 0.05);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(76, 0, 76, 0.3);
+    box-shadow: 0 8px 25px rgba(76, 0, 76, 0.3), 0 0 20px rgba(179, 143, 198, 0.6);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 .nav-link:hover::after {
@@ -181,8 +182,8 @@
         top: 100%;
         left: 0;
         width: 100%;
-        background: linear-gradient(135deg, rgba(76, 0, 76, 0.98) 0%, rgba(32, 0, 38, 0.98) 100%);
-        backdrop-filter: blur(20px);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(76, 0, 76, 0.12) 50%, rgba(32, 0, 38, 0.15) 100%);
+        backdrop-filter: blur(25px);
         flex-direction: column;
         gap: 0;
         padding: 20px 0;
@@ -190,7 +191,8 @@
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-top: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     
     .navbar.navbar-open {
@@ -249,14 +251,14 @@
     position: absolute;
     top: 100%;
     right: 0;
-    background: linear-gradient(135deg, rgba(76, 0, 76, 0.95) 0%, rgba(32, 0, 38, 0.98) 100%);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(76, 0, 76, 0.12) 50%, rgba(32, 0, 38, 0.15) 100%);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 10px;
     padding: 10px;
     margin-top: 10px;
     min-width: 150px;
-    box-shadow: 0 8px 32px rgba(76, 0, 76, 0.3);
+    box-shadow: 0 8px 32px rgba(76, 0, 76, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .theme-toggle {
@@ -279,9 +281,9 @@
 
 /* Light Theme */
 [data-theme="light"] .header {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.98) 100%);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(109, 26, 109, 0.08) 50%, rgba(240, 240, 240, 0.15) 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 [data-theme="light"] .logo-text {
@@ -313,9 +315,9 @@
 }
 
 [data-theme="light"] .settings-dropdown {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.98) 100%);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(109, 26, 109, 0.08) 50%, rgba(240, 240, 240, 0.15) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 [data-theme="light"] .theme-toggle {
@@ -332,6 +334,59 @@
 }
 
 [data-theme="light"] .navbar {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 240, 240, 0.98) 100%);
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(109, 26, 109, 0.08) 50%, rgba(240, 240, 240, 0.15) 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+/* Pink Navbar for Motoristas Page */
+.header.pink-navbar {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 20, 147, 0.12) 50%, rgba(255, 105, 180, 0.15) 100%);
+    box-shadow: 0 8px 32px rgba(255, 20, 147, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.header.pink-navbar:hover {
+    box-shadow: 0 12px 40px rgba(255, 20, 147, 0.4);
+}
+
+.header.pink-navbar .logo-text {
+    background: linear-gradient(135deg, #ffffff 0%, #ffe6f2 50%, #ffb3d9 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 8px rgba(255, 20, 147, 0.8));
+}
+
+.header.pink-navbar .logo-subtitle {
+    color: #ffb3d9;
+}
+
+.header.pink-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.header.pink-navbar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 25px rgba(255, 20, 147, 0.3);
+}
+
+.header.pink-navbar .login-btn {
+    background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
+    box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+}
+
+.header.pink-navbar .login-btn:hover {
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    box-shadow: 0 8px 25px rgba(255, 20, 147, 0.6);
+}
+
+.header.pink-navbar .settings-dropdown {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 20, 147, 0.12) 50%, rgba(255, 105, 180, 0.15) 100%);
+    box-shadow: 0 8px 32px rgba(255, 20, 147, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    .header.pink-navbar .navbar {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 20, 147, 0.12) 50%, rgba(255, 105, 180, 0.15) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
 }

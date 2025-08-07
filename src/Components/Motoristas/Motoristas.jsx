@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Motoristas.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faVanShuttle, faStar, faPhone, faMap } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faVanShuttle, faStar, faPhone, faMap, faSchool, faFilter } from '@fortawesome/free-solid-svg-icons'
 
 
 
 const Motoristas = () => {
     const navigate = useNavigate()
-    const [motoristas] = useState([
+    const [allMotoristas] = useState([
         {
             id: 1,
             nome: 'João Silva',
@@ -17,7 +17,9 @@ const Motoristas = () => {
             foto: <FontAwesomeIcon icon={faUser} style={{color: "#b38fc6",}}/>,
             avaliacao: 4.8,
             experiencia: '5 anos',
-            rota: 'Centro - Zona Sul'
+            rota: 'Centro - Zona Sul',
+            localizacao: 'São Paulo - SP',
+            escola: 'Colégio São Paulo'
         },
         {
             id: 2,
@@ -27,7 +29,9 @@ const Motoristas = () => {
             foto: <FontAwesomeIcon icon={faUser} style={{color: "#b38fc6",}}/>,
             avaliacao: 4.9,
             experiencia: '3 anos',
-            rota: 'Zona Norte - Centro'
+            rota: 'Zona Norte - Centro',
+            localizacao: 'Guarulhos - SP',
+            escola: 'Escola Municipal Norte'
         },
         {
             id: 3,
@@ -37,7 +41,9 @@ const Motoristas = () => {
             foto: <FontAwesomeIcon icon={faUser} style={{color: "#b38fc6",}}/>,
             avaliacao: 4.7,
             experiencia: '7 anos',
-            rota: 'Zona Leste - Centro'
+            rota: 'Zona Leste - Centro',
+            localizacao: 'Santo André - SP',
+            escola: 'Colégio Leste'
         },
         {
             id: 4,
@@ -47,15 +53,39 @@ const Motoristas = () => {
             foto: <FontAwesomeIcon icon={faUser} style={{color: "#b38fc6",}}/>,
             avaliacao: 4.9,
             experiencia: '4 anos',
-            rota: 'Zona Oeste - Centro'
+            rota: 'Zona Oeste - Centro',
+            localizacao: 'São Paulo - SP',
+            escola: 'Colégio São Paulo'
         }
     ])
+    
+    const [filtroLocalizacao, setFiltroLocalizacao] = useState('')
+    const [filtroEscola, setFiltroEscola] = useState('')
+    const [motoristas, setMotoristas] = useState(allMotoristas)
 
     const [isVisible, setIsVisible] = useState(false)
 
     useEffect(() => {
         setIsVisible(true)
     }, [])
+    
+    useEffect(() => {
+        let motoristasFiltrados = allMotoristas
+        
+        if (filtroLocalizacao) {
+            motoristasFiltrados = motoristasFiltrados.filter(motorista => 
+                motorista.localizacao.toLowerCase().includes(filtroLocalizacao.toLowerCase())
+            )
+        }
+        
+        if (filtroEscola) {
+            motoristasFiltrados = motoristasFiltrados.filter(motorista => 
+                motorista.escola.toLowerCase().includes(filtroEscola.toLowerCase())
+            )
+        }
+        
+        setMotoristas(motoristasFiltrados)
+    }, [filtroLocalizacao, filtroEscola, allMotoristas])
 
     return (
         <div className="motoristas-container">
@@ -78,6 +108,37 @@ const Motoristas = () => {
 
             <section className="motoristas-grid-section">
                 <div className="container">
+                    <div className="filters-section">
+                        <h2 className="filters-title">
+                            <FontAwesomeIcon icon={faFilter} /> Filtrar Motoristas
+                        </h2>
+                        <div className="filters-grid">
+                            <div className="filter-group">
+                                <label htmlFor="localizacao">
+                                    <FontAwesomeIcon icon={faMap} /> Localização
+                                </label>
+                                <input
+                                    type="text"
+                                    id="localizacao"
+                                    placeholder="Digite a localização..."
+                                    value={filtroLocalizacao}
+                                    onChange={(e) => setFiltroLocalizacao(e.target.value)}
+                                />
+                            </div>
+                            <div className="filter-group">
+                                <label htmlFor="escola">
+                                    <FontAwesomeIcon icon={faSchool} /> Escola
+                                </label>
+                                <input
+                                    type="text"
+                                    id="escola"
+                                    placeholder="Digite o nome da escola..."
+                                    value={filtroEscola}
+                                    onChange={(e) => setFiltroEscola(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
                     <div className="motoristas-grid">
                         {motoristas.map(motorista => (
                             <div key={motorista.id} className="motorista-card">
@@ -97,6 +158,14 @@ const Motoristas = () => {
                                     <div className="info-item">
                                         <span className="icon"><FontAwesomeIcon icon={faMap} style={{color: "#9243bdff",}} /></span>
                                         <span>{motorista.rota}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="icon"><FontAwesomeIcon icon={faMap} style={{color: "#9243bdff",}} /></span>
+                                        <span>{motorista.localizacao}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="icon"><FontAwesomeIcon icon={faSchool} style={{color: "#9243bdff",}} /></span>
+                                        <span>{motorista.escola}</span>
                                     </div>
                                     <div className="info-item">
                                         <span className="icon"><FontAwesomeIcon icon={faStar} style={{color: "#9243bdff",}} /></span>
