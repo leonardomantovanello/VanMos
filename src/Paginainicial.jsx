@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBolt, faMoneyBillTrendUp, faShield, faVanShuttle, faArrowRight, faStar } from '@fortawesome/free-solid-svg-icons'
+import { faBolt, faMoneyBillTrendUp, faShield, faVanShuttle, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { faPeopleGroup } from '@fortawesome/free-solid-svg-icons'
 
 import './Paginainicial.css'
@@ -45,12 +45,7 @@ const PaginaInicial = () => {
                                 <span>Ver Motoristas</span>
                                 <FontAwesomeIcon icon={faArrowRight} className="arrow-icon" />
                             </Link>
-                            <div className="stats-mini">
-                                <div className="stat-item">
-                                    <FontAwesomeIcon icon={faStar} style={{color: "#FFD700"}} />
-                                    <span>4.9/5 Avaliação</span>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                     <div className="hero-visual">
@@ -64,16 +59,7 @@ const PaginaInicial = () => {
                             <p>Sua jornada começa aqui</p>
                             <div className="card-glow"></div>
                         </div>
-                        <div className="floating-stats">
-                            <div className="stat-bubble">
-                                <span className="stat-number">500+</span>
-                                <span className="stat-label">Viagens</span>
-                            </div>
-                            <div className="stat-bubble">
-                                <span className="stat-number">50+</span>
-                                <span className="stat-label">Motoristas</span>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
                 
