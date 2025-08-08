@@ -17,6 +17,24 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: "brige";
+    src: url("../src/assets/Brigends\ Expanded.otf");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "code";
+    src: url("../src/assets/CODE\ Bold.otf");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "gome";
+    src: url("../src/assets/Geometos.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
 .home-container {
     width: 100%;
     overflow-x: hidden;
@@ -63,6 +81,8 @@
     line-height: 1.1;
     margin-bottom: 24px;
     letter-spacing: -1px;
+     font-family: "brige";
+     
    
 }
 
@@ -72,6 +92,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 0 20px rgba(179, 143, 198, 0.5));
+    font-family: "brige";
 }
 
 .hero-description {
@@ -182,6 +203,9 @@
     justify-content: center;
     align-items: center;
 }
+.hero-visual h3{
+    font-family: "";
+}
 
 .floating-card {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
@@ -197,6 +221,9 @@
     z-index: 3;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+.floating-card p{
+    font-family: "gome";
 }
 
 .interactive-card:hover {
@@ -348,6 +375,10 @@
     position: relative;
     overflow: hidden;
     cursor: pointer;
+}
+
+.feature-card p{
+    font-family: "gome";
 }
 
 .feature-card h3{
@@ -507,6 +538,7 @@
     
     .hero-text h1.hero-title {
         font-size: 3rem;
+       
         
     }
     
