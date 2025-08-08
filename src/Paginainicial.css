@@ -295,8 +295,8 @@
 .shape-3 {
     width: 120px;
     height: 120px;
-    top: 75%;
-    right: 45%;
+    top: 69%;
+    right: 55%;
     animation: floatSimple 10s ease-in-out infinite;
     z-index: 0;
 }
