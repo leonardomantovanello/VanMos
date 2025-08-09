@@ -17,6 +17,36 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: "nexa";
+    src: url("../src/assets/Nexa-Heavy.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "outer";
+    src: url("../src/assets/MADE\ Outer\ Sans\ Regular\ PERSONAL\ USE.otf");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "code";
+    src: url("../src/assets/CODE\ Bold.otf");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "choco";
+    src: url("../src/assets/TT\ Chocolates\ Trial\ DemiBold.otf");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "pack";
+    src: url("../src/assets/PackyGreat.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
 .home-container {
     width: 100%;
     overflow-x: hidden;
@@ -80,7 +110,7 @@
     line-height: 1.6;
     margin-bottom: 30px;
     font-weight: 400;
-    font-family: "exo";
+    font-family: "outer";
 }
 
 .hero-actions {
@@ -237,11 +267,13 @@
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 12px;
+    
 }
 
 .floating-card p {
     color: rgba(255, 255, 255, 0.7);
     font-size: 1rem;
+    font-family: "choco";
 }
 
 /* Background Elements */
@@ -430,6 +462,7 @@
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.6;
     font-size: 1rem;
+    font-family: "outer";
 }
 
 /* Animations */

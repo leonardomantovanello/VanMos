@@ -152,7 +152,7 @@ const QuemSomos = () => {
                             <h4>Matheus Fernandes</h4>
                             <p className="role">CDO</p>
                             <p className="bio">
-                                Responsável pelos designs do site,  inovação da empresa
+                                Especialista e responsável pelos designs do site,  inovação da empresa
                                  e por supervisar todos os designs 
                             </p>
                         </div>

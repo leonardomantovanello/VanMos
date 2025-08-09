@@ -1,3 +1,9 @@
+@font-face {
+    font-family: "pack";
+    src: url("../src/assets/PackyGreat.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
 /* Quem Somos Styles */
 .quem-somos-container {
     width: 100%;
@@ -7,7 +13,7 @@
 /* Hero Section */
 .hero-about {
     min-height: 70vh;
-    background: linear-gradient(135deg, #200026 0%, #1a001a 50%, #0d0013 100%);
+    background: #000000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -112,7 +118,11 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+     font-family: "pack";
+   
+   
 }
+
 
 .section-subtitle {
     font-size: 1.2rem;
@@ -124,7 +134,8 @@
 /* Nossa História */
 .nossa-historia {
     padding: 100px 0;
-    background: linear-gradient(135deg, #0d0013 0%, #1a001a 100%);
+    background: #000000;
+    font-family: "pack";
 }
 
 .content-grid {
@@ -202,7 +213,7 @@
 /* Missão, Visão, Valores */
 .missao-visao {
     padding: 100px 0;
-    background: linear-gradient(135deg, #200026 0%, #1a001a 100%);
+    background: #000000;
 }
 
 .mvv-grid {
@@ -265,7 +276,7 @@
 /* Nossa Equipe */
 .nossa-equipe {
     padding: 100px 0;
-    background: linear-gradient(135deg, #0d0013 0%, #1a001a 100%);
+    background: #000000;
     text-align: center;
 }
 
@@ -326,7 +337,7 @@
 /* Diferenciais */
 .diferenciais {
     padding: 100px 0;
-    background: linear-gradient(135deg, #200026 0%, #1a001a 100%);
+    background: #000000;
     text-align: center;
 }
 

@@ -4,6 +4,12 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: "code";
+    src: url("../src/assets/CODE\ Bold.otf");
+    font-weight: normal;
+    font-style: normal;
+}
 
 .header {
     position: fixed;
@@ -78,6 +84,7 @@
     transition: all 0.3s ease;
     overflow: hidden;
     letter-spacing: 0.5px;
+    font-family: "code";
 }
 
 .nav-link::before {
