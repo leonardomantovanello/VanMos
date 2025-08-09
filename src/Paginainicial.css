@@ -106,7 +106,7 @@
 
 .hero-description {
     font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.95);
     line-height: 1.6;
     margin-bottom: 30px;
     font-weight: 400;
@@ -385,7 +385,7 @@
 .feature-card h3{
     font-family: "edge";
     letter-spacing: 2px;
-    text-shadow: 2px 2px 4px #2d024d;
+    
 }
 
 .feature-card::before {
@@ -794,6 +794,7 @@
 
 [data-theme="light"] .hero-description {
     color: rgba(33, 37, 41, 0.8);
+    
 }
 
 [data-theme="light"] .floating-card {
@@ -833,7 +834,7 @@
 }
 
 [data-theme="light"] .feature-card h3 {
-    color: #212529;
+    color: #292929;
 }
 
 [data-theme="light"] .feature-card p {

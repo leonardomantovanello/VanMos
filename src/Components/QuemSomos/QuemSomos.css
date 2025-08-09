@@ -73,8 +73,10 @@
 .floating-shape {
     position: absolute;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(179, 143, 198, 0.1), rgba(76, 0, 76, 0.1));
-    filter: blur(1px);
+    background: linear-gradient(135deg, #b38fc6 0%, #e91e63 50%, #ff69b4 100%);
+    opacity: 0.6;
+    border: 2px solid rgba(179, 143, 198, 0.8);
+    box-shadow: 0 0 20px rgba(179, 143, 198, 0.4);
 }
 
 .shape-1 {
@@ -107,6 +109,9 @@
     margin: 0 auto;
     padding: 0 5%;
 }
+.container h2{
+    font-family: "pack";
+}
 
 /* Section Title */
 .section-title {
@@ -136,6 +141,60 @@
     padding: 100px 0;
     background: #000000;
     font-family: "pack";
+    position: relative;
+    overflow: hidden;
+}
+
+.floating-cubes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-cube {
+    position: absolute;
+    background: linear-gradient(135deg, rgba(162, 0, 249, 0.653), rgba(245, 11, 245, 0.473));
+    border: 1px solid rgba(179, 143, 198, 0.2);
+    filter: blur(1px);
+}
+
+.cube-1 {
+    width: 60px;
+    height: 60px;
+    top: 15%;
+    left: 8%;
+    animation: floatCube 10s ease-in-out infinite;
+}
+
+.cube-2 {
+    width: 40px;
+    height: 40px;
+    top: 70%;
+    right: 12%;
+    animation: floatCube 8s ease-in-out infinite reverse;
+}
+
+.cube-3 {
+    width: 50px;
+    height: 50px;
+    bottom: 5%;
+    left: 3%;
+    animation: floatCube 12s ease-in-out infinite;
+}
+
+@keyframes floatCube {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-25px) rotate(45deg);
+        opacity: 1;
+    }
 }
 
 .content-grid {
@@ -150,6 +209,9 @@
     line-height: 1.8;
     font-size: 1.1rem;
     margin-bottom: 24px;
+}
+.text-content h2{
+    font-family: "pack";
 }
 
 .stats-mini {
@@ -394,7 +456,9 @@
 @keyframes floatSimple {
     0%, 100% {
         transform: translateY(0px) scale(1);
-        opacity: 0.7;
+        opacity: 1;
+    border: 4px solid rgba(179, 143, 198, 1);
+    box-shadow: 0 0 40px rgba(233, 30, 99, 0.9);
     }
     50% {
         transform: translateY(-30px) scale(1.1);
@@ -549,7 +613,7 @@
 [data-theme="light"] .mvv-card:hover,
 [data-theme="light"] .team-member:hover,
 [data-theme="light"] .diferencial-item:hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     border-color: rgba(109, 26, 109, 0.2);
 }
 

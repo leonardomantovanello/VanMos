@@ -97,6 +97,10 @@ const Contato = () => {
 
             {/* Informações de Contato */}
             <section className="info-contato">
+                <div className="bg-elements">
+                    <div className="floating-shape info-shape-1"></div>
+                    <div className="floating-shape info-shape-2"></div>
+                </div>
                 <div className="container">
                     <div className="contato-grid">
                         {/* Cartão Email */}
@@ -156,6 +160,10 @@ const Contato = () => {
 
             {/* Formulário de Contato */}
             <section className="formulario-contato">
+                <div className="bg-elements">
+                    <div className="floating-shape form-shape-1"></div>
+                    <div className="floating-shape form-shape-2"></div>
+                </div>
                 <div className="container">
                     <div className="form-wrapper">
                         <div className="form-header">
@@ -256,6 +264,10 @@ const Contato = () => {
 
             {/* Horários de Atendimento */}
             <section className="horarios-atendimento">
+                <div className="bg-elements">
+                    <div className="floating-shape horario-shape-1"></div>
+                    <div className="floating-shape horario-shape-2"></div>
+                </div>
                 <div className="container">
                     <div className="horarios-content">
                         <h2>Horários de Atendimento</h2>

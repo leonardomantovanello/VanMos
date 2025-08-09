@@ -32,6 +32,12 @@ const QuemSomos = () => {
 
             {/* Nossa História */}
             <section className="nossa-historia">
+                {/* Floating cubes background */}
+                <div className="floating-cubes">
+                    <div className="floating-cube cube-1"></div>
+                    <div className="floating-cube cube-2"></div>
+                    <div className="floating-cube cube-3"></div>
+                </div>
                 <div className="container">
                     <div className="content-grid">
                         <div className="text-content">
