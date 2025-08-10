@@ -634,7 +634,7 @@ const Motorista = () => {
                 {activeTab === 'rota' && (
                     <div className="rota-section">
                         <div className="section-header">
-                            <h2>Gerenciar Rotas e Escolas</h2>
+                            <h2>Gerenciar Rotas<br />e Escolas</h2>
                             <div className="header-buttons">
                                 <button 
                                     className="add-btn"
