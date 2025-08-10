@@ -114,10 +114,10 @@ const Register = () => {
   return (
     <div className="register-container">
       <div className="register-background">
-        <div className="bg-circle circle-1"></div>
-        <div className="bg-circle circle-2"></div>
-        <div className="bg-circle circle-3"></div>
-        <div className="bg-circle circle-4"></div>
+        <div className="bg-circle circle-1" style={{background: 'linear-gradient(135deg, #9300d3, #ff1493)'}}></div>
+        <div className="bg-circle circle-2" style={{background: 'linear-gradient(135deg, #9300d3, #ff1493)'}}></div>
+        <div className="bg-circle circle-3" style={{background: 'linear-gradient(135deg, #9300d3, #ff1493)'}}></div>
+        <div className="bg-circle circle-4" style={{background: 'linear-gradient(135deg, #9300d3, #ff1493)'}}></div>
       </div>
       
       <button 

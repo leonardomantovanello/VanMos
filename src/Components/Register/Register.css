@@ -19,14 +19,16 @@
   height: 100%;
   pointer-events: none;
   z-index: 1;
+  background-color: black;
 }
 
 .bg-circle {
   position: absolute;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(179, 143, 198, 0.08), rgba(76, 0, 76, 0.04));
+  background: linear-gradient(135deg, #9300d3, #ff1493);
   filter: blur(2px);
   animation: float 8s ease-in-out infinite;
+  
 }
 
 .circle-1 {

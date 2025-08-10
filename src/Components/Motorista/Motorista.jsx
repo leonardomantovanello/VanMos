@@ -291,7 +291,7 @@ const Motorista = () => {
             <header className="motorista-header">
                 <div className="header-content">
                     <div className="logo-section">
-                        <h1><FontAwesomeIcon icon={faVanShuttle} style={{color: "#b38fc6"}} /> VanMos Motorista</h1>
+                        <h1><FontAwesomeIcon icon={faVanShuttle} style={{color: "#b38fc6"}} /> VanMos <span>Motorista</span></h1>
                         <span className="driver-name">{driverName}</span>
                     </div>
                     

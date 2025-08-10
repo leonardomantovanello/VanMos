@@ -1,7 +1,7 @@
 /* Login Container */
 .login-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #200026 0%, #1a001a 50%, #0d0013 100%);
+  background: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,14 +19,15 @@
   height: 100%;
   pointer-events: none;
   z-index: 1;
+  background-color: #000000;
 }
 
 .bg-circle {
   position: absolute;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(179, 143, 198, 0.1), rgba(76, 0, 76, 0.05));
-  filter: blur(2px);
+  background: linear-gradient(135deg, #9300d3, #ff1493);
   animation: float 6s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(147, 0, 211, 0.6), 0 0 40px rgba(255, 20, 147, 0.4);
 }
 
 .circle-1 {
@@ -35,6 +36,7 @@
   top: 10%;
   left: 10%;
   animation-delay: 0s;
+
 }
 
 .circle-2 {
@@ -321,12 +323,15 @@
 @keyframes float {
   0%, 100% {
     transform: translateY(0px) rotate(0deg);
+    box-shadow: 0 0 15px rgba(147, 0, 211, 0.4), 0 0 30px rgba(255, 20, 147, 0.3);
   }
   33% {
     transform: translateY(-10px) rotate(2deg);
+    box-shadow: 0 0 30px rgba(147, 0, 211, 0.8), 0 0 60px rgba(255, 20, 147, 0.6);
   }
   66% {
     transform: translateY(5px) rotate(-1deg);
+    box-shadow: 0 0 10px rgba(147, 0, 211, 0.3), 0 0 20px rgba(255, 20, 147, 0.2);
   }
 }
 
@@ -360,11 +365,13 @@
   
   .bg-circle {
     opacity: 0.5;
+     
   }
   
   .circle-1 {
     width: 200px;
     height: 200px;
+    
   }
   
   .circle-2 {
@@ -375,6 +382,7 @@
   .circle-3 {
     width: 100px;
     height: 100px;
+  
   }
 }
 
@@ -481,5 +489,5 @@
 }
 
 [data-theme="light"] .bg-circle {
-  background: linear-gradient(135deg, rgba(109, 26, 109, 0.1), rgba(75, 0, 75, 0.05));
+  background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(75, 0, 75, 0.05));
 }
