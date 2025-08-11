@@ -130,11 +130,39 @@ const Motorista = () => {
     const handleAddPassenger = (e) => {
         e.preventDefault()
         const newId = Math.max(...passageiros.map(p => p.id)) + 1
+        
+        // Gerar login e senha para o aluno
+        const nomePartes = novoPassageiro.nome.toLowerCase().split(' ')
+        const primeiroNome = nomePartes[0]
+        const ultimoNome = nomePartes[nomePartes.length - 1] || ''
+        const login = `${primeiroNome}.${ultimoNome}@vanmos.app`
+        const senha = `${primeiroNome}${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`
+        
+        // Salvar aluno como usuário no sistema
+        const users = JSON.parse(localStorage.getItem('vanmos_users') || '[]')
+        const novoUsuario = {
+            id: Date.now(),
+            nome: novoPassageiro.nome,
+            email: login,
+            senha: senha,
+            tipo: 'aluno'
+        }
+        users.push(novoUsuario)
+        localStorage.setItem('vanmos_users', JSON.stringify(users))
+        
+        // Adicionar passageiro
         setPassageiros([...passageiros, { 
             ...novoPassageiro, 
             id: newId, 
-            status: 'ativo' 
+            status: 'ativo',
+            login: login,
+            senha: senha
         }])
+        
+        // Mostrar credenciais para o motorista
+        const credenciais = `Aluno cadastrado com sucesso!\n\nCredenciais para acesso ao aplicativo mobile:\n\nLogin: ${login}\nSenha: ${senha}\n\nInforme essas credenciais ao aluno.`
+        alert(credenciais)
+        
         setNovoPassageiro({ nome: '', telefone: '', endereco: '', pontoEmbarque: '', escola: '', pontoDesembarque: '' })
         setShowAddPassenger(false)
     }

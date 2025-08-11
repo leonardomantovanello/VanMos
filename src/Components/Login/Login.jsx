@@ -86,7 +86,7 @@ const Login = () => {
     )
     
     if (!user) {
-      alert('Usuário não encontrado. Por favor, realize o cadastro primeiro.')
+      alert('E-mail/CPF ou senha incorretos.')
       return
     }
     
