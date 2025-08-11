@@ -49,7 +49,7 @@ const Motorista = () => {
         { id: 4, nome: 'Bairro Residencial', endereco: 'Rua Residencial, 300', horario: '07:45' }
     ])
     const [novoPassageiro, setNovoPassageiro] = useState({
-        nome: '', telefone: '', endereco: '', pontoEmbarque: '', escola: '', pontoDesembarque: ''
+        nome: '', telefone: '', endereco: '', pontoEmbarque: '', escola: '', pontoDesembarque: '', valor: '', nomeResponsavel: '', telefoneResponsavel: ''
     })
     const [escolas, setEscolas] = useState([
         { nome: 'Escola Municipal A', endereco: 'Rua das Flores, 123 - Centro' },
@@ -69,6 +69,12 @@ const Motorista = () => {
     const [showEditRota, setShowEditRota] = useState(false)
     const [editingRota, setEditingRota] = useState(null)
     const [draggedItem, setDraggedItem] = useState(null)
+    const [alunosAdicionadosSemana, setAlunosAdicionadosSemana] = useState(2)
+    const [receitaMensal, setReceitaMensal] = useState(850)
+    const [showPassageiroDetails, setShowPassageiroDetails] = useState(false)
+    const [selectedPassageiro, setSelectedPassageiro] = useState(null)
+    const [showEditPassageiro, setShowEditPassageiro] = useState(false)
+    const [editingPassageiro, setEditingPassageiro] = useState(null)
     const [bgElements, setBgElements] = useState([
         { id: 1, x: 5, y: 10, size: 300, speedX: 0.5, speedY: 0.3 },
         { id: 2, x: 80, y: 60, size: 200, speedX: -0.3, speedY: 0.4 },
@@ -159,11 +165,15 @@ const Motorista = () => {
             senha: senha
         }])
         
+        // Incrementar contador da semana e receita mensal
+        setAlunosAdicionadosSemana(prev => prev + 1)
+        setReceitaMensal(prev => prev + parseFloat(novoPassageiro.valor))
+        
         // Mostrar credenciais para o motorista
         const credenciais = `Aluno cadastrado com sucesso!\n\nCredenciais para acesso ao aplicativo mobile:\n\nLogin: ${login}\nSenha: ${senha}\n\nInforme essas credenciais ao aluno.`
         alert(credenciais)
         
-        setNovoPassageiro({ nome: '', telefone: '', endereco: '', pontoEmbarque: '', escola: '', pontoDesembarque: '' })
+        setNovoPassageiro({ nome: '', telefone: '', endereco: '', pontoEmbarque: '', escola: '', pontoDesembarque: '', valor: '', nomeResponsavel: '', telefoneResponsavel: '' })
         setShowAddPassenger(false)
     }
 
@@ -296,6 +306,33 @@ const Motorista = () => {
         setEscolas(escolas.filter(e => e.nome !== escolaNome))
     }
 
+    const handleShowPassageiroDetails = (passageiro) => {
+        setSelectedPassageiro(passageiro)
+        setShowPassageiroDetails(true)
+    }
+
+    const handleEditPassageiro = (passageiro) => {
+        setEditingPassageiro({...passageiro})
+        setShowEditPassageiro(true)
+        setShowPassageiroDetails(false)
+    }
+
+    const handleUpdatePassageiro = (e) => {
+        e.preventDefault()
+        setPassageiros(passageiros.map(p => 
+            p.id === editingPassageiro.id ? editingPassageiro : p
+        ))
+        setShowEditPassageiro(false)
+        setEditingPassageiro(null)
+    }
+
+    const handleEditPassageiroInputChange = (e) => {
+        setEditingPassageiro({
+            ...editingPassageiro,
+            [e.target.name]: e.target.value
+        })
+    }
+
     return (
         <div className="motorista-container">
             {/* Background Elements */}
@@ -386,7 +423,7 @@ const Motorista = () => {
                                 <div className="stat-info">
                                     <h3>{passageiros.length}</h3>
                                     <p>Passageiros Ativos</p>
-                                    <span className="stat-trend">+2 esta semana</span>
+                                    <span className="stat-trend">+{alunosAdicionadosSemana} esta semana</span>
                                 </div>
                             </div>
                             <div className="stat-card">
@@ -408,7 +445,7 @@ const Motorista = () => {
                             <div className="stat-card">
                                 <div className="stat-icon"><FontAwesomeIcon icon={faMoneyBill} style={{color: "#b852b8ff"}} /></div>
                                 <div className="stat-info">
-                                    <h3>R$ 850</h3>
+                                    <h3>R$ {receitaMensal.toFixed(2).replace('.', ',')}</h3>
                                     <p>Receita Mensal</p>
                                     <span className="stat-trend">+12% vs mês anterior</span>
                                 </div>
@@ -503,7 +540,12 @@ const Motorista = () => {
 
                         <div className="passageiros-grid">
                             {passageiros.map(passageiro => (
-                                <div key={passageiro.id} className="passageiro-card">
+                                <div 
+                                    key={passageiro.id} 
+                                    className="passageiro-card"
+                                    onClick={() => handleShowPassageiroDetails(passageiro)}
+                                    style={{cursor: 'pointer'}}
+                                >
                                     <div className="passageiro-header">
                                         <div className="passageiro-avatar">
                                             <FontAwesomeIcon icon={faUser} />
@@ -642,12 +684,189 @@ const Motorista = () => {
                                                 </option>
                                             ))}
                                         </select>
+                                        <input
+                                            type="number"
+                                            name="valor"
+                                            placeholder="Valor mensal (R$)"
+                                            value={novoPassageiro.valor}
+                                            onChange={handleInputChange}
+                                            min="0"
+                                            step="0.01"
+                                            required
+                                        />
+                                        <input
+                                            type="text"
+                                            name="nomeResponsavel"
+                                            placeholder="Nome do responsável"
+                                            value={novoPassageiro.nomeResponsavel}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
+                                        <input
+                                            type="tel"
+                                            name="telefoneResponsavel"
+                                            placeholder="Telefone do responsável"
+                                            value={novoPassageiro.telefoneResponsavel}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
                                         <div className="modal-actions">
                                             <button type="submit" className="confirm-btn">Adicionar</button>
                                             <button 
                                                 type="button" 
                                                 className="cancel-btn"
                                                 onClick={() => setShowAddPassenger(false)}
+                                            >
+                                                Cancelar
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        )}
+
+                        {showPassageiroDetails && selectedPassageiro && (
+                            <div className="modal-overlay">
+                                <div className="modal">
+                                    <h3>Detalhes do Passageiro</h3>
+                                    <div className="passageiro-details-modal">
+                                        <p><strong>Nome:</strong> {selectedPassageiro.nome}</p>
+                                        <p><strong>Telefone:</strong> {selectedPassageiro.telefone}</p>
+                                        <p><strong>Endereço:</strong> {selectedPassageiro.endereco}</p>
+                                        <p><strong>Ponto de Embarque:</strong> {selectedPassageiro.pontoEmbarque}</p>
+                                        <p><strong>Escola:</strong> {selectedPassageiro.escola}</p>
+                                        <p><strong>Ponto de Desembarque:</strong> {selectedPassageiro.pontoDesembarque}</p>
+                                        <p><strong>Valor Mensal:</strong> R$ {selectedPassageiro.valor}</p>
+                                        <p><strong>Responsável:</strong> {selectedPassageiro.nomeResponsavel}</p>
+                                        <p><strong>Telefone do Responsável:</strong> {selectedPassageiro.telefoneResponsavel}</p>
+                                        {selectedPassageiro.login && (
+                                            <div>
+                                                <p><strong>Login:</strong> {selectedPassageiro.login}</p>
+                                                <p><strong>Senha:</strong> {selectedPassageiro.senha}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="modal-actions">
+                                        <button 
+                                            className="confirm-btn"
+                                            onClick={() => handleEditPassageiro(selectedPassageiro)}
+                                        >
+                                            Editar
+                                        </button>
+                                        <button 
+                                            className="cancel-btn"
+                                            onClick={() => setShowPassageiroDetails(false)}
+                                        >
+                                            Fechar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {showEditPassageiro && editingPassageiro && (
+                            <div className="modal-overlay">
+                                <div className="modal">
+                                    <h3>Editar Passageiro</h3>
+                                    <form onSubmit={handleUpdatePassageiro}>
+                                        <input
+                                            type="text"
+                                            name="nome"
+                                            placeholder="Nome completo"
+                                            value={editingPassageiro.nome}
+                                            onChange={handleEditPassageiroInputChange}
+                                            required
+                                        />
+                                        <input
+                                            type="tel"
+                                            name="telefone"
+                                            placeholder="Telefone"
+                                            value={editingPassageiro.telefone}
+                                            onChange={handleEditPassageiroInputChange}
+                                            required
+                                        />
+                                        <input
+                                            type="text"
+                                            name="endereco"
+                                            placeholder="Endereço"
+                                            value={editingPassageiro.endereco}
+                                            onChange={handleEditPassageiroInputChange}
+                                            required
+                                        />
+                                        <select
+                                            name="pontoEmbarque"
+                                            value={editingPassageiro.pontoEmbarque}
+                                            onChange={handleEditPassageiroInputChange}
+                                            required
+                                        >
+                                            <option value="">Ponto de embarque (ida)</option>
+                                            {rotas.map(rota => (
+                                                <option key={rota.id} value={rota.nome}>
+                                                    {rota.nome} - {rota.horario}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <select
+                                            name="escola"
+                                            value={editingPassageiro.escola}
+                                            onChange={handleEditPassageiroInputChange}
+                                            required
+                                        >
+                                            <option value="">Selecione a escola</option>
+                                            {escolas.map(escola => (
+                                                <option key={escola.nome} value={escola.nome}>
+                                                    {escola.nome}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <select
+                                            name="pontoDesembarque"
+                                            value={editingPassageiro.pontoDesembarque}
+                                            onChange={handleEditPassageiroInputChange}
+                                            required
+                                        >
+                                            <option value="">Ponto de desembarque (volta)</option>
+                                            {rotas.map(rota => (
+                                                <option key={rota.id} value={rota.nome}>
+                                                    {rota.nome} - {rota.horario}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <input
+                                            type="number"
+                                            name="valor"
+                                            placeholder="Valor mensal (R$)"
+                                            value={editingPassageiro.valor}
+                                            onChange={handleEditPassageiroInputChange}
+                                            min="0"
+                                            step="0.01"
+                                            required
+                                        />
+                                        <input
+                                            type="text"
+                                            name="nomeResponsavel"
+                                            placeholder="Nome do responsável"
+                                            value={editingPassageiro.nomeResponsavel}
+                                            onChange={handleEditPassageiroInputChange}
+                                            required
+                                        />
+                                        <input
+                                            type="tel"
+                                            name="telefoneResponsavel"
+                                            placeholder="Telefone do responsável"
+                                            value={editingPassageiro.telefoneResponsavel}
+                                            onChange={handleEditPassageiroInputChange}
+                                            required
+                                        />
+                                        <div className="modal-actions">
+                                            <button type="submit" className="confirm-btn">Salvar</button>
+                                            <button 
+                                                type="button" 
+                                                className="cancel-btn"
+                                                onClick={() => {
+                                                    setShowEditPassageiro(false)
+                                                    setEditingPassageiro(null)
+                                                }}
                                             >
                                                 Cancelar
                                             </button>
