@@ -305,20 +305,22 @@
 }
 
 [data-theme="light"] .nav-link {
-    color: rgba(0, 0, 0, 0.8);
+    color: #2c2c2c;
+    font-weight: 600;
 }
 
 [data-theme="light"] .nav-link:hover {
-    color: #4b004b;
-    background: rgba(0, 0, 0, 0.05);
+    color: #1a1a1a;
+    background: rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="light"] .settings-btn {
-    color: rgba(0, 0, 0, 0.8);
+    color: #2c2c2c;
 }
 
 [data-theme="light"] .settings-btn:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.12);
+    color: #1a1a1a;
 }
 
 [data-theme="light"] .settings-dropdown {
@@ -328,12 +330,13 @@
 }
 
 [data-theme="light"] .theme-toggle {
-    color: rgba(0, 0, 0, 0.8);
+    color: #2c2c2c;
+    font-weight: 500;
 }
 
 [data-theme="light"] .theme-toggle:hover {
-    background: rgba(0, 0, 0, 0.1);
-    color: #4b004b;
+    background: rgba(0, 0, 0, 0.12);
+    color: #1a1a1a;
 }
 
 [data-theme="light"] .menu-toggle span {

@@ -1,0 +1,152 @@
+/* Melhorias de visibilidade para o modo claro */
+
+/* Estilos globais para melhor contraste */
+[data-theme="light"] * {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Títulos principais */
+[data-theme="light"] h1 {
+  color: #1a1a1a !important;
+  font-weight: 900 !important;
+}
+
+[data-theme="light"] h2 {
+  color: #1a1a1a !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] h3 {
+  color: #1a1a1a !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6 {
+  color: #2c2c2c !important;
+  font-weight: 600 !important;
+}
+
+/* Parágrafos e textos */
+[data-theme="light"] p {
+  color: #2c2c2c !important;
+  font-weight: 500 !important;
+}
+
+/* Links */
+[data-theme="light"] a {
+  color: #4b004b !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] a:hover {
+  color: #1a1a1a !important;
+}
+
+/* Labels e textos de formulário */
+[data-theme="light"] label {
+  color: #1a1a1a !important;
+  font-weight: 600 !important;
+}
+
+/* Botões */
+[data-theme="light"] button {
+  font-weight: 600 !important;
+}
+
+/* Spans e textos pequenos */
+[data-theme="light"] span {
+  color: #2c2c2c !important;
+  font-weight: 500 !important;
+}
+
+/* Textos em cards e containers */
+[data-theme="light"] .card,
+[data-theme="light"] .container,
+[data-theme="light"] .content {
+  color: #2c2c2c !important;
+}
+
+/* Melhorias específicas para componentes */
+[data-theme="light"] .nav-link {
+  color: #2c2c2c !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .nav-link:hover {
+  color: #1a1a1a !important;
+}
+
+/* Textos em modais e dropdowns */
+[data-theme="light"] .modal,
+[data-theme="light"] .dropdown {
+  color: #2c2c2c !important;
+}
+
+/* Placeholder text */
+[data-theme="light"] ::placeholder {
+  color: #666666 !important;
+  opacity: 1 !important;
+}
+
+/* Textos de erro e sucesso */
+[data-theme="light"] .error-text {
+  color: #dc3545 !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .success-text {
+  color: #28a745 !important;
+  font-weight: 600 !important;
+}
+
+/* Textos em tabelas */
+[data-theme="light"] table,
+[data-theme="light"] td,
+[data-theme="light"] th {
+  color: #2c2c2c !important;
+}
+
+[data-theme="light"] th {
+  color: #1a1a1a !important;
+  font-weight: 700 !important;
+}
+
+/* Melhorias para inputs */
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] select {
+  color: #1a1a1a !important;
+  font-weight: 500 !important;
+}
+
+/* Textos em listas */
+[data-theme="light"] li {
+  color: #2c2c2c !important;
+  font-weight: 500 !important;
+}
+
+/* Textos destacados */
+[data-theme="light"] .highlight,
+[data-theme="light"] .featured-text {
+  color: #1a1a1a !important;
+  font-weight: 700 !important;
+}
+
+/* Textos secundários */
+[data-theme="light"] .secondary-text,
+[data-theme="light"] .subtitle {
+  color: #2c2c2c !important;
+  font-weight: 500 !important;
+}
+
+/* Garantir que textos em gradientes sejam visíveis */
+[data-theme="light"] .text-gradient {
+  background: linear-gradient(135deg, #1a1a1a 0%, #4b004b 100%) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}

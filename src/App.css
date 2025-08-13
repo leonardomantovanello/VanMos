@@ -43,8 +43,8 @@
 
 /* Light Theme Global Styles */
 [data-theme="light"] .page-content {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
-    color: #212529;
+    background: linear-gradient(135deg, #f0f2f5 0%, #e1e5e9 50%, #d6dae0 100%);
+    color: #1a1a1a;
 }
 
 [data-theme="light"] ::-webkit-scrollbar-track {
