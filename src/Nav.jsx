@@ -13,21 +13,20 @@ const Nav = () => {
     return (
         <>
             <header className="header">
-                <div className="header-left">
-                    <button 
-                        className="hamburger-btn"
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    >
-                        <FontAwesomeIcon icon={faBars} />
-                    </button>
-                    <Link to="/login" className="nav-link login-btn">
-                        <span>Login para Motoristas</span>
-                    </Link>
-                </div>
+                <button 
+                    className="hamburger-btn"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                >
+                    <FontAwesomeIcon icon={faBars} />
+                </button>
                 
                 <Link to="/" className="logo">
                     <span className="logo-text"><FontAwesomeIcon icon={faVanShuttle} style={{color: "#e6ccff"}} />VANMOS</span>
                     <span className="logo-subtitle">Transport</span>
+                </Link>
+                
+                <Link to="/login" className="nav-link login-btn">
+                    <span>Login para Motoristas</span>
                 </Link>
             </header>
             
