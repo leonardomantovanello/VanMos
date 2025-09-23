@@ -1,32 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useTheme } from '../../contexts/ThemeContext'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { 
-    faChartSimple, 
-    faSun, 
-    faGear, 
-    faUsers, 
-    faMap, 
-    faUser, 
-    faLocationPin, 
-    faClock, 
-    faMoneyBill, 
-    faVanShuttle, 
-    faDoorClosed,
-    faMoon, 
-    faCheck, 
-    faPhone, 
-    faMapPin, 
-    faTrashCan, 
-    faPlus, 
-    faArrowsUpDown, 
-    faPencil, 
-    faMapLocation,
-    faArrowRight
-} from '@fortawesome/free-solid-svg-icons'
-import './Motorista.css'
-import { buscarEscolasPorNome } from '../../services/googlePlaces'
+    import React, { useState, useEffect } from 'react'
+    import { useNavigate } from 'react-router-dom'
+    import { useTheme } from '../../contexts/ThemeContext'
+    import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+    import {faChartSimple, faSun, faGear, faUsers, faMap, faUser, faLocationPin, faClock, 
+    faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faCheck, faPhone, faMapPin, faTrashCan, 
+    faPlus, faArrowsUpDown, faPencil, faMapLocation, faArrowRight} 
+    from '@fortawesome/free-solid-svg-icons'
+    import './Motorista.css'
+    import { buscarEscolasPorNome } from '../../services/googlePlaces'
 
 
 const Motorista = () => {
