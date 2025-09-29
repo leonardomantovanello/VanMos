@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { cadastrarUsuario } from '../../services/cadastro'
 import './Register.css'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,14 +12,15 @@ const Register = () => {
     cpf: '',
     email: '',
     senha: '',
-    genero: ''
+    genero: '',
+    aceitouTermos: false
   })
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value, type, checked } = e.target
     setFormData({
       ...formData,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     })
   }
 
@@ -76,39 +78,41 @@ const Register = () => {
            /\d/.test(password)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    
     if (!validateCPF(formData.cpf)) {
       alert('Por favor, insira um CPF válido')
       return
     }
-    
     if (!validateEmail(formData.email)) {
       alert('Por favor, insira um e-mail válido')
       return
     }
-    
     if (!validatePassword(formData.senha)) {
       alert('A senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número')
       return
     }
-    
-    // Salvar usuário no localStorage
-    const users = JSON.parse(localStorage.getItem('vanmos_users') || '[]')
-    const newUser = {
-      id: Date.now(),
+    // Remove máscara do CPF antes de enviar e envia nome conforme backend
+    const cadastro = {
       nome: formData.nome,
-      cpf: formData.cpf,
+      idade: formData.idade,
+      cpf: formData.cpf.replace(/\D/g, ''),
+      genero: formData.genero,
       email: formData.email,
-      senha: formData.senha
+      senha: formData.senha,
+      aceitouTermos: formData.aceitouTermos
     }
-    users.push(newUser)
-    localStorage.setItem('vanmos_users', JSON.stringify(users))
-    
-    console.log('Dados do cadastro:', formData)
-    alert('Cadastro realizado com sucesso!')
-    navigate('/motorista')
+    try {
+      const response = await cadastrarUsuario(cadastro)
+      if (response.sucesso || response.success) {
+        alert('Cadastro realizado com sucesso!')
+        navigate('/motorista')
+      } else {
+        alert(response.mensagem || response.message || 'Erro ao cadastrar usuário')
+      }
+    } catch (error) {
+      alert('Erro ao conectar com o servidor de cadastro')
+    }
   }
 
   return (
@@ -240,7 +244,13 @@ const Register = () => {
 
           <div className="form-options">
             <label className="checkbox-container">
-              <input type="checkbox" required />
+              <input
+                type="checkbox"
+                name="aceitouTermos"
+                checked={formData.aceitouTermos}
+                onChange={handleInputChange}
+                required
+              />
               <span className="checkmark"></span>
               Concordo com os <a href="#" className="link">Termos de Uso</a> e <a href="#" className="link">Política de Privacidade</a>
             </label>
