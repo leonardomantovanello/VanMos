@@ -10,19 +10,18 @@ export const loginApi = {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email_ou_cpf: emailOuCpf,
-          senha,
-          lembrarMe
+          emailOuCpf: emailOuCpf,
+          senha: String(senha),
+          lembrarMe: Boolean(lembrarMe)
         })
       });
       
       const data = await response.json();
       
-      if (response.ok) {
-        return { sucesso: true, mensagem: 'Login realizado com sucesso!' };
-      } else {
-        return { sucesso: false, mensagem: data.mensagem || 'Erro ao fazer login' };
-      }
+      return {
+        sucesso: data.sucesso || false,
+        mensagem: data.mensagem || 'Erro desconhecido'
+      };
     } catch (error) {
       return { sucesso: false, mensagem: 'Erro de conexão com o servidor' };
     }
