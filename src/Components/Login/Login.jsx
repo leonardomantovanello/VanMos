@@ -7,8 +7,9 @@ const Login = () => {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email_ou_cpf: '',
+    senha: '',
+    lembrar_me: false
   })
 
   const formatCPF = (value) => {
@@ -17,16 +18,11 @@ const Login = () => {
   }
 
   const handleInputChange = (e) => {
-    let value = e.target.value
-    
-    if (e.target.name === 'email' && /^\d/.test(value)) {
-      value = formatCPF(value)
-    }
-    
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: value
-    })
+      [name]: type === 'checkbox' ? checked : value
+    });
   }
 
   const validateCPF = (cpf) => {
@@ -63,38 +59,19 @@ const Login = () => {
            /\d/.test(password)
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    
-    const isValidCPF = validateCPF(formData.email)
-    const isValidEmail = validateEmail(formData.email)
-    
-    if (!isValidCPF && !isValidEmail) {
-      alert('Por favor, insira um CPF ou e-mail válido')
-      return
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const emailOuCpf = /^\d/.test(formData.email_ou_cpf) ? formData.email_ou_cpf.replace(/\D/g, '') : formData.email_ou_cpf;
+    const resultado = await fazerLogin(emailOuCpf, formData.senha, formData.lembrar_me);
+      if (resultado.sucesso) {
+        // Salva o usuário logado no localStorage
+        // Ajuste conforme o retorno da sua API (resultado.usuario, resultado.dados, etc)
+        localStorage.setItem('vanmos_logged_user', JSON.stringify(resultado.usuario || { nome: formData.email_ou_cpf }));
+        alert('Login realizado com sucesso!');
+        navigate('/motorista');
+      } else {
+        alert(resultado.mensagem);
     }
-    
-    if (!validatePassword(formData.password)) {
-      alert('A senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número')
-      return
-    }
-    
-    // Verificar se usuário está cadastrado
-    const users = JSON.parse(localStorage.getItem('vanmos_users') || '[]')
-    const user = users.find(u => 
-      (u.cpf === formData.email || u.email === formData.email) && 
-      u.senha === formData.password
-    )
-    
-    if (!user) {
-      alert('E-mail/CPF ou senha incorretos.')
-      return
-    }
-    
-    // Salvar dados do usuário logado
-    localStorage.setItem('vanmos_logged_user', JSON.stringify(user))
-    console.log('Login successful:', user)
-    navigate('/motorista')
   }
   
 
@@ -122,27 +99,27 @@ const Login = () => {
 
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="input-group">
-            <label htmlFor="email">E-mail ou CPF</label>
+            <label htmlFor="email_ou_cpf">E-mail ou CPF</label>
             <input
               type="text"
-              id="email"
-              name="email"
+              id="email_ou_cpf"
+              name="email_ou_cpf"
               placeholder="Digite seu e-mail ou CPF"
-              value={formData.email}
+              value={formData.email_ou_cpf}
               onChange={handleInputChange}
               required
             />
           </div>
 
           <div className="input-group">
-            <label htmlFor="password">Senha</label>
+            <label htmlFor="senha">Senha</label>
             <div className="password-field">
               <input
                 type={showPassword ? "text" : "password"}
-                id="password"
-                name="password"
+                id="senha"
+                name="senha"
                 placeholder="Digite sua senha"
-                value={formData.password}
+                value={formData.senha}
                 onChange={handleInputChange}
                 required
               />
@@ -159,7 +136,12 @@ const Login = () => {
 
           <div className="form-options">
             <label className="checkbox-container">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                name="lembrar_me"
+                checked={formData.lembrar_me}
+                onChange={handleInputChange}
+              />
               <span className="checkmark"></span>
               Lembrar-me
             </label>
