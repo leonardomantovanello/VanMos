@@ -82,6 +82,32 @@
   box-shadow: 0 8px 25px rgba(76, 0, 76, 0.3);
 }
 
+/* Admin Button */
+.admin-btn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #6d1a6d 0%, #4b004b 100%);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(179, 143, 198, 0.3);
+  color: #fff;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-weight: 600;
+  z-index: 10;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.admin-btn:hover {
+  background: linear-gradient(135deg, #8b2a8b 0%, #6d1a6d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(76, 0, 76, 0.4);
+  border-color: #b38fc6;
+}
+
 /* Login Content */
 .login-content {
   background: linear-gradient(135deg, rgba(179, 143, 198, 0.1) 0%, rgba(76, 0, 76, 0.15) 100%);
@@ -346,6 +372,13 @@
     left: 20px;
     padding: 10px 16px;
     font-size: 0.9rem;
+  }
+  
+  .admin-btn {
+    top: 20px;
+    right: 20px;
+    padding: 10px 16px;
+    font-size: 0.85rem;
   }
   
   .login-content {

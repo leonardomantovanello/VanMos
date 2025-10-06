@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { ThemeProvider } from './contexts/ThemeContext'
 import Nav from './Nav'
 import Login from './Components/Login/Login'
+import AdminLogin from './Components/Login/AdminLogin'
+import AdminPanel from './Components/Admin/AdminPanel'
 import Register from './Components/Register/Register'
 import ForgotPassword from './Components/ForgotPassword/ForgotPassword'
 import QuemSomos from './Components/QuemSomos/QuemSomos'
@@ -14,7 +16,7 @@ import './App.css'
 
 const AppContent = () => {
     const location = useLocation()
-    const hideNav = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/motorista' || location.pathname === '/forgot-password'
+    const hideNav = location.pathname === '/login' || location.pathname === '/admin-login' || location.pathname === '/admin-panel' || location.pathname === '/register' || location.pathname === '/motorista' || location.pathname === '/forgot-password'
 
     return (
         <>
@@ -25,6 +27,8 @@ const AppContent = () => {
                 <Route path="/contato" element={<Contato />} />
                 <Route path="/motoristas" element={<Motoristas />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/admin-login" element={<AdminLogin />} />
+                <Route path="/admin-panel" element={<AdminPanel />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/motorista" element={<Motorista />} />
