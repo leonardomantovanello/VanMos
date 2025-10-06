@@ -30,7 +30,7 @@ const Motorista = () => {
         { id: 4, nome: 'Bairro Residencial', endereco: 'Rua Residencial, 300', horario: '07:45' }
     ])
     const [novoPassageiro, setNovoPassageiro] = useState({
-        nome: '', telefone: '', endereco: '', pontoEmbarque: '', escola: '', pontoDesembarque: '', valor: '', nomeResponsavel: '', telefoneResponsavel: ''
+        nome: '', telefone: '', endereco: '', escola: '', valor: '', nomeResponsavel: '', telefoneResponsavel: ''
     })
     const [escolas, setEscolas] = useState([
         { nome: 'Escola Municipal A', endereco: 'Rua das Flores, 123 - Centro' },
@@ -154,7 +154,7 @@ const Motorista = () => {
         const credenciais = `Aluno cadastrado com sucesso!\n\nCredenciais para acesso ao aplicativo mobile:\n\nLogin: ${login}\nSenha: ${senha}\n\nInforme essas credenciais ao aluno.`
         alert(credenciais)
         
-        setNovoPassageiro({ nome: '', telefone: '', endereco: '', pontoEmbarque: '', escola: '', pontoDesembarque: '', valor: '', nomeResponsavel: '', telefoneResponsavel: '' })
+        setNovoPassageiro({ nome: '', telefone: '', endereco: '', escola: '', valor: '', nomeResponsavel: '', telefoneResponsavel: '' })
         setShowAddPassenger(false)
     }
 
@@ -554,42 +554,14 @@ const Motorista = () => {
                                         </div>
                                     </div>
                                     
-                                    <div className="rota-info">
-                                        <div className="rota-step">
-                                            <div className="step-icon embarque">
-                                                <FontAwesomeIcon icon={faLocationPin} />
-                                            </div>
-                                            <div className="step-content">
-                                                <span className="step-label">Embarque</span>
-                                                <span className="step-value">{passageiro.pontoEmbarque}</span>
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="rota-arrow">
-                                            <FontAwesomeIcon icon={faArrowRight} />
-                                        </div>
-                                        
-                                        <div className="rota-step">
-                                            <div className="step-icon escola">
+                                    <div className="escola-info">
+                                        <div className="escola-display">
+                                            <div className="escola-icon">
                                                 <FontAwesomeIcon icon={faMapLocation} />
                                             </div>
-                                            <div className="step-content">
-                                                <span className="step-label">Escola</span>
-                                                <span className="step-value">{passageiro.escola}</span>
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="rota-arrow">
-                                            <FontAwesomeIcon icon={faArrowRight} />
-                                        </div>
-                                        
-                                        <div className="rota-step">
-                                            <div className="step-icon desembarque">
-                                                <FontAwesomeIcon icon={faLocationPin} />
-                                            </div>
-                                            <div className="step-content">
-                                                <span className="step-label">Retorno</span>
-                                                <span className="step-value">{passageiro.pontoDesembarque}</span>
+                                            <div className="escola-content">
+                                                <span className="escola-label">Escola</span>
+                                                <span className="escola-value">{passageiro.escola}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -627,19 +599,6 @@ const Motorista = () => {
                                             required
                                         />
                                         <select
-                                            name="pontoEmbarque"
-                                            value={novoPassageiro.pontoEmbarque}
-                                            onChange={handleInputChange}
-                                            required
-                                        >
-                                            <option value="">Ponto de embarque (ida)</option>
-                                            {rotas.map(rota => (
-                                                <option key={rota.id} value={rota.nome}>
-                                                    {rota.nome} - {rota.horario}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <select
                                             name="escola"
                                             value={novoPassageiro.escola}
                                             onChange={handleInputChange}
@@ -649,19 +608,6 @@ const Motorista = () => {
                                             {escolas.map(escola => (
                                                 <option key={escola.nome} value={escola.nome}>
                                                     {escola.nome}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <select
-                                            name="pontoDesembarque"
-                                            value={novoPassageiro.pontoDesembarque}
-                                            onChange={handleInputChange}
-                                            required
-                                        >
-                                            <option value="">Ponto de desembarque (volta)</option>
-                                            {rotas.map(rota => (
-                                                <option key={rota.id} value={rota.nome}>
-                                                    {rota.nome} - {rota.horario}
                                                 </option>
                                             ))}
                                         </select>
@@ -708,23 +654,48 @@ const Motorista = () => {
 
                         {showPassageiroDetails && selectedPassageiro && (
                             <div className="modal-overlay">
-                                <div className="modal">
+                                <div className="modal modal-flexible">
                                     <h3>Detalhes do Passageiro</h3>
                                     <div className="passageiro-details-modal">
-                                        <p><strong>Nome:</strong> {selectedPassageiro.nome}</p>
-                                        <p><strong>Telefone:</strong> {selectedPassageiro.telefone}</p>
-                                        <p><strong>Endereço:</strong> {selectedPassageiro.endereco}</p>
-                                        <p><strong>Ponto de Embarque:</strong> {selectedPassageiro.pontoEmbarque}</p>
-                                        <p><strong>Escola:</strong> {selectedPassageiro.escola}</p>
-                                        <p><strong>Ponto de Desembarque:</strong> {selectedPassageiro.pontoDesembarque}</p>
-                                        <p><strong>Valor Mensal:</strong> R$ {selectedPassageiro.valor}</p>
-                                        <p><strong>Responsável:</strong> {selectedPassageiro.nomeResponsavel}</p>
-                                        <p><strong>Telefone do Responsável:</strong> {selectedPassageiro.telefoneResponsavel}</p>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Nome:</span>
+                                            <span className="detail-value">{selectedPassageiro.nome}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Telefone:</span>
+                                            <span className="detail-value">{selectedPassageiro.telefone}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Endereço:</span>
+                                            <span className="detail-value">{selectedPassageiro.endereco}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Escola:</span>
+                                            <span className="detail-value">{selectedPassageiro.escola}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Valor Mensal:</span>
+                                            <span className="detail-value">R$ {selectedPassageiro.valor}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Responsável:</span>
+                                            <span className="detail-value">{selectedPassageiro.nomeResponsavel}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Telefone do Responsável:</span>
+                                            <span className="detail-value">{selectedPassageiro.telefoneResponsavel}</span>
+                                        </div>
                                         {selectedPassageiro.login && (
-                                            <div>
-                                                <p><strong>Login:</strong> {selectedPassageiro.login}</p>
-                                                <p><strong>Senha:</strong> {selectedPassageiro.senha}</p>
-                                            </div>
+                                            <>
+                                                <div className="detail-row">
+                                                    <span className="detail-label">Login:</span>
+                                                    <span className="detail-value">{selectedPassageiro.login}</span>
+                                                </div>
+                                                <div className="detail-row">
+                                                    <span className="detail-label">Senha:</span>
+                                                    <span className="detail-value">{selectedPassageiro.senha}</span>
+                                                </div>
+                                            </>
                                         )}
                                     </div>
                                     <div className="modal-actions">
@@ -747,7 +718,7 @@ const Motorista = () => {
 
                         {showEditPassageiro && editingPassageiro && (
                             <div className="modal-overlay">
-                                <div className="modal">
+                                <div className="modal modal-flexible">
                                     <h3>Editar Passageiro</h3>
                                     <form onSubmit={handleUpdatePassageiro}>
                                         <input
@@ -775,19 +746,6 @@ const Motorista = () => {
                                             required
                                         />
                                         <select
-                                            name="pontoEmbarque"
-                                            value={editingPassageiro.pontoEmbarque}
-                                            onChange={handleEditPassageiroInputChange}
-                                            required
-                                        >
-                                            <option value="">Ponto de embarque (ida)</option>
-                                            {rotas.map(rota => (
-                                                <option key={rota.id} value={rota.nome}>
-                                                    {rota.nome} - {rota.horario}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <select
                                             name="escola"
                                             value={editingPassageiro.escola}
                                             onChange={handleEditPassageiroInputChange}
@@ -797,19 +755,6 @@ const Motorista = () => {
                                             {escolas.map(escola => (
                                                 <option key={escola.nome} value={escola.nome}>
                                                     {escola.nome}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <select
-                                            name="pontoDesembarque"
-                                            value={editingPassageiro.pontoDesembarque}
-                                            onChange={handleEditPassageiroInputChange}
-                                            required
-                                        >
-                                            <option value="">Ponto de desembarque (volta)</option>
-                                            {rotas.map(rota => (
-                                                <option key={rota.id} value={rota.nome}>
-                                                    {rota.nome} - {rota.horario}
                                                 </option>
                                             ))}
                                         </select>

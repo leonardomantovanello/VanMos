@@ -508,73 +508,51 @@
     width: 16px;
 }
 
-.rota-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.escola-info {
     padding: 15px;
     background: rgba(26, 0, 26, 0.4);
     border-radius: 12px;
-    overflow-x: auto;
 }
 
-.rota-step {
+.escola-display {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 8px;
-    min-width: 80px;
+    gap: 15px;
 }
 
-.step-icon {
-    width: 35px;
-    height: 35px;
+.escola-icon {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
-.step-icon.embarque {
-    background: rgba(34, 197, 94, 0.2);
-    color: #22c55e;
-}
-
-.step-icon.escola {
-    background: rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
-}
-
-.step-icon.desembarque {
-    background: rgba(245, 158, 11, 0.2);
-    color: #f59e0b;
-}
-
-.step-content {
+.escola-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 2px;
+    gap: 4px;
+    flex: 1;
 }
 
-.step-label {
-    font-size: 0.7rem;
+.escola-label {
+    font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.6);
     text-transform: uppercase;
     font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
-.step-value {
-    font-size: 0.8rem;
+.escola-value {
+    font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.9);
-    text-align: center;
     font-weight: 500;
-}
-
-.rota-arrow {
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 0.8rem;
+    line-height: 1.3;
+    word-wrap: break-word;
 }
 
 .section-header {
@@ -706,6 +684,47 @@
     padding: 30px;
     width: 90%;
     max-width: 500px;
+}
+
+.modal-flexible {
+    max-width: 600px;
+    width: 95%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.passageiro-details-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.detail-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 12px;
+    background: rgba(26, 0, 26, 0.4);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    color: #b38fc6;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-value {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    word-wrap: break-word;
+    word-break: break-all;
+    line-height: 1.4;
 }
 
 .modal h3 {
@@ -1333,6 +1352,19 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
+[data-theme="light"] .detail-row {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .detail-label {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .detail-value {
+    color: rgba(33, 37, 41, 0.9);
+}
+
 [data-theme="light"] .escola-item {
     background: rgba(255, 255, 255, 0.6);
     color: rgba(33, 37, 41, 0.9);
@@ -1398,8 +1430,17 @@
 
 [data-theme="light"] .activity-item,
 [data-theme="light"] .ponto-item,
-[data-theme="light"] .horario-item {
+[data-theme="light"] .horario-item,
+[data-theme="light"] .escola-info {
     background: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] .escola-label {
+    color: rgba(33, 37, 41, 0.6);
+}
+
+[data-theme="light"] .escola-value {
+    color: rgba(33, 37, 41, 0.9);
 }
 
 [data-theme="light"] .ponto-item.selected {
