@@ -1,41 +1,69 @@
 import React, { useState, useEffect } from 'react'
 import './AdminPanel.css'
 import { useNavigate } from 'react-router-dom'
+import { motoristasApi } from '../../services/motoristasApi'
 
 const AdminPanel = () => {
   const navigate = useNavigate()
   const [motoristas, setMotoristas] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [novoMotorista, setNovoMotorista] = useState({
-    nome: '',
-    email: '',
+    nomeCompleto: '',
+    gmail: '',
     cpf: '',
     senha: '',
     cnh: '',
-    placa_van: '',
-    modelo_van: '',
+    placaVan: '',
+    modeloVan: '',
     ativo: true
   })
 
   useEffect(() => {
-    const motoristasCadastrados = JSON.parse(localStorage.getItem('motoristas_cadastrados') || '[]')
-    setMotoristas(motoristasCadastrados)
+    carregarMotoristas()
   }, [])
 
-  const toggleStatus = (index) => {
-    const novosMotoristas = [...motoristas]
-    novosMotoristas[index].ativo = !novosMotoristas[index].ativo
-    setMotoristas(novosMotoristas)
-    localStorage.setItem('motoristas_cadastrados', JSON.stringify(novosMotoristas))
+  const carregarMotoristas = async () => {
+    try {
+      const data = await motoristasApi.listar()
+      setMotoristas(data || [])
+    } catch (error) {
+      console.error('Erro ao carregar motoristas:', error)
+    }
   }
 
-  const handleAddMotorista = (e) => {
+  const toggleStatus = async (index) => {
+    const motorista = motoristas[index]
+    try {
+      if (motorista.ativo) {
+        await motoristasApi.inativar(motorista.id)
+      } else {
+        await motoristasApi.ativar(motorista.id)
+      }
+      carregarMotoristas()
+    } catch (error) {
+      alert('Erro ao conectar com o servidor')
+    }
+  }
+
+  const handleAddMotorista = async (e) => {
     e.preventDefault()
-    const novosMotoristas = [...motoristas, novoMotorista]
-    setMotoristas(novosMotoristas)
-    localStorage.setItem('motoristas_cadastrados', JSON.stringify(novosMotoristas))
-    setShowModal(false)
-    setNovoMotorista({ nome: '', email: '', cpf: '', senha: '', cnh: '', placa_van: '', modelo_van: '', ativo: true })
+    try {
+      console.log('Enviando motorista:', novoMotorista)
+      const response = await motoristasApi.adicionar(novoMotorista)
+      console.log('Resposta da API:', response)
+      
+      if (response.sucesso) {
+        setShowModal(false)
+        setNovoMotorista({ nomeCompleto: '', gmail: '', cpf: '', senha: '', cnh: '', placaVan: '', modeloVan: '', ativo: true })
+        await carregarMotoristas()
+        alert('Motorista adicionado com sucesso!')
+      } else {
+        alert('Erro: ' + response.mensagem)
+      }
+    } catch (error) {
+      console.error('Erro completo:', error)
+      alert('Erro ao conectar com o servidor: ' + error.message)
+    }
   }
 
   return (
@@ -59,7 +87,7 @@ const AdminPanel = () => {
             <thead>
               <tr>
                 <th>Nome</th>
-                <th>Email</th>
+                <th>Gmail</th>
                 <th>CPF</th>
                 <th>CNH</th>
                 <th>Placa Van</th>
@@ -74,12 +102,12 @@ const AdminPanel = () => {
                 </tr>
               ) : (
                 motoristas.map((motorista, index) => (
-                  <tr key={index}>
-                    <td>{motorista.nome}</td>
-                    <td>{motorista.email}</td>
+                  <tr key={motorista.id || index}>
+                    <td>{motorista.nomeCompleto}</td>
+                    <td>{motorista.gmail}</td>
                     <td>{motorista.cpf}</td>
                     <td>{motorista.cnh || '-'}</td>
-                    <td>{motorista.placa_van || '-'}</td>
+                    <td>{motorista.placaVan || '-'}</td>
                     <td>
                       <span className={`status-badge ${motorista.ativo ? 'ativo' : 'inativo'}`}>
                         {motorista.ativo ? 'Ativo' : 'Inativo'}
@@ -109,15 +137,15 @@ const AdminPanel = () => {
               <input
                 type="text"
                 placeholder="Nome completo"
-                value={novoMotorista.nome}
-                onChange={(e) => setNovoMotorista({...novoMotorista, nome: e.target.value})}
+                value={novoMotorista.nomeCompleto}
+                onChange={(e) => setNovoMotorista({...novoMotorista, nomeCompleto: e.target.value})}
                 required
               />
               <input
                 type="email"
-                placeholder="Email"
-                value={novoMotorista.email}
-                onChange={(e) => setNovoMotorista({...novoMotorista, email: e.target.value})}
+                placeholder="Gmail"
+                value={novoMotorista.gmail}
+                onChange={(e) => setNovoMotorista({...novoMotorista, gmail: e.target.value})}
                 required
               />
               <input
@@ -144,15 +172,15 @@ const AdminPanel = () => {
               <input
                 type="text"
                 placeholder="Placa da Van"
-                value={novoMotorista.placa_van}
-                onChange={(e) => setNovoMotorista({...novoMotorista, placa_van: e.target.value})}
+                value={novoMotorista.placaVan}
+                onChange={(e) => setNovoMotorista({...novoMotorista, placaVan: e.target.value})}
                 required
               />
               <input
                 type="text"
                 placeholder="Modelo da Van"
-                value={novoMotorista.modelo_van}
-                onChange={(e) => setNovoMotorista({...novoMotorista, modelo_van: e.target.value})}
+                value={novoMotorista.modeloVan}
+                onChange={(e) => setNovoMotorista({...novoMotorista, modeloVan: e.target.value})}
                 required
               />
               <div className="modal-actions">
