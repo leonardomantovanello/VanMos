@@ -3,15 +3,15 @@ const API_BASE_URL = 'http://localhost:8080/api'
 export const motoristasApi = {
   listar: async () => {
     console.log('API: Listando motoristas...')
-    const response = await fetch(`${API_BASE_URL}/motoristas-admin`)
+    const response = await fetch(`${API_BASE_URL}/cadastro`)
     const data = await response.json()
     console.log('API: Motoristas recebidos:', data)
-    return data
+    return Array.isArray(data) ? data : []
   },
 
   adicionar: async (motorista) => {
     console.log('API: Enviando dados:', motorista)
-    const response = await fetch(`${API_BASE_URL}/motoristas-admin`, {
+    const response = await fetch(`${API_BASE_URL}/cadastro`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,14 +30,14 @@ export const motoristasApi = {
   },
 
   ativar: async (id) => {
-    const response = await fetch(`${API_BASE_URL}/motoristas-admin/${id}/ativar`, {
+    const response = await fetch(`${API_BASE_URL}/cadastro/${id}/ativar`, {
       method: 'PUT',
     })
     return response.json()
   },
 
   inativar: async (id) => {
-    const response = await fetch(`${API_BASE_URL}/motoristas-admin/${id}/inativar`, {
+    const response = await fetch(`${API_BASE_URL}/cadastro/${id}/inativar`, {
       method: 'PUT',
     })
     return response.json()

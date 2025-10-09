@@ -6,17 +6,7 @@ import { motoristasApi } from '../../services/motoristasApi'
 const AdminPanel = () => {
   const navigate = useNavigate()
   const [motoristas, setMotoristas] = useState([])
-  const [showModal, setShowModal] = useState(false)
-  const [novoMotorista, setNovoMotorista] = useState({
-    nomeCompleto: '',
-    gmail: '',
-    cpf: '',
-    senha: '',
-    cnh: '',
-    placaVan: '',
-    modeloVan: '',
-    ativo: true
-  })
+
 
   useEffect(() => {
     carregarMotoristas()
@@ -25,9 +15,10 @@ const AdminPanel = () => {
   const carregarMotoristas = async () => {
     try {
       const data = await motoristasApi.listar()
-      setMotoristas(data || [])
+      setMotoristas(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error('Erro ao carregar motoristas:', error)
+      setMotoristas([])
     }
   }
 
@@ -45,26 +36,9 @@ const AdminPanel = () => {
     }
   }
 
-  const handleAddMotorista = async (e) => {
-    e.preventDefault()
-    try {
-      console.log('Enviando motorista:', novoMotorista)
-      const response = await motoristasApi.adicionar(novoMotorista)
-      console.log('Resposta da API:', response)
-      
-      if (response.sucesso) {
-        setShowModal(false)
-        setNovoMotorista({ nomeCompleto: '', gmail: '', cpf: '', senha: '', cnh: '', placaVan: '', modeloVan: '', ativo: true })
-        await carregarMotoristas()
-        alert('Motorista adicionado com sucesso!')
-      } else {
-        alert('Erro: ' + response.mensagem)
-      }
-    } catch (error) {
-      console.error('Erro completo:', error)
-      alert('Erro ao conectar com o servidor: ' + error.message)
-    }
-  }
+
+
+
 
   return (
     <div className="admin-panel-container">
@@ -78,7 +52,7 @@ const AdminPanel = () => {
           <h2>Gerenciar Motoristas</h2>
           <div className="header-actions">
             <span className="total-count">{motoristas.length} motoristas</span>
-            <button onClick={() => setShowModal(true)} className="add-btn">+ Adicionar Motorista</button>
+
           </div>
         </div>
 
@@ -129,68 +103,7 @@ const AdminPanel = () => {
         </div>
       </div>
 
-      {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>Adicionar Novo Motorista</h3>
-            <form onSubmit={handleAddMotorista}>
-              <input
-                type="text"
-                placeholder="Nome completo"
-                value={novoMotorista.nomeCompleto}
-                onChange={(e) => setNovoMotorista({...novoMotorista, nomeCompleto: e.target.value})}
-                required
-              />
-              <input
-                type="email"
-                placeholder="Gmail"
-                value={novoMotorista.gmail}
-                onChange={(e) => setNovoMotorista({...novoMotorista, gmail: e.target.value})}
-                required
-              />
-              <input
-                type="text"
-                placeholder="CPF"
-                value={novoMotorista.cpf}
-                onChange={(e) => setNovoMotorista({...novoMotorista, cpf: e.target.value})}
-                required
-              />
-              <input
-                type="password"
-                placeholder="Senha"
-                value={novoMotorista.senha}
-                onChange={(e) => setNovoMotorista({...novoMotorista, senha: e.target.value})}
-                required
-              />
-              <input
-                type="text"
-                placeholder="CNH"
-                value={novoMotorista.cnh}
-                onChange={(e) => setNovoMotorista({...novoMotorista, cnh: e.target.value})}
-                required
-              />
-              <input
-                type="text"
-                placeholder="Placa da Van"
-                value={novoMotorista.placaVan}
-                onChange={(e) => setNovoMotorista({...novoMotorista, placaVan: e.target.value})}
-                required
-              />
-              <input
-                type="text"
-                placeholder="Modelo da Van"
-                value={novoMotorista.modeloVan}
-                onChange={(e) => setNovoMotorista({...novoMotorista, modeloVan: e.target.value})}
-                required
-              />
-              <div className="modal-actions">
-                <button type="button" onClick={() => setShowModal(false)} className="cancel-btn">Cancelar</button>
-                <button type="submit" className="submit-btn">Adicionar</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+
     </div>
   )
 }
