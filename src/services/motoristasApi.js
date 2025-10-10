@@ -42,4 +42,34 @@ export const motoristasApi = {
     })
     return response.json()
   },
+
+  editar: async (id, motorista) => {
+    const response = await fetch(`${API_BASE_URL}/cadastro/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(motorista),
+    })
+    
+    if (!response.ok) {
+      const data = await response.json()
+      throw new Error(data.mensagem || 'Erro ao editar motorista')
+    }
+    
+    return response.json()
+  },
+
+  deletar: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/cadastro/${id}`, {
+      method: 'DELETE',
+    })
+    
+    if (!response.ok) {
+      const data = await response.json()
+      throw new Error(data.mensagem || 'Erro ao deletar motorista')
+    }
+    
+    return response.json()
+  },
 }
