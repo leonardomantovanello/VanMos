@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://vanmosapi.onrender.com/api'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api'
 
 export const motoristasApi = {
   listar: async () => {
