@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8080/api/login';
+const API_BASE_URL = 'https://vanmosapi.onrender.com/api/login';
 
 export const loginApi = {
   // Fazer login
