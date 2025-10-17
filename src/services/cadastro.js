@@ -1,4 +1,4 @@
-const API_BASE_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:8080/api'}/cadastro`;
+const API_BASE_URL = `${import.meta.env.VITE_API_URL || 'https://vanmosapi.onrender.com/api'}/cadastro`;
 
 export const cadastroApi = {
   // Criar novo cadastro
@@ -47,7 +47,7 @@ export const cadastroApi = {
 
 export async function cadastrarUsuario(dadosCadastro) {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080/api'}/cadastro`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://vanmosapi.onrender.com/api'}/cadastro`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(dadosCadastro)
