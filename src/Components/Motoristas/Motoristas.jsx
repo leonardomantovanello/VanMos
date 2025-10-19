@@ -2,60 +2,12 @@ import React, { useState, useEffect } from 'react'
 import './Motoristas.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faVanShuttle, faStar, faPhone, faMap, faSchool, faFilter } from '@fortawesome/free-solid-svg-icons'
+import { motoristasApi } from '../../services/motoristasApi'
 
 
 
 const Motoristas = () => {
-    const [allMotoristas] = useState([
-        {
-            id: 1,
-            nome: 'João Silva',
-            telefone: '(11) 99999-1111',
-            van: 'Mercedes Sprinter - Placa ABC-1234',
-            foto: <FontAwesomeIcon icon={faUser} style={{color: "#b38fc6"}}/>,
-            avaliacao: 4.8,
-            experiencia: '5 anos',
-            rota: 'Centro - Zona Sul',
-            localizacao: 'São Paulo - SP',
-            escola: 'Colégio São Paulo'
-        },
-        {
-            id: 2,
-            nome: 'Maria Santos',
-            telefone: '(11) 99999-2222',
-            van: 'Iveco Daily - Placa DEF-5678',
-            foto: <FontAwesomeIcon icon={faUser} style={{color: "#b38fc6"}}/>,
-            avaliacao: 4.9,
-            experiencia: '3 anos',
-            rota: 'Zona Norte - Centro',
-            localizacao: 'Guarulhos - SP',
-            escola: 'Escola Municipal Norte'
-        },
-        {
-            id: 3,
-            nome: 'Carlos Oliveira',
-            telefone: '(11) 99999-3333',
-            van: 'Fiat Ducato - Placa GHI-9012',
-            foto: <FontAwesomeIcon icon={faUser} style={{color: "#b38fc6"}}/>,
-            avaliacao: 4.7,
-            experiencia: '7 anos',
-            rota: 'Zona Leste - Centro',
-            localizacao: 'Santo André - SP',
-            escola: 'Colégio Leste'
-        },
-        {
-            id: 4,
-            nome: 'Ana Costa',
-            telefone: '(11) 99999-4444',
-            van: 'Renault Master - Placa JKL-3456',
-            foto: <FontAwesomeIcon icon={faUser} style={{color: "#b38fc6"}}/>,
-            avaliacao: 4.9,
-            experiencia: '4 anos',
-            rota: 'Zona Oeste - Centro',
-            localizacao: 'São Paulo - SP',
-            escola: 'Colégio São Paulo'
-        }
-    ])
+    const [allMotoristas, setAllMotoristas] = useState([])
     
     const [filtroLocalizacao, setFiltroLocalizacao] = useState('')
     const [filtroEscola, setFiltroEscola] = useState('')
@@ -65,7 +17,18 @@ const Motoristas = () => {
 
     useEffect(() => {
         setIsVisible(true)
+        carregarMotoristasAtivos()
     }, [])
+
+    const carregarMotoristasAtivos = async () => {
+        try {
+            const data = await motoristasApi.listar()
+            const motoristasAtivos = data.filter(motorista => motorista.ativo)
+            setAllMotoristas(motoristasAtivos)
+        } catch (error) {
+            console.error('Erro ao carregar motoristas:', error)
+        }
+    }
     
     useEffect(() => {
         let motoristasFiltrados = allMotoristas
@@ -144,31 +107,24 @@ const Motoristas = () => {
                                     <span className="foto-emoji">{motorista.foto}</span>
                                 </div>
                                 <div className="motorista-info">
-                                    <h3>{motorista.nome}</h3>
+                                    <h3>{motorista.nome || motorista.nomeCompleto}</h3>
                                     <div className="info-item">
                                         <span className="icon"><FontAwesomeIcon icon={faPhone} style={{color: "#9243bdff",}} /></span>
-                                        <span>{motorista.telefone}</span>
+                                        <span>{motorista.email || motorista.gmail}</span>
                                     </div>
                                     <div className="info-item">
-                                        <span className="icon"><FontAwesomeIcon icon={faVanShuttle} style={{color: "#9243bdff"}} /></span>
-                                        <span>{motorista.van}</span>
-                                    </div>
-                                    <div className="info-item">
-                                        <span className="icon"><FontAwesomeIcon icon={faMap} style={{color: "#9243bdff",}} /></span>
-                                        <span>{motorista.rota}</span>
+                                        <span className="icon"><FontAwesomeIcon icon={faUser} style={{color: "#9243bdff"}} /></span>
+                                        <span>CPF: {motorista.cpf ? motorista.cpf.slice(0, -2) + '**' : 'Não informado'}</span>
                                     </div>
                                     <div className="info-item">
                                         <span className="icon"><FontAwesomeIcon icon={faMap} style={{color: "#9243bdff",}} /></span>
-                                        <span>{motorista.localizacao}</span>
+                                        <span>Idade: {motorista.idade} anos</span>
                                     </div>
                                     <div className="info-item">
-                                        <span className="icon"><FontAwesomeIcon icon={faSchool} style={{color: "#9243bdff",}} /></span>
-                                        <span>{motorista.escola}</span>
+                                        <span className="icon"><FontAwesomeIcon icon={faUser} style={{color: "#9243bdff",}} /></span>
+                                        <span>Gênero: {motorista.genero || 'Não informado'}</span>
                                     </div>
-                                    <div className="info-item">
-                                        <span className="icon"><FontAwesomeIcon icon={faStar} style={{color: "#9243bdff",}} /></span>
-                                        <span>{motorista.avaliacao} • {motorista.experiencia}</span>
-                                    </div>
+
                                 </div>
                             </div>
                         ))}
