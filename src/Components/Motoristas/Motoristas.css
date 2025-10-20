@@ -1,7 +1,7 @@
 /* Motoristas Container */
 .motoristas-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #200026 0%, #1a001a 50%, #0d0013 100%);
+    background: #000000 !important;
     color: #ffffff;
 }
 
@@ -20,6 +20,10 @@
     text-align: center;
     z-index: 2;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .hero-title {
@@ -30,6 +34,7 @@
     opacity: 0;
     transform: translateY(30px);
     animation: fadeInUp 1s ease forwards;
+    text-align: center;
 }
 
 .highlight {

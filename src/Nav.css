@@ -76,6 +76,7 @@
     align-items: flex-start;
     text-decoration: none;
     transition: transform 0.3s ease;
+    margin-left: 32px;
 }
 
 

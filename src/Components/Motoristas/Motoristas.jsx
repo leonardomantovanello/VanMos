@@ -55,9 +55,7 @@ const Motoristas = () => {
                     <h1 className="hero-title">
                         Nossos <span className="highlight">Motoristas</span>
                     </h1>
-                    <p className="hero-description">
-                        Conheça nossa equipe de motoristas qualificados e experientes
-                    </p>
+
                 </div>
                 
                 <div className="bg-elements">
