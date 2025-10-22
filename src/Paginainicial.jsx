@@ -27,39 +27,13 @@ const PaginaInicial = () => {
             {/* Hero Section */}
             <section className={`hero-section ${isVisible ? 'fade-in' : ''}`}>
                 <div className="hero-content">
-                    <div className="hero-text">
-                        <h1 className="hero-title">
-                            Transporte
-                            <span className="highlight"> Inteligente</span>
-                            <br />
-                            Para Sua
-                            <span className="highlight"> Cidade</span>
-                        </h1>
-                        <p className="hero-description">
-                            Conectamos você ao melhor transporte urbano com tecnologia de ponta, 
-                            segurança garantida e conforto excepcional.
-                        </p>
-                        <div className="hero-actions">
-                            <Link to="/motoristas" className="cta-btn pulse-btn">
-                                <FontAwesomeIcon icon={faPeopleGroup} style={{color: "#B197FC",}} /> 
-                                <span>Ver Motoristas</span>
-                                <FontAwesomeIcon icon={faArrowRight} className="arrow-icon" />
-                            </Link>
-
-                        </div>
-                    </div>
-                    <div className="hero-visual">
-                        <div className="floating-card interactive-card" 
-                             onMouseEnter={() => setHoveredCard('main')}
-                             onMouseLeave={() => setHoveredCard(null)}>
-                            <div className="card-icon pulse-icon">
-                                <FontAwesomeIcon icon={faVanShuttle} style={{color: "#6d1a6d"}} />
-                            </div>
-                            <h3>VanMos Transport</h3>
-                            <p>Sua jornada começa aqui</p>
-                            <div className="card-glow"></div>
-                        </div>
-
+                    <h1 className="vanmos-title">VANMOS</h1>
+                    <div className="hero-actions">
+                        <Link to="/motoristas" className="cta-btn pulse-btn">
+                            <FontAwesomeIcon icon={faPeopleGroup} style={{color: "#B197FC",}} /> 
+                            <span>Ver Motoristas</span>
+                            <FontAwesomeIcon icon={faArrowRight} className="arrow-icon" />
+                        </Link>
                     </div>
                 </div>
                 

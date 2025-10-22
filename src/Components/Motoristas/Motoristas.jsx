@@ -55,49 +55,34 @@ const Motoristas = () => {
                     <h1 className="hero-title">
                         Nossos <span className="highlight">Motoristas</span>
                     </h1>
-
-                </div>
-                
-                <div className="bg-elements">
-                    <div className="floating-shape shape-1"></div>
-                    <div className="floating-shape shape-2"></div>
-                    <div className="floating-shape shape-3"></div>
-                </div>
-            </section>
-
-            <section className="motoristas-grid-section">
-                <div className="container">
-                    <div className="filters-section">
-                        <h2 className="filters-title">
-                            <FontAwesomeIcon icon={faFilter} /> Filtrar Motoristas
-                        </h2>
-                        <div className="filters-grid">
-                            <div className="filter-group">
-                                <label htmlFor="localizacao">
-                                    <FontAwesomeIcon icon={faMap} /> Localização
-                                </label>
-                                <input
-                                    type="text"
-                                    id="localizacao"
-                                    placeholder="Digite a localização..."
-                                    value={filtroLocalizacao}
-                                    onChange={(e) => setFiltroLocalizacao(e.target.value)}
-                                />
-                            </div>
-                            <div className="filter-group">
-                                <label htmlFor="escola">
-                                    <FontAwesomeIcon icon={faSchool} /> Escola
-                                </label>
-                                <input
-                                    type="text"
-                                    id="escola"
-                                    placeholder="Digite o nome da escola..."
-                                    value={filtroEscola}
-                                    onChange={(e) => setFiltroEscola(e.target.value)}
-                                />
-                            </div>
+                    
+                    <div className="filters-inputs">
+                        <div className="filter-group">
+                            <label htmlFor="localizacao">
+                                <FontAwesomeIcon icon={faMap} /> Localização
+                            </label>
+                            <input
+                                type="text"
+                                id="localizacao"
+                                placeholder="Digite a localização..."
+                                value={filtroLocalizacao}
+                                onChange={(e) => setFiltroLocalizacao(e.target.value)}
+                            />
+                        </div>
+                        <div className="filter-group">
+                            <label htmlFor="escola">
+                                <FontAwesomeIcon icon={faSchool} /> Escola
+                            </label>
+                            <input
+                                type="text"
+                                id="escola"
+                                placeholder="Digite o nome da escola..."
+                                value={filtroEscola}
+                                onChange={(e) => setFiltroEscola(e.target.value)}
+                            />
                         </div>
                     </div>
+                    
                     <div className="motoristas-grid">
                         {motoristas.map(motorista => (
                             <div key={motorista.id} className="motorista-card">
@@ -127,6 +112,12 @@ const Motoristas = () => {
                             </div>
                         ))}
                     </div>
+                </div>
+                
+                <div className="bg-elements">
+                    <div className="floating-shape shape-1"></div>
+                    <div className="floating-shape shape-2"></div>
+                    <div className="floating-shape shape-3"></div>
                 </div>
             </section>
         </div>

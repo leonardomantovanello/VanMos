@@ -50,9 +50,10 @@ const AdminLogin = () => {
   return (
     <div className="admin-login-container">
       <div className="admin-login-background">
-        <div className="bg-circle circle-1"></div>
-        <div className="bg-circle circle-2"></div>
-        <div className="bg-circle circle-3"></div>
+        <div className="tech-line line-1"></div>
+        <div className="tech-line line-2"></div>
+        <div className="tech-line line-3"></div>
+        <div className="tech-line line-4"></div>
       </div>
       
       <button 

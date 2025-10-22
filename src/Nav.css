@@ -20,6 +20,8 @@
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(76, 0, 76, 0.12) 50%, rgba(32, 0, 38, 0.15) 100%);
     backdrop-filter: blur(25px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;

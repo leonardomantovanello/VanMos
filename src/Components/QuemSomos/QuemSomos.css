@@ -36,6 +36,7 @@
 }
 
 .hero-title {
+    font-family: "akira";
     font-size: 3.5rem;
     font-weight: 900;
     color: #ffffff;
@@ -45,6 +46,7 @@
 }
 
 .hero-title .highlight {
+    font-family: "akira";
     background: linear-gradient(135deg, #b38fc6 0%, #e6ccff 50%, #ffffff 100%);
     background-clip: text;
     -webkit-background-clip: text;
@@ -123,9 +125,7 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-     font-family: "pack";
-   
-   
+    font-family: "akira";
 }
 
 
