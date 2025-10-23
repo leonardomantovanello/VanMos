@@ -25,14 +25,14 @@
 .bg-circle {
   position: absolute;
   border-radius: 50%;
-  background: linear-gradient(135deg, #9300d3, #ff1493);
+  background: linear-gradient(135deg, rgba(147, 0, 211, 0.3), rgba(255, 20, 147, 0.3));
   animation: float 6s ease-in-out infinite;
-  box-shadow: 0 0 20px rgba(147, 0, 211, 0.6), 0 0 40px rgba(255, 20, 147, 0.4);
+  box-shadow: 0 0 10px rgba(147, 0, 211, 0.2), 0 0 20px rgba(255, 20, 147, 0.1);
 }
 
 .circle-1 {
-  width: 300px;
-  height: 300px;
+  width: 80px;
+  height: 80px;
   top: 10%;
   left: 10%;
   animation-delay: 0s;
@@ -40,16 +40,16 @@
 }
 
 .circle-2 {
-  width: 200px;
-  height: 200px;
+  width: 60px;
+  height: 60px;
   top: 60%;
   right: 10%;
   animation-delay: 2s;
 }
 
 .circle-3 {
-  width: 150px;
-  height: 150px;
+  width: 50px;
+  height: 50px;
   bottom: 20%;
   left: 15%;
   animation-delay: 4s;
@@ -129,7 +129,8 @@
 }
 
 .login-title {
-  font-size: 2.2rem;
+  font-family: 'Akira', sans-serif;
+  font-size: 1.8rem;
   font-weight: 800;
   background: linear-gradient(135deg, #ffffff 0%, #b38fc6 100%);
   background-clip: text;
@@ -387,7 +388,7 @@
   }
   
   .login-title {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
   
   .form-options {

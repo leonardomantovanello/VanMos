@@ -42,6 +42,7 @@ const PaginaInicial = () => {
                     <div className="floating-shape shape-1"></div>
                     <div className="floating-shape shape-2"></div>
                     <div className="floating-shape shape-3"></div>
+
                     <div className="cursor-glow" 
                          style={{
                              left: mousePosition.x - 100,

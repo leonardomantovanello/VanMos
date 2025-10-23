@@ -83,11 +83,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div className="login-background">
-        <div className="bg-circle circle-1" style={{background: 'linear-gradient(135deg, #9300d3, #ff1493)'}}></div>
-        <div className="bg-circle circle-2" style={{background: 'linear-gradient(135deg, #9300d3, #ff1493)'}}></div>
-        <div className="bg-circle circle-3" style={{background: 'linear-gradient(135deg, #9300d3, #ff1493)'}}></div>
-      </div>
+
       
       <button 
         type="button" 

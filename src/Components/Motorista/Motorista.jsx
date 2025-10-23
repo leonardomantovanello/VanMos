@@ -64,6 +64,7 @@ const Motorista = () => {
         { id: 5, x: 85, y: 60, size: 80, speedX: 0.3, speedY: -0.4 }
     ])
 
+
     useEffect(() => {
         // Obter dados do usuário logado
         const loggedUser = JSON.parse(localStorage.getItem('vanmos_logged_user') || '{}')
@@ -107,6 +108,8 @@ const Motorista = () => {
 
         const interval = setInterval(animateElements, 50)
         return () => clearInterval(interval)
+
+
     }, [navigate])
 
     const handleLogout = () => {
