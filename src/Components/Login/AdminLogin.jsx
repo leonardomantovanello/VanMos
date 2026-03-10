@@ -22,7 +22,7 @@ const AdminLogin = () => {
     e.preventDefault()
     
     try {
-      const response = await fetch('https://vanmosapi.onrender.com/api/login-admin', {
+      const response = await fetch('http://localhost:8080/api/login-admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

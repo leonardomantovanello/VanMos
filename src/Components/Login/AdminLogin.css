@@ -165,6 +165,90 @@
   gap: 24px;
 }
 
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.input-group input {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(179, 143, 198, 0.3);
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #b38fc6;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(179, 143, 198, 0.1);
+}
+
+.input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 90px;
+}
+
+.show-password-btn {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #b38fc6;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: color 0.3s ease;
+}
+
+.show-password-btn:hover {
+  color: #ffffff;
+}
+
+.voltar-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(179, 143, 198, 0.1);
+  border: 1px solid rgba(179, 143, 198, 0.3);
+  border-radius: 12px;
+  color: #ffffff;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.voltar-btn:hover {
+  background: rgba(179, 143, 198, 0.2);
+  border-color: #b38fc6;
+  transform: translateX(-4px);
+}
+
 .admin-login-btn {
   padding: 16px 24px;
   background: linear-gradient(135deg, #6d1a6d 0%, #4b004b 100%);
