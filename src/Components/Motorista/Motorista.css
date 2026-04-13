@@ -1205,6 +1205,9 @@
 /* Settings Button */
 .settings-container {
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .settings-btn {
@@ -1221,6 +1224,23 @@
 .settings-btn:hover {
     background: rgba(255, 255, 255, 0.1);
     transform: rotate(90deg);
+}
+
+.perfil-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.perfil-btn:hover {
+    background: rgba(179, 143, 198, 0.15);
+    color: #b38fc6;
+    transform: scale(1.15);
 }
 
 .settings-dropdown {

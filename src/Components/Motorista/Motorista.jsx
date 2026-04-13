@@ -4,7 +4,7 @@
     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
     import {faChartSimple, faSun, faGear, faUsers, faMap, faUser, faLocationPin, faClock, 
     faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faCheck, faPhone, faMapPin, faTrashCan, 
-    faPlus, faArrowsUpDown, faPencil, faMapLocation, faArrowRight} 
+    faPlus, faArrowsUpDown, faPencil, faMapLocation, faArrowRight, faIdCard} 
     from '@fortawesome/free-solid-svg-icons'
     import './Motorista.css'
     import { buscarEscolasPorNome } from '../../services/googlePlaces'
@@ -56,6 +56,9 @@ const Motorista = () => {
     const [selectedPassageiro, setSelectedPassageiro] = useState(null)
     const [showEditPassageiro, setShowEditPassageiro] = useState(false)
     const [editingPassageiro, setEditingPassageiro] = useState(null)
+    const [showPerfil, setShowPerfil] = useState(false)
+    const [loggedUser, setLoggedUser] = useState({})
+    const [editingPerfil, setEditingPerfil] = useState(false)
     const [bgElements, setBgElements] = useState([
         { id: 1, x: 5, y: 10, size: 300, speedX: 0.5, speedY: 0.3 },
         { id: 2, x: 80, y: 60, size: 200, speedX: -0.3, speedY: 0.4 },
@@ -72,7 +75,7 @@ const Motorista = () => {
             navigate('/login')
             return
         }
-        
+        setLoggedUser(loggedUser)
         const nomes = loggedUser.nome.trim().split(' ')
         const primeiroNome = nomes[0]
         const ultimoNome = nomes.length > 1 ? nomes[nomes.length - 1] : ''
@@ -366,6 +369,13 @@ const Motorista = () => {
                     </nav>
                     
                     <div className="settings-container">
+                        <button
+                            className="perfil-btn"
+                            onClick={() => setShowPerfil(true)}
+                            title="Meu Perfil"
+                        >
+                            <FontAwesomeIcon icon={faUser} />
+                        </button>
                         <button 
                             className="settings-btn"
                             onClick={() => setIsSettingsOpen(!isSettingsOpen)}
@@ -391,6 +401,67 @@ const Motorista = () => {
                     </div>
                 </div>
             </header>
+
+            {showPerfil && (
+                <div className="modal-overlay">
+                    <div className="modal modal-flexible">
+                        <h3><FontAwesomeIcon icon={faIdCard} style={{color: "#b38fc6"}} /> Meu Perfil</h3>
+                        {editingPerfil ? (
+                            <form onSubmit={(e) => {
+                                e.preventDefault()
+                                localStorage.setItem('vanmos_logged_user', JSON.stringify(loggedUser))
+                                setEditingPerfil(false)
+                            }}>
+                                <input type="text" placeholder="Nome" value={loggedUser.nome || ''} onChange={(e) => setLoggedUser({...loggedUser, nome: e.target.value})} required />
+                                <input type="email" placeholder="Email" value={loggedUser.email || loggedUser.gmail || ''} onChange={(e) => setLoggedUser({...loggedUser, email: e.target.value})} />
+                                <input type="tel" placeholder="Telefone" value={loggedUser.telefone || ''} onChange={(e) => setLoggedUser({...loggedUser, telefone: e.target.value})} />
+                                <input type="number" placeholder="Idade" value={loggedUser.idade || ''} onChange={(e) => setLoggedUser({...loggedUser, idade: e.target.value})} />
+                                <div className="modal-actions">
+                                    <button type="submit" className="confirm-btn">Salvar</button>
+                                    <button type="button" className="cancel-btn" onClick={() => setEditingPerfil(false)}>Cancelar</button>
+                                </div>
+                            </form>
+                        ) : (
+                            <>
+                                <div className="passageiro-details-modal">
+                                    <div className="detail-row">
+                                        <span className="detail-label">Nome</span>
+                                        <span className="detail-value">{loggedUser.nome}</span>
+                                    </div>
+                                    <div className="detail-row">
+                                        <span className="detail-label">Email</span>
+                                        <span className="detail-value">{loggedUser.email || loggedUser.gmail || 'Não informado'}</span>
+                                    </div>
+                                    {loggedUser.cpf && (
+                                        <div className="detail-row">
+                                            <span className="detail-label">CPF</span>
+                                            <span className="detail-value">{loggedUser.cpf.slice(0, -2) + '**'}</span>
+                                        </div>
+                                    )}
+                                    {loggedUser.telefone && (
+                                        <div className="detail-row">
+                                            <span className="detail-label">Telefone</span>
+                                            <span className="detail-value">{loggedUser.telefone}</span>
+                                        </div>
+                                    )}
+                                    {loggedUser.idade && (
+                                        <div className="detail-row">
+                                            <span className="detail-label">Idade</span>
+                                            <span className="detail-value">{loggedUser.idade} anos</span>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="modal-actions">
+                                    <button className="confirm-btn" onClick={() => setEditingPerfil(true)}>
+                                        <FontAwesomeIcon icon={faPencil} /> Editar
+                                    </button>
+                                    <button className="cancel-btn" onClick={() => setShowPerfil(false)}>Fechar</button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
 
             {/* Content */}
             <main className="motorista-content">
