@@ -25,10 +25,7 @@ const Register = () => {
   }
 
   const formatCPF = (value) => {
-    // Remove tudo que não é dígito
     const digits = value.replace(/\D/g, '')
-    
-    // Aplica a máscara XXX.XXX.XXX-XX
     return digits
       .replace(/(\d{3})(\d)/, '$1.$2')
       .replace(/(\d{3})(\d)/, '$1.$2')
@@ -92,7 +89,6 @@ const Register = () => {
       alert('A senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número')
       return
     }
-    // Remove máscara do CPF antes de enviar e envia nome conforme backend
     const cadastro = {
       nome: formData.nome,
       idade: formData.idade,
@@ -234,7 +230,7 @@ const Register = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 tabIndex="-1"
               >
-                {showPassword ? "👁️" : "👁️‍🗨️"}
+                {showPassword ? "👁️" : "👁️🗨️"}
               </button>
             </div>
             <div className="password-hint">

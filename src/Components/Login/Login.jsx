@@ -64,20 +64,11 @@ const Login = () => {
     const emailOuCpf = /^\d/.test(formData.email_ou_cpf) ? formData.email_ou_cpf.replace(/\D/g, '') : formData.email_ou_cpf;
     const resultado = await fazerLogin(emailOuCpf, formData.senha, formData.lembrar_me);
       if (resultado.sucesso) {
-        const motoristas = JSON.parse(localStorage.getItem('motoristas_cadastrados') || '[]');
-        const motorista = motoristas.find(m => m.email === emailOuCpf || m.cpf === emailOuCpf);
-        
-        if (motorista && !motorista.ativo) {
-          alert('Sua conta está inativa. Entre em contato com o administrador.');
-          return;
-        }
-        
-        localStorage.setItem('vanmos_logged_user', JSON.stringify(resultado.usuario || { nome: formData.email_ou_cpf }));
         alert('Login realizado com sucesso!');
         navigate('/motorista');
       } else {
         alert(resultado.mensagem);
-    }
+      }
   }
   
 
@@ -139,7 +130,7 @@ const Login = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 tabIndex="-1"
               >
-                {showPassword ? "👁️" : "👁️‍🗨️"}
+                {showPassword ? "👁️" : "👁️🗨️"}
               </button>
             </div>
           </div>
