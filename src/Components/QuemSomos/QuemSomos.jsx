@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { 
-    faVanShuttle, faUser, faMapLocation, faShield, faBrain, faLeaf, faMoneyBill, faClock, 
-    faUsers, faGear, faPalette, faChartSimple
+import {
+    faVanShuttle, faUser, faMapLocation, faShield, faBrain, faLeaf, faMoneyBill, faClock,
+    faUsers
 } from '@fortawesome/free-solid-svg-icons'
 import './QuemSomos.css'
 

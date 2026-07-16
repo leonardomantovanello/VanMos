@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBolt, faMoneyBillTrendUp, faShield, faVanShuttle, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { faBolt, faMoneyBillTrendUp, faShield, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { faPeopleGroup } from '@fortawesome/free-solid-svg-icons'
 
 import './Paginainicial.css'
@@ -9,7 +9,6 @@ import './Paginainicial.css'
 const PaginaInicial = () => {
     const [isVisible, setIsVisible] = useState(false)
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-    const [hoveredCard, setHoveredCard] = useState(null)
 
     useEffect(() => {
         setIsVisible(true)
@@ -56,9 +55,7 @@ const PaginaInicial = () => {
                 <div className="container">
                     <h2 className="section-title">Por que escolher VanMos?</h2>
                     <div className="features-grid">
-                        <div className="feature-card interactive-feature" 
-                             onMouseEnter={() => setHoveredCard('speed')}
-                             onMouseLeave={() => setHoveredCard(null)}>
+                        <div className="feature-card interactive-feature">
                             <div className="feature-icon bounce-icon">
                                 <FontAwesomeIcon icon={faBolt} style={{color: "#913b91ff"}} />
                             </div>
@@ -68,9 +65,7 @@ const PaginaInicial = () => {
                                 <div className="progress-bar" style={{width: '95%'}}></div>
                             </div>
                         </div>
-                        <div className="feature-card interactive-feature" 
-                             onMouseEnter={() => setHoveredCard('security')}
-                             onMouseLeave={() => setHoveredCard(null)}>
+                        <div className="feature-card interactive-feature">
                             <div className="feature-icon bounce-icon">
                                 <FontAwesomeIcon icon={faShield} style={{color: "#913b91ff"}} />
                             </div>
@@ -80,9 +75,7 @@ const PaginaInicial = () => {
                                 <div className="progress-bar" style={{width: '98%'}}></div>
                             </div>
                         </div>
-                        <div className="feature-card interactive-feature" 
-                             onMouseEnter={() => setHoveredCard('price')}
-                             onMouseLeave={() => setHoveredCard(null)}>
+                        <div className="feature-card interactive-feature">
                             <div className="feature-icon bounce-icon">
                                 <FontAwesomeIcon icon={faMoneyBillTrendUp} style={{color: "#913b91ff"}} />
                             </div>

@@ -4,9 +4,9 @@
     import { useAuth } from '../../contexts/AuthContext'
     import { addMockUser } from '../../utils/mockUsersStore'
     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-    import {faChartSimple, faSun, faGear, faUsers, faMap, faUser, faLocationPin, faClock, 
-    faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faCheck, faPhone, faMapPin, faTrashCan, 
-    faPlus, faArrowsUpDown, faPencil, faMapLocation, faArrowRight, faIdCard} 
+    import {faChartSimple, faSun, faGear, faUsers, faMap, faUser, faLocationPin, faClock,
+    faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faCheck, faPhone, faMapPin, faTrashCan,
+    faPlus, faArrowsUpDown, faPencil, faMapLocation, faIdCard}
     from '@fortawesome/free-solid-svg-icons'
     import './Motorista.css'
     import { buscarEscolasPorNome } from '../../services/googlePlaces'

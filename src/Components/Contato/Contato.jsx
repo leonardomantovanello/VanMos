@@ -60,7 +60,7 @@ const Contato = () => {
             setToastMessage('Mensagem enviada com sucesso! Entraremos em contato em breve.')
             setToastType('success')
             setShowToast(true)
-        } catch (error) {
+        } catch {
             setToastMessage('Erro ao enviar mensagem. Tente novamente.')
             setToastType('error')
             setShowToast(true)
