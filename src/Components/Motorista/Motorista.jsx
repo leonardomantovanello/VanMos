@@ -372,12 +372,16 @@ const Motorista = () => {
                             className="perfil-btn"
                             onClick={() => setShowPerfil(true)}
                             title="Meu Perfil"
+                            aria-label="Meu Perfil"
                         >
                             <FontAwesomeIcon icon={faUser} />
                         </button>
-                        <button 
+                        <button
                             className="settings-btn"
                             onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                            aria-label="Configurações"
+                            aria-expanded={isSettingsOpen}
+                            aria-haspopup="true"
                         >
                             <FontAwesomeIcon icon={faGear} style={{color: "#B197FC"}} />
                         </button>
@@ -403,8 +407,8 @@ const Motorista = () => {
 
             {showPerfil && (
                 <div className="modal-overlay">
-                    <div className="modal modal-flexible">
-                        <h3><FontAwesomeIcon icon={faIdCard} style={{color: "#b38fc6"}} /> Meu Perfil</h3>
+                    <div className="modal modal-flexible" role="dialog" aria-modal="true" aria-labelledby="modal-title-perfil">
+                        <h3 id="modal-title-perfil"><FontAwesomeIcon icon={faIdCard} style={{color: "#b38fc6"}} /> Meu Perfil</h3>
                         {editingPerfil ? (
                             <form onSubmit={(e) => {
                                 e.preventDefault()
@@ -644,8 +648,8 @@ const Motorista = () => {
 
                         {showAddPassenger && (
                             <div className="modal-overlay">
-                                <div className="modal">
-                                    <h3>Adicionar Novo Passageiro</h3>
+                                <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-add-passageiro">
+                                    <h3 id="modal-title-add-passageiro">Adicionar Novo Passageiro</h3>
                                     <form onSubmit={handleAddPassenger}>
                                         <input
                                             type="text"
@@ -727,8 +731,8 @@ const Motorista = () => {
 
                         {showPassageiroDetails && selectedPassageiro && (
                             <div className="modal-overlay">
-                                <div className="modal modal-flexible">
-                                    <h3>Detalhes do Passageiro</h3>
+                                <div className="modal modal-flexible" role="dialog" aria-modal="true" aria-labelledby="modal-title-detalhes-passageiro">
+                                    <h3 id="modal-title-detalhes-passageiro">Detalhes do Passageiro</h3>
                                     <div className="passageiro-details-modal">
                                         <div className="detail-row">
                                             <span className="detail-label">Nome:</span>
@@ -791,8 +795,8 @@ const Motorista = () => {
 
                         {showEditPassageiro && editingPassageiro && (
                             <div className="modal-overlay">
-                                <div className="modal modal-flexible">
-                                    <h3>Editar Passageiro</h3>
+                                <div className="modal modal-flexible" role="dialog" aria-modal="true" aria-labelledby="modal-title-edit-passageiro">
+                                    <h3 id="modal-title-edit-passageiro">Editar Passageiro</h3>
                                     <form onSubmit={handleUpdatePassageiro}>
                                         <input
                                             type="text"
@@ -1000,8 +1004,8 @@ const Motorista = () => {
 
                         {showAddRota && (
                             <div className="modal-overlay">
-                                <div className="modal">
-                                    <h3>Adicionar Nova Rota</h3>
+                                <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-add-rota">
+                                    <h3 id="modal-title-add-rota">Adicionar Nova Rota</h3>
                                     <form onSubmit={handleAddRota}>
                                         <input
                                             type="text"
@@ -1044,8 +1048,8 @@ const Motorista = () => {
 
                         {showEditRota && editingRota && (
                             <div className="modal-overlay">
-                                <div className="modal">
-                                    <h3>Editar Rota</h3>
+                                <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-edit-rota">
+                                    <h3 id="modal-title-edit-rota">Editar Rota</h3>
                                     <form onSubmit={handleUpdateRota}>
                                         <input
                                             type="text"
@@ -1091,8 +1095,8 @@ const Motorista = () => {
 
                         {showAddEscola && (
                             <div className="modal-overlay">
-                                <div className="modal escola-modal">
-                                    <h3>Adicionar Nova Escola</h3>
+                                <div className="modal escola-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-add-escola">
+                                    <h3 id="modal-title-add-escola">Adicionar Nova Escola</h3>
                                     <form onSubmit={handleAddEscola}>
                                         <div className="search-container">
                                             <input

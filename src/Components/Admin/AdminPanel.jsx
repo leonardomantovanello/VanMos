@@ -203,8 +203,8 @@ const AdminPanel = () => {
 
       {showEditModal && (
         <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>Editar Motorista</h3>
+          <div className="modal-content" role="dialog" aria-modal="true" aria-labelledby="edit-motorista-title">
+            <h3 id="edit-motorista-title">Editar Motorista</h3>
             <form onSubmit={handleSaveEdit}>
               <input
                 type="text"

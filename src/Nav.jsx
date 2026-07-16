@@ -13,9 +13,11 @@ const Nav = () => {
     return (
         <>
             <header className="header">
-                <button 
+                <button
                     className="hamburger-btn"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+                    aria-expanded={isMenuOpen}
                 >
                     <FontAwesomeIcon icon={faBars} />
                 </button>
@@ -32,9 +34,10 @@ const Nav = () => {
             
             <div className={`sidebar ${isMenuOpen ? 'sidebar-open' : ''}`}>
                 <div className="sidebar-header">
-                    <button 
+                    <button
                         className="close-btn"
                         onClick={() => setIsMenuOpen(false)}
+                        aria-label="Fechar menu"
                     >
                         <FontAwesomeIcon icon={faTimes} />
                     </button>
@@ -52,9 +55,11 @@ const Nav = () => {
                     </Link>
                     
                     <div className="settings-container">
-                        <button 
+                        <button
                             className="settings-btn"
                             onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                            aria-expanded={isSettingsOpen}
+                            aria-haspopup="true"
                         >
                             <FontAwesomeIcon icon={faGear} /> Configurações
                         </button>
