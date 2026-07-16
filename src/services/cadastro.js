@@ -1,66 +1,24 @@
-const API_BASE_URL = `${import.meta.env.VITE_API_URL || 'https://vanmosapi.onrender.com/api'}/cadastro`;
+import { apiRequest } from './apiClient'
+
+const CADASTRO_PATH = '/cadastro'
 
 export const cadastroApi = {
-  // Criar novo cadastro
-  criar: async (cadastro) => {
-    const response = await fetch(API_BASE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(cadastro)
-    });
-    return response.json();
-  },
+  // Cria um novo cadastro de responsável (fica pendente de ativação por um admin).
+  criar: async (cadastro) =>
+    apiRequest(CADASTRO_PATH, { method: 'POST', body: cadastro, throwOnError: false }),
 
-  // Listar todos
-  listar: async () => {
-    const response = await fetch(API_BASE_URL);
-    return response.json();
-  },
+  // ATENÇÃO: GET /api/cadastro agora exige ROLE_ADMIN no backend (ver CadastroController).
+  // Não é usado por nenhum componente hoje — o painel admin usa motoristasApi.listar(),
+  // que já envia o token de admin. Mantido aqui por compatibilidade do service.
+  listar: async () => apiRequest(CADASTRO_PATH, { throwOnError: false }),
 
-  // Buscar por ID
-  buscarPorId: async (id) => {
-    const response = await fetch(`${API_BASE_URL}/${id}`);
-    return response.json();
-  },
+  // ATENÇÃO: exige ser o dono do cadastro (ownership validation no backend), não ROLE_ADMIN.
+  buscarPorId: async (id) => apiRequest(`${CADASTRO_PATH}/${id}`, { throwOnError: false }),
 
-  // Atualizar
-  atualizar: async (id, cadastro) => {
-    const response = await fetch(`${API_BASE_URL}/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(cadastro)
-    });
-    return response.json();
-  },
+  // ATENÇÃO: exige ser o dono do cadastro (ownership validation no backend), não ROLE_ADMIN.
+  atualizar: async (id, cadastro) =>
+    apiRequest(`${CADASTRO_PATH}/${id}`, { method: 'PUT', body: cadastro, throwOnError: false }),
 
-  // Deletar
-  deletar: async (id) => {
-    await fetch(`${API_BASE_URL}/${id}`, {
-      method: 'DELETE'
-    });
-  }
-};
-
-export async function cadastrarUsuario(dadosCadastro) {
-  try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://vanmosapi.onrender.com/api'}/cadastro`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(dadosCadastro)
-    });
-    
-    const data = await response.json();
-    
-    if (response.ok) {
-      return { sucesso: true, data };
-    } else {
-      return { sucesso: false, mensagem: data || 'Erro ao cadastrar usuário' };
-    }
-  } catch (error) {
-    return { sucesso: false, mensagem: 'Erro de conexão com o servidor' };
-  }
+  // ATENÇÃO: exige ser o dono do cadastro (ownership validation no backend), não ROLE_ADMIN.
+  deletar: async (id) => apiRequest(`${CADASTRO_PATH}/${id}`, { method: 'DELETE', throwOnError: false }),
 }

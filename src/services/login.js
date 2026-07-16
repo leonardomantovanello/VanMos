@@ -1,46 +1,34 @@
-const API_BASE_URL = `${import.meta.env.VITE_API_URL || 'https://vanmosapi.onrender.com/api'}/login`;
+import { apiRequest } from './apiClient'
+
+const LOGIN_PATH = '/login'
 
 export const loginApi = {
-  // Fazer login
+  // Fazer login. Retorna o corpo padronizado do backend
+  // { sucesso, mensagem, accessToken, refreshToken, usuario } tanto em caso de
+  // sucesso quanto de credenciais inválidas (401) — só lança em falha de rede/servidor.
   login: async (emailOuCpf, senha, lembrarMe = false) => {
     try {
-      const response = await fetch(API_BASE_URL, {
+      return await apiRequest(LOGIN_PATH, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          emailOuCpf: emailOuCpf,
+        body: {
+          emailOuCpf,
           senha: String(senha),
-          lembrarMe: Boolean(lembrarMe)
-        })
-      });
-      
-      const data = await response.json();
-      
-      return {
-        sucesso: data.sucesso || false,
-        mensagem: data.mensagem || 'Erro desconhecido'
-      };
-    } catch (error) {
-      return { sucesso: false, mensagem: 'Erro de conexão com o servidor' };
+          lembrarMe: Boolean(lembrarMe),
+        },
+        throwOnError: false,
+      })
+    } catch {
+      return { sucesso: false, mensagem: 'Erro de conexão com o servidor' }
     }
   },
 
   // Fazer logout
   logout: async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/logout`, {
-        method: 'POST'
-      });
-      return { sucesso: true, mensagem: 'Logout realizado com sucesso!' };
-    } catch (error) {
-      return { sucesso: false, mensagem: 'Erro ao fazer logout' };
+      await apiRequest(`${LOGIN_PATH}/logout`, { method: 'POST', throwOnError: false })
+      return { sucesso: true, mensagem: 'Logout realizado com sucesso!' }
+    } catch {
+      return { sucesso: false, mensagem: 'Erro ao fazer logout' }
     }
-  }
-};
-
-// Função principal para usar no componente
-export async function fazerLogin(emailOuCpf, senha, lembrarMe = false) {
-  return await loginApi.login(emailOuCpf, senha, lembrarMe);
+  },
 }

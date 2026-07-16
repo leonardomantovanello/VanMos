@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://vanmosapi.onrender.com/api'
+import { apiRequest } from './apiClient'
 
 const extrairListaMotoristas = (data) => {
   if (Array.isArray(data)) return data
@@ -7,61 +7,37 @@ const extrairListaMotoristas = (data) => {
     data?.motoristas,
     data?.cadastros,
     data?.usuarios,
-    data?.data,
     data?.dados,
+    data?.data,
   ]
 
   return listasPossiveis.find(Array.isArray) || []
 }
 
-const authHeaders = () => {
-  const token = localStorage.getItem('admin_token')
-  return {
-    'Content-Type': 'application/json',
-    ...(token && { Authorization: `Bearer ${token}` }),
-  }
-}
-
 export const motoristasApi = {
   // Cadastros pendentes/ativos para o painel admin — exige token de ADMIN.
   listar: async () => {
-    const response = await fetch(`${API_BASE_URL}/cadastro`, { headers: authHeaders() })
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data?.mensagem || data?.message || 'Não foi possível carregar os motoristas')
-    }
-
+    const data = await apiRequest('/cadastro', {
+      auth: true,
+      fallbackMessage: 'Não foi possível carregar os motoristas',
+    })
     return extrairListaMotoristas(data)
   },
 
   // Lista pública (sem CPF/e-mail) de motoristas ativos, para a página "Nossos Motoristas".
   listarPublico: async () => {
-    const response = await fetch(`${API_BASE_URL}/motoristas-admin/publico`)
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data?.mensagem || data?.message || 'Não foi possível carregar os motoristas')
-    }
-
+    const data = await apiRequest('/motoristas-admin/publico', {
+      fallbackMessage: 'Não foi possível carregar os motoristas',
+    })
     return extrairListaMotoristas(data)
   },
 
-  adicionar: async (motorista) => {
-    const response = await fetch(`${API_BASE_URL}/cadastro`, {
+  adicionar: async (motorista) =>
+    apiRequest('/cadastro', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(motorista),
-    })
-
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data.mensagem || 'Erro na requisição')
-    }
-
-    return data
-  },
+      body: motorista,
+      fallbackMessage: 'Erro na requisição',
+    }),
 
   ativar: async (id) => {
     return motoristasApi.alterarStatus(id, true)
@@ -77,45 +53,25 @@ export const motoristasApi = {
     }
 
     const acao = ativo ? 'ativar' : 'inativar'
-    const response = await fetch(`${API_BASE_URL}/cadastro/${id}/${acao}`, {
+    return apiRequest(`/cadastro/${id}/${acao}`, {
       method: 'PUT',
-      headers: authHeaders(),
+      auth: true,
+      fallbackMessage: 'Nao foi possivel atualizar o status do motorista',
     })
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data?.mensagem || data?.message || 'Nao foi possivel atualizar o status do motorista')
-    }
-
-    return data
   },
 
-  editar: async (id, motorista) => {
-    const response = await fetch(`${API_BASE_URL}/cadastro/${id}`, {
+  editar: async (id, motorista) =>
+    apiRequest(`/cadastro/${id}`, {
       method: 'PUT',
-      headers: authHeaders(),
-      body: JSON.stringify(motorista),
-    })
+      body: motorista,
+      auth: true,
+      fallbackMessage: 'Erro ao editar motorista',
+    }),
 
-    if (!response.ok) {
-      const data = await response.json()
-      throw new Error(data.mensagem || 'Erro ao editar motorista')
-    }
-
-    return response.json()
-  },
-
-  deletar: async (id) => {
-    const response = await fetch(`${API_BASE_URL}/cadastro/${id}`, {
+  deletar: async (id) =>
+    apiRequest(`/cadastro/${id}`, {
       method: 'DELETE',
-      headers: authHeaders(),
-    })
-
-    if (!response.ok) {
-      const data = await response.json()
-      throw new Error(data.mensagem || 'Erro ao deletar motorista')
-    }
-
-    return response.json()
-  },
+      auth: true,
+      fallbackMessage: 'Erro ao deletar motorista',
+    }),
 }

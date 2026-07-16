@@ -1,22 +1,21 @@
 // services/adminApi.js
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://vanmosapi.onrender.com/api';
+import { apiRequest } from './apiClient'
 
 export const adminApi = {
   login: async (emailOuCpf, senha) => {
-    const response = await fetch(`${API_BASE_URL}/login-admin`, {
+    // throwOnError: false — credenciais inválidas são um resultado de negócio normal
+    // (HTTP 401 com { sucesso: false, mensagem: 'Credenciais inválidas' }), não uma falha.
+    return apiRequest('/login-admin', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email_ou_cpf: emailOuCpf, senha }),
-    });
-    return response.json();
+      body: { email_ou_cpf: emailOuCpf, senha },
+      throwOnError: false,
+    })
   },
 
   logout: async () => {
-    const response = await fetch(`${API_BASE_URL}/login-admin/logout`, {
+    return apiRequest('/login-admin/logout', {
       method: 'POST',
-    });
-    return response.json();
+      throwOnError: false,
+    })
   },
-};
+}
