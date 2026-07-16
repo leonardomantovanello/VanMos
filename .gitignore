@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Environment files — may contain real secrets/API URLs in the future.
+# .env.example stays tracked as the template.
+.env
+.env.production
+.env.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
