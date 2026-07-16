@@ -60,7 +60,6 @@ const AdminPanel = () => {
         // Se der erro, não mostra nada pois já atualizou a interface
       }
     } else {
-      // Para ativar, atualiza primeiro a interface e depois tenta a API
       const novosMotoristas = [...motoristas]
       novosMotoristas[index] = { ...motorista, ativo: true }
       setMotoristas(novosMotoristas)
@@ -104,7 +103,6 @@ const AdminPanel = () => {
         const response = await motoristasApi.deletar(editingMotorista.id)
         console.log('Motorista foi deletado com sucesso', response)
         
-        // Remove da lista local imediatamente
         const novosMotoristas = motoristas.filter(m => m.id !== editingMotorista.id)
         setMotoristas(novosMotoristas)
         
@@ -118,10 +116,6 @@ const AdminPanel = () => {
     }
   }
 
-
-
-
-
   return (
     <div className="admin-panel-container">
       <div className="admin-header">
@@ -134,7 +128,6 @@ const AdminPanel = () => {
           <h2>Gerenciar Motoristas</h2>
           <div className="header-actions">
             <span className="total-count">{motoristas.length} motoristas</span>
-
           </div>
         </div>
 

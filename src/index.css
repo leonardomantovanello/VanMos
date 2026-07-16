@@ -159,3 +159,46 @@ a {
     font-size: 13px;
   }
 }
+
+/* ── Loading state nos botões (ponto 1) ─────────────────────────────────── */
+.btn-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Botão desabilitado durante loading */
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Erros inline por campo (ponto 2) ───────────────────────────────────── */
+.field-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: #e53e3e;
+  font-weight: 500;
+}
+
+input[aria-invalid="true"],
+select[aria-invalid="true"] {
+  border-color: #e53e3e !important;
+  box-shadow: 0 0 0 2px rgba(229, 62, 62, 0.2);
+}
