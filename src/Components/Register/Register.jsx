@@ -47,7 +47,11 @@ const Register = () => {
       alert('A senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número')
       return
     }
-    // Remove máscara do CPF antes de enviar e envia nome conforme backend
+    // Remove máscara do CPF antes de enviar e envia nome conforme backend.
+    // Este formulário só é usado pelo fluxo de motorista do site (leva ao
+    // dashboard /motorista após o cadastro) — por isso tipo é sempre
+    // MOTORISTA. A mesma tabela/endpoint também serve PASSAGEIRO (ver
+    // Passageiro.java no backend), mas essa opção não tem tela neste site.
     const cadastro = {
       nome: formData.nome,
       idade: formData.idade,
@@ -55,7 +59,8 @@ const Register = () => {
       genero: formData.genero,
       email: formData.email,
       senha: formData.senha,
-      aceitouTermos: formData.aceitouTermos
+      aceitouTermos: formData.aceitouTermos,
+      tipo: 'MOTORISTA'
     }
     try {
       const response = await cadastroApi.criar(cadastro)

@@ -1,13 +1,14 @@
 import { apiRequest } from './apiClient'
 
-const CADASTRO_PATH = '/cadastro'
+const CADASTRO_PATH = '/passageiros'
 
 export const cadastroApi = {
-  // Cria um novo cadastro de responsável (fica pendente de ativação por um admin).
+  // Cria um novo cadastro (motorista ou passageiro, ver campo "tipo") — fica
+  // pendente de ativação por um admin.
   criar: async (cadastro) =>
     apiRequest(CADASTRO_PATH, { method: 'POST', body: cadastro, throwOnError: false }),
 
-  // ATENÇÃO: GET /api/cadastro agora exige ROLE_ADMIN no backend (ver CadastroController).
+  // ATENÇÃO: GET /api/passageiros agora exige ROLE_ADMIN no backend (ver PassageiroController).
   // Não é usado por nenhum componente hoje — o painel admin usa motoristasApi.listar(),
   // que já envia o token de admin. Mantido aqui por compatibilidade do service.
   listar: async () => apiRequest(CADASTRO_PATH, { throwOnError: false }),

@@ -26,7 +26,7 @@ const parseBody = async (response) => {
 /**
  * Faz uma requisição à API do VanMos.
  *
- * @param {string} path - Caminho relativo (ex: '/cadastro') ou URL absoluta.
+ * @param {string} path - Caminho relativo (ex: '/passageiros') ou URL absoluta.
  * @param {object} [options]
  * @param {string} [options.method='GET']
  * @param {object} [options.body] - Corpo a ser serializado como JSON.

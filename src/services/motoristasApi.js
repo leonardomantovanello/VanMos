@@ -17,7 +17,7 @@ const extrairListaMotoristas = (data) => {
 export const motoristasApi = {
   // Cadastros pendentes/ativos para o painel admin — exige token de ADMIN.
   listar: async () => {
-    const data = await apiRequest('/cadastro', {
+    const data = await apiRequest('/passageiros', {
       auth: true,
       fallbackMessage: 'Não foi possível carregar os motoristas',
     })
@@ -33,7 +33,7 @@ export const motoristasApi = {
   },
 
   adicionar: async (motorista) =>
-    apiRequest('/cadastro', {
+    apiRequest('/passageiros', {
       method: 'POST',
       body: motorista,
       fallbackMessage: 'Erro na requisição',
@@ -53,7 +53,7 @@ export const motoristasApi = {
     }
 
     const acao = ativo ? 'ativar' : 'inativar'
-    return apiRequest(`/cadastro/${id}/${acao}`, {
+    return apiRequest(`/passageiros/${id}/${acao}`, {
       method: 'PUT',
       auth: true,
       fallbackMessage: 'Nao foi possivel atualizar o status do motorista',
@@ -61,7 +61,7 @@ export const motoristasApi = {
   },
 
   editar: async (id, motorista) =>
-    apiRequest(`/cadastro/${id}`, {
+    apiRequest(`/passageiros/${id}`, {
       method: 'PUT',
       body: motorista,
       auth: true,
@@ -69,7 +69,7 @@ export const motoristasApi = {
     }),
 
   deletar: async (id) =>
-    apiRequest(`/cadastro/${id}`, {
+    apiRequest(`/passageiros/${id}`, {
       method: 'DELETE',
       auth: true,
       fallbackMessage: 'Erro ao deletar motorista',
