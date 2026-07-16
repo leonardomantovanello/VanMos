@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './ForgotPassword.css'
+import { findMockUserByEmail, updateMockUserPassword } from '../../utils/mockUsersStore'
+import { isValidEmail, isValidPassword } from '../../utils/validators'
 
 const ForgotPassword = () => {
     const navigate = useNavigate()
@@ -11,18 +13,6 @@ const ForgotPassword = () => {
         confirmPassword: ''
     })
 
-    const validateEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        return emailRegex.test(email)
-    }
-
-    const validatePassword = (password) => {
-        return password.length >= 8 && 
-               /[A-Z]/.test(password) && 
-               /[a-z]/.test(password) && 
-               /\d/.test(password)
-    }
-
     const handleInputChange = (e) => {
         setFormData({
             ...formData,
@@ -32,15 +22,14 @@ const ForgotPassword = () => {
 
     const handleVerifyEmail = (e) => {
         e.preventDefault()
-        
-        if (!validateEmail(formData.email)) {
+
+        if (!isValidEmail(formData.email)) {
             alert('Por favor, insira um e-mail válido')
             return
         }
 
-        const users = JSON.parse(localStorage.getItem('vanmos_users') || '[]')
-        const user = users.find(u => u.email === formData.email)
-        
+        const user = findMockUserByEmail(formData.email)
+
         if (!user) {
             alert('E-mail não encontrado. Verifique o endereço digitado.')
             return
@@ -51,8 +40,8 @@ const ForgotPassword = () => {
 
     const handleResetPassword = (e) => {
         e.preventDefault()
-        
-        if (!validatePassword(formData.newPassword)) {
+
+        if (!isValidPassword(formData.newPassword)) {
             alert('A senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número')
             return
         }
@@ -62,14 +51,7 @@ const ForgotPassword = () => {
             return
         }
 
-        const users = JSON.parse(localStorage.getItem('vanmos_users') || '[]')
-        const updatedUsers = users.map(user => 
-            user.email === formData.email 
-                ? { ...user, senha: formData.newPassword }
-                : user
-        )
-        
-        localStorage.setItem('vanmos_users', JSON.stringify(updatedUsers))
+        updateMockUserPassword(formData.email, formData.newPassword)
         alert('Senha alterada com sucesso!')
         navigate('/login')
     }

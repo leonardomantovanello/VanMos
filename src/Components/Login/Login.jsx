@@ -1,21 +1,18 @@
 import React, { useState } from 'react'
 import './Login.css'
 import { useNavigate } from 'react-router-dom'
-import { fazerLogin } from '../../services/login'
+import { loginApi } from '../../services/login'
+import { useAuth } from '../../contexts/AuthContext'
 
 const Login = () => {
   const navigate = useNavigate()
+  const { loginGuardian } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     email_ou_cpf: '',
     senha: '',
     lembrar_me: false
   })
-
-  const formatCPF = (value) => {
-    const numbers = value.replace(/\D/g, '')
-    return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
-  }
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -25,61 +22,19 @@ const Login = () => {
     });
   }
 
-  const validateCPF = (cpf) => {
-    cpf = cpf.replace(/[^\d]/g, '')
-    if (cpf.length !== 11) return false
-    if (/^(\d)\1{10}$/.test(cpf)) return false
-    
-    let sum = 0
-    for (let i = 0; i < 9; i++) {
-      sum += parseInt(cpf.charAt(i)) * (10 - i)
-    }
-    let remainder = (sum * 10) % 11
-    if (remainder === 10 || remainder === 11) remainder = 0
-    if (remainder !== parseInt(cpf.charAt(9))) return false
-    
-    sum = 0
-    for (let i = 0; i < 10; i++) {
-      sum += parseInt(cpf.charAt(i)) * (11 - i)
-    }
-    remainder = (sum * 10) % 11
-    if (remainder === 10 || remainder === 11) remainder = 0
-    return remainder === parseInt(cpf.charAt(10))
-  }
-
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-  }
-
-  const validatePassword = (password) => {
-    return password.length >= 8 && 
-           /[A-Z]/.test(password) && 
-           /[a-z]/.test(password) && 
-           /\d/.test(password)
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const emailOuCpf = /^\d/.test(formData.email_ou_cpf) ? formData.email_ou_cpf.replace(/\D/g, '') : formData.email_ou_cpf;
-    const resultado = await fazerLogin(emailOuCpf, formData.senha, formData.lembrar_me);
-      if (resultado.sucesso) {
-        const motoristas = JSON.parse(localStorage.getItem('motoristas_cadastrados') || '[]');
-        const motorista = motoristas.find(m => m.email === emailOuCpf || m.cpf === emailOuCpf);
-        
-        if (motorista && !motorista.ativo) {
-          alert('Sua conta está inativa. Entre em contato com o administrador.');
-          return;
-        }
-        
-        localStorage.setItem('vanmos_logged_user', JSON.stringify(resultado.usuario || { nome: formData.email_ou_cpf }));
-        alert('Login realizado com sucesso!');
-        navigate('/motorista');
-      } else {
-        alert(resultado.mensagem);
+    const resultado = await loginApi.login(emailOuCpf, formData.senha, formData.lembrar_me);
+    if (resultado.sucesso) {
+      loginGuardian(resultado.usuario || { nome: formData.email_ou_cpf })
+      alert('Login realizado com sucesso!');
+      navigate('/motorista');
+    } else {
+      alert(resultado.mensagem);
     }
   }
-  
+
 
   return (
     <div className="login-container">

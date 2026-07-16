@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { AuthProvider } from './contexts/AuthContext'
 import Nav from './Nav'
 import Login from './Components/Login/Login'
 import AdminLogin from './Components/Login/AdminLogin'
@@ -39,9 +40,11 @@ const AppContent = () => {
 
 const App = () => (
     <ThemeProvider>
-        <Router>
-            <AppContent />
-        </Router>
+        <AuthProvider>
+            <Router>
+                <AppContent />
+            </Router>
+        </AuthProvider>
     </ThemeProvider>
 )
 

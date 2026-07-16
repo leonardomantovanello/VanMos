@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import './AdminLogin.css'
 import { useNavigate } from 'react-router-dom'
 import { adminApi } from '../../services/AdminLogin'
+import { useAuth } from '../../contexts/AuthContext'
 
 const AdminLogin = () => {
   const navigate = useNavigate()
+  const { loginAdmin } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     email_ou_cpf: '',
@@ -29,15 +31,12 @@ const AdminLogin = () => {
       )
       
       if (data.sucesso) {
-        localStorage.setItem('admin_logged', 'true')
-        localStorage.setItem('admin_user', JSON.stringify(data.usuario || {}))
-        if (data.accessToken) localStorage.setItem('admin_token', data.accessToken)
-        if (data.refreshToken) localStorage.setItem('admin_refresh_token', data.refreshToken)
+        loginAdmin(data)
         navigate('/admin-panel')
       } else {
         alert(data.mensagem || 'Email ou senha incorretos')
       }
-    } catch (error) {
+    } catch {
       alert('Erro ao conectar com o servidor')
     }
   }

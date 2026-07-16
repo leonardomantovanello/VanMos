@@ -1,6 +1,8 @@
     import React, { useState, useEffect } from 'react'
     import { useNavigate } from 'react-router-dom'
     import { useTheme } from '../../contexts/ThemeContext'
+    import { useAuth } from '../../contexts/AuthContext'
+    import { addMockUser } from '../../utils/mockUsersStore'
     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
     import {faChartSimple, faSun, faGear, faUsers, faMap, faUser, faLocationPin, faClock, 
     faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faCheck, faPhone, faMapPin, faTrashCan, 
@@ -13,6 +15,7 @@
 const Motorista = () => {
     const navigate = useNavigate()
     const { isDark, toggleTheme } = useTheme()
+    const { guardianUser, isGuardianAuthenticated, updateGuardian, logoutGuardian } = useAuth()
     const [activeTab, setActiveTab] = useState('dashboard')
     const [showAddPassenger, setShowAddPassenger] = useState(false)
     const [showAddRota, setShowAddRota] = useState(false)
@@ -69,14 +72,13 @@ const Motorista = () => {
 
 
     useEffect(() => {
-        // Obter dados do usuário logado
-        const loggedUser = JSON.parse(localStorage.getItem('vanmos_logged_user') || '{}')
-        if (!loggedUser.nome) {
+        // Guarda de rota: redireciona para o login se não houver responsável logado.
+        if (!isGuardianAuthenticated) {
             navigate('/login')
             return
         }
-        setLoggedUser(loggedUser)
-        const nomes = loggedUser.nome.trim().split(' ')
+        setLoggedUser(guardianUser)
+        const nomes = guardianUser.nome.trim().split(' ')
         const primeiroNome = nomes[0]
         const ultimoNome = nomes.length > 1 ? nomes[nomes.length - 1] : ''
         setDriverName(ultimoNome ? `${primeiroNome} ${ultimoNome}` : primeiroNome)
@@ -113,10 +115,10 @@ const Motorista = () => {
         return () => clearInterval(interval)
 
 
-    }, [navigate])
+    }, [isGuardianAuthenticated, guardianUser, navigate])
 
     const handleLogout = () => {
-        localStorage.removeItem('vanmos_logged_user')
+        logoutGuardian()
         navigate('/')
     }
 
@@ -131,18 +133,15 @@ const Motorista = () => {
         const login = `${primeiroNome}.${ultimoNome}@vanmos.app`
         const senha = `${primeiroNome}${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`
         
-        // Salvar aluno como usuário no sistema
-        const users = JSON.parse(localStorage.getItem('vanmos_users') || '[]')
-        const novoUsuario = {
+        // Salvar aluno como usuário no sistema (mock local)
+        addMockUser({
             id: Date.now(),
             nome: novoPassageiro.nome,
             email: login,
             senha: senha,
             tipo: 'aluno'
-        }
-        users.push(novoUsuario)
-        localStorage.setItem('vanmos_users', JSON.stringify(users))
-        
+        })
+
         // Adicionar passageiro
         setPassageiros([...passageiros, { 
             ...novoPassageiro, 
@@ -409,7 +408,7 @@ const Motorista = () => {
                         {editingPerfil ? (
                             <form onSubmit={(e) => {
                                 e.preventDefault()
-                                localStorage.setItem('vanmos_logged_user', JSON.stringify(loggedUser))
+                                updateGuardian(loggedUser)
                                 setEditingPerfil(false)
                             }}>
                                 <input type="text" placeholder="Nome" value={loggedUser.nome || ''} onChange={(e) => setLoggedUser({...loggedUser, nome: e.target.value})} required />

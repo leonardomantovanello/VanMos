@@ -2,19 +2,31 @@ import React, { useState, useEffect } from 'react'
 import './AdminPanel.css'
 import { useNavigate } from 'react-router-dom'
 import { motoristasApi } from '../../services/motoristasApi'
+import { useAuth } from '../../contexts/AuthContext'
 
 const AdminPanel = () => {
   const navigate = useNavigate()
+  const { isAdminAuthenticated, logoutAdmin } = useAuth()
   const [motoristas, setMotoristas] = useState([])
   const [editingMotorista, setEditingMotorista] = useState(null)
   const [showEditModal, setShowEditModal] = useState(false)
   const [carregando, setCarregando] = useState(true)
   const [erroCarregamento, setErroCarregamento] = useState('')
 
-
   useEffect(() => {
+    // Guarda de rota: a API já bloqueia o acesso aos dados sem token de admin,
+    // mas sem isso a interface do painel ainda "aparecia" para qualquer visitante.
+    if (!isAdminAuthenticated) {
+      navigate('/admin-login')
+      return
+    }
     carregarMotoristas()
-  }, [])
+  }, [isAdminAuthenticated, navigate])
+
+  const handleLogout = () => {
+    logoutAdmin()
+    navigate('/admin-login')
+  }
 
   const carregarMotoristas = async () => {
     setCarregando(true)
@@ -114,7 +126,7 @@ const AdminPanel = () => {
     <div className="admin-panel-container">
       <div className="admin-header">
         <h1>Painel Administrativo</h1>
-        <button onClick={() => navigate('/admin-login')} className="logout-btn">Sair</button>
+        <button onClick={handleLogout} className="logout-btn">Sair</button>
       </div>
 
       <div className="admin-content">
