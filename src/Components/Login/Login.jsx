@@ -27,7 +27,10 @@ const Login = () => {
     const emailOuCpf = /^\d/.test(formData.email_ou_cpf) ? formData.email_ou_cpf.replace(/\D/g, '') : formData.email_ou_cpf;
     const resultado = await loginApi.login(emailOuCpf, formData.senha, formData.lembrar_me);
     if (resultado.sucesso) {
-      loginGuardian(resultado.usuario || { nome: formData.email_ou_cpf })
+      loginGuardian(resultado.usuario || { nome: formData.email_ou_cpf }, {
+        accessToken: resultado.accessToken,
+        refreshToken: resultado.refreshToken,
+      })
       alert('Login realizado com sucesso!');
       navigate('/motorista');
     } else {

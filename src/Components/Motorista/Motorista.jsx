@@ -2,7 +2,8 @@
     import { useNavigate } from 'react-router-dom'
     import { useTheme } from '../../contexts/ThemeContext'
     import { useAuth } from '../../contexts/AuthContext'
-    import { addMockUser } from '../../utils/mockUsersStore'
+    import { passageirosApi } from '../../services/passageirosApi'
+    import { alunosApi } from '../../services/alunosApi'
     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
     import {faChartSimple, faSun, faGear, faUsers, faMap, faUser, faLocationPin, faClock,
     faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faCheck, faPhone, faMapPin, faTrashCan,
@@ -21,11 +22,9 @@ const Motorista = () => {
     const [showAddRota, setShowAddRota] = useState(false)
     const [isSettingsOpen, setIsSettingsOpen] = useState(false)
     const [driverName, setDriverName] = useState('Motorista')
-    const [passageiros, setPassageiros] = useState([
-        { id: 1, nome: 'Ana Silva', telefone: '(11) 99999-1111', endereco: 'Rua A, 123', pontoEmbarque: 'Terminal Central', escola: 'Escola Municipal A', pontoDesembarque: 'Bairro Residencial', status: 'ativo' },
-        { id: 2, nome: 'Carlos Santos', telefone: '(11) 99999-2222', endereco: 'Rua B, 456', pontoEmbarque: 'Avenida Principal', escola: 'Colégio Estadual B', pontoDesembarque: 'Centro Comercial', status: 'ativo' },
-        { id: 3, nome: 'Maria Oliveira', telefone: '(11) 99999-3333', endereco: 'Rua C, 789', pontoEmbarque: 'Centro Comercial', escola: 'Escola Particular C', pontoDesembarque: 'Terminal Central', status: 'ativo' }
-    ])
+    const [passageiros, setPassageiros] = useState([])
+    const [carregandoPassageiros, setCarregandoPassageiros] = useState(true)
+    const [erroPassageiros, setErroPassageiros] = useState('')
     const [rotas, setRotas] = useState([
         { id: 1, nome: 'Terminal Central', endereco: 'Av. Central, 100', horario: '07:00' },
         { id: 2, nome: 'Avenida Principal', endereco: 'Av. Principal, 500', horario: '07:15' },
@@ -33,8 +32,11 @@ const Motorista = () => {
         { id: 4, nome: 'Bairro Residencial', endereco: 'Rua Residencial, 300', horario: '07:45' }
     ])
     const [novoPassageiro, setNovoPassageiro] = useState({
-        nome: '', telefone: '', endereco: '', escola: '', valor: '', nomeResponsavel: '', telefoneResponsavel: ''
+        nomeAluno: '', telefoneResponsavel: '', enderecoEmbarque: '', enderecoDesembarque: '', escola: '', turno: '',
+        valor: '',
+        nomeResponsavel: '', cpfResponsavel: '', emailResponsavel: '', idadeResponsavel: '', generoResponsavel: ''
     })
+    const [cadastrandoPassageiro, setCadastrandoPassageiro] = useState(false)
     const [escolas, setEscolas] = useState([
         { nome: 'Escola Municipal A', endereco: 'Rua das Flores, 123 - Centro' },
         { nome: 'Colégio Estadual B', endereco: 'Av. Principal, 456 - Bairro Norte' },
@@ -83,6 +85,8 @@ const Motorista = () => {
         const ultimoNome = nomes.length > 1 ? nomes[nomes.length - 1] : ''
         setDriverName(ultimoNome ? `${primeiroNome} ${ultimoNome}` : primeiroNome)
 
+        carregarPassageiros()
+
         // Animação dos elementos de fundo
         const animateElements = () => {
             setBgElements(prev => prev.map(element => {
@@ -122,49 +126,89 @@ const Motorista = () => {
         navigate('/')
     }
 
-    const handleAddPassenger = (e) => {
-        e.preventDefault()
-        const newId = Math.max(...passageiros.map(p => p.id)) + 1
-        
-        // Gerar login e senha para o aluno
-        const nomePartes = novoPassageiro.nome.toLowerCase().split(' ')
-        const primeiroNome = nomePartes[0]
-        const ultimoNome = nomePartes[nomePartes.length - 1] || ''
-        const login = `${primeiroNome}.${ultimoNome}@vanmos.app`
-        const senha = `${primeiroNome}${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`
-        
-        // Salvar aluno como usuário no sistema (mock local)
-        addMockUser({
-            id: Date.now(),
-            nome: novoPassageiro.nome,
-            email: login,
-            senha: senha,
-            tipo: 'aluno'
-        })
+    // Mapeia o Aluno do backend pros campos que os cards/modais já usam.
+    const mapAlunoParaPassageiro = (aluno) => ({
+        id: aluno.id,
+        nome: aluno.nome,
+        telefoneResponsavel: aluno.telefoneResponsavel,
+        endereco: aluno.enderecoEmbarque,
+        enderecoEmbarque: aluno.enderecoEmbarque,
+        enderecoDesembarque: aluno.enderecoDesembarque,
+        escola: aluno.escola,
+        turno: aluno.turno,
+        ativo: aluno.ativo,
+        status: aluno.ativo ? 'ativo' : 'inativo',
+    })
 
-        // Adicionar passageiro
-        setPassageiros([...passageiros, { 
-            ...novoPassageiro, 
-            id: newId, 
-            status: 'ativo',
-            login: login,
-            senha: senha
-        }])
-        
-        // Incrementar contador da semana e receita mensal
-        setAlunosAdicionadosSemana(prev => prev + 1)
-        setReceitaMensal(prev => prev + parseFloat(novoPassageiro.valor))
-        
-        // Mostrar credenciais para o motorista
-        const credenciais = `Aluno cadastrado com sucesso!\n\nCredenciais para acesso ao aplicativo mobile:\n\nLogin: ${login}\nSenha: ${senha}\n\nInforme essas credenciais ao aluno.`
-        alert(credenciais)
-        
-        setNovoPassageiro({ nome: '', telefone: '', endereco: '', escola: '', valor: '', nomeResponsavel: '', telefoneResponsavel: '' })
-        setShowAddPassenger(false)
+    const carregarPassageiros = async () => {
+        setCarregandoPassageiros(true)
+        setErroPassageiros('')
+        try {
+            const alunos = await alunosApi.listar()
+            setPassageiros(alunos.map(mapAlunoParaPassageiro))
+        } catch (error) {
+            console.error('Erro ao carregar passageiros:', error)
+            setPassageiros([])
+            setErroPassageiros(error.message || 'Não foi possível carregar os passageiros cadastrados.')
+        } finally {
+            setCarregandoPassageiros(false)
+        }
     }
 
-    const handleRemovePassenger = (id) => {
-        setPassageiros(passageiros.filter(p => p.id !== id))
+    const handleAddPassenger = async (e) => {
+        e.preventDefault()
+        setCadastrandoPassageiro(true)
+
+        try {
+            // Cria a conta do responsável (tabela passageiros, tipo PASSAGEIRO —
+            // senha gerada e enviada por e-mail, nunca passa por aqui) E o Aluno
+            // vinculado a essa conta e ao motorista logado (é o Aluno que
+            // aparece no dashboard do app).
+            await passageirosApi.cadastrarPeloMotorista({
+                nomeResponsavel: novoPassageiro.nomeResponsavel,
+                cpfResponsavel: novoPassageiro.cpfResponsavel,
+                emailResponsavel: novoPassageiro.emailResponsavel,
+                idadeResponsavel: novoPassageiro.idadeResponsavel ? Number(novoPassageiro.idadeResponsavel) : null,
+                generoResponsavel: novoPassageiro.generoResponsavel,
+                nomeAluno: novoPassageiro.nomeAluno,
+                telefoneResponsavel: novoPassageiro.telefoneResponsavel,
+                enderecoEmbarque: novoPassageiro.enderecoEmbarque,
+                enderecoDesembarque: novoPassageiro.enderecoDesembarque,
+                escola: novoPassageiro.escola,
+                turno: novoPassageiro.turno,
+            })
+
+            await carregarPassageiros()
+
+            setAlunosAdicionadosSemana(prev => prev + 1)
+            if (novoPassageiro.valor) {
+                setReceitaMensal(prev => prev + parseFloat(novoPassageiro.valor))
+            }
+
+            alert(`Aluno cadastrado com sucesso!\n\nA senha de acesso ao aplicativo do responsável foi enviada para ${novoPassageiro.emailResponsavel}.`)
+
+            setNovoPassageiro({
+                nomeAluno: '', telefoneResponsavel: '', enderecoEmbarque: '', enderecoDesembarque: '', escola: '', turno: '',
+                valor: '',
+                nomeResponsavel: '', cpfResponsavel: '', emailResponsavel: '', idadeResponsavel: '', generoResponsavel: ''
+            })
+            setShowAddPassenger(false)
+        } catch (error) {
+            alert(error.message || 'Erro ao cadastrar passageiro')
+        } finally {
+            setCadastrandoPassageiro(false)
+        }
+    }
+
+    const handleRemovePassenger = async (id) => {
+        if (!confirm('Tem certeza que deseja remover este passageiro?')) return
+
+        try {
+            await alunosApi.deletar(id)
+            setPassageiros(passageiros.filter(p => p.id !== id))
+        } catch (error) {
+            alert(error.message || 'Erro ao remover passageiro')
+        }
     }
 
     const handleInputChange = (e) => {
@@ -303,13 +347,24 @@ const Motorista = () => {
         setShowPassageiroDetails(false)
     }
 
-    const handleUpdatePassageiro = (e) => {
+    const handleUpdatePassageiro = async (e) => {
         e.preventDefault()
-        setPassageiros(passageiros.map(p => 
-            p.id === editingPassageiro.id ? editingPassageiro : p
-        ))
-        setShowEditPassageiro(false)
-        setEditingPassageiro(null)
+        try {
+            await alunosApi.editar(editingPassageiro.id, {
+                nome: editingPassageiro.nome,
+                telefoneResponsavel: editingPassageiro.telefoneResponsavel,
+                enderecoEmbarque: editingPassageiro.enderecoEmbarque,
+                enderecoDesembarque: editingPassageiro.enderecoDesembarque,
+                escola: editingPassageiro.escola,
+                turno: editingPassageiro.turno,
+                ativo: editingPassageiro.ativo,
+            })
+            await carregarPassageiros()
+            setShowEditPassageiro(false)
+            setEditingPassageiro(null)
+        } catch (error) {
+            alert(error.message || 'Erro ao editar passageiro')
+        }
     }
 
     const handleEditPassageiroInputChange = (e) => {
@@ -596,6 +651,13 @@ const Motorista = () => {
                             </div>
                         </div>
 
+                        {carregandoPassageiros ? (
+                            <p className="empty-state">Carregando passageiros...</p>
+                        ) : erroPassageiros ? (
+                            <p className="empty-state">{erroPassageiros}</p>
+                        ) : passageiros.length === 0 ? (
+                            <p className="empty-state">Nenhum passageiro cadastrado ainda.</p>
+                        ) : (
                         <div className="passageiros-grid">
                             {passageiros.map(passageiro => (
                                 <div 
@@ -610,11 +672,16 @@ const Motorista = () => {
                                         </div>
                                         <div className="passageiro-basic">
                                             <h4>{passageiro.nome}</h4>
-                                            <span className="status-badge active">Ativo</span>
+                                            <span className={`status-badge ${passageiro.status === 'ativo' ? 'active' : ''}`}>
+                                                {passageiro.status === 'ativo' ? 'Ativo' : 'Inativo'}
+                                            </span>
                                         </div>
-                                        <button 
+                                        <button
                                             className="remove-btn"
-                                            onClick={() => handleRemovePassenger(passageiro.id)}
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                handleRemovePassenger(passageiro.id)
+                                            }}
                                         >
                                             <FontAwesomeIcon icon={faTrashCan} />
                                         </button>
@@ -623,7 +690,7 @@ const Motorista = () => {
                                     <div className="passageiro-details">
                                         <div className="detail-item">
                                             <FontAwesomeIcon icon={faPhone} className="detail-icon" />
-                                            <span>{passageiro.telefone}</span>
+                                            <span>{passageiro.telefoneResponsavel}</span>
                                         </div>
                                         <div className="detail-item">
                                             <FontAwesomeIcon icon={faMapPin} className="detail-icon" />
@@ -645,35 +712,36 @@ const Motorista = () => {
                                 </div>
                             ))}
                         </div>
+                        )}
 
                         {showAddPassenger && (
                             <div className="modal-overlay">
                                 <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-add-passageiro">
                                     <h3 id="modal-title-add-passageiro">Adicionar Novo Passageiro</h3>
                                     <form onSubmit={handleAddPassenger}>
+                                        <p className="form-section-label">Dados do aluno</p>
                                         <input
                                             type="text"
-                                            name="nome"
-                                            placeholder="Nome completo"
-                                            value={novoPassageiro.nome}
-                                            onChange={handleInputChange}
-                                            required
-                                        />
-                                        <input
-                                            type="tel"
-                                            name="telefone"
-                                            placeholder="Telefone"
-                                            value={novoPassageiro.telefone}
+                                            name="nomeAluno"
+                                            placeholder="Nome completo do aluno"
+                                            value={novoPassageiro.nomeAluno}
                                             onChange={handleInputChange}
                                             required
                                         />
                                         <input
                                             type="text"
-                                            name="endereco"
-                                            placeholder="Endereço"
-                                            value={novoPassageiro.endereco}
+                                            name="enderecoEmbarque"
+                                            placeholder="Endereço de embarque"
+                                            value={novoPassageiro.enderecoEmbarque}
                                             onChange={handleInputChange}
                                             required
+                                        />
+                                        <input
+                                            type="text"
+                                            name="enderecoDesembarque"
+                                            placeholder="Endereço de desembarque"
+                                            value={novoPassageiro.enderecoDesembarque}
+                                            onChange={handleInputChange}
                                         />
                                         <select
                                             name="escola"
@@ -688,6 +756,16 @@ const Motorista = () => {
                                                 </option>
                                             ))}
                                         </select>
+                                        <select
+                                            name="turno"
+                                            value={novoPassageiro.turno}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="">Selecione o turno</option>
+                                            <option value="MANHA">Manhã</option>
+                                            <option value="TARDE">Tarde</option>
+                                            <option value="NOITE">Noite</option>
+                                        </select>
                                         <input
                                             type="number"
                                             name="valor"
@@ -696,8 +774,9 @@ const Motorista = () => {
                                             onChange={handleInputChange}
                                             min="0"
                                             step="0.01"
-                                            required
                                         />
+
+                                        <p className="form-section-label">Dados do responsável (recebe o acesso ao app)</p>
                                         <input
                                             type="text"
                                             name="nomeResponsavel"
@@ -714,12 +793,30 @@ const Motorista = () => {
                                             onChange={handleInputChange}
                                             required
                                         />
+                                        <input
+                                            type="email"
+                                            name="emailResponsavel"
+                                            placeholder="E-mail do responsável (a senha de acesso é enviada aqui)"
+                                            value={novoPassageiro.emailResponsavel}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
+                                        <input
+                                            type="text"
+                                            name="cpfResponsavel"
+                                            placeholder="CPF do responsável"
+                                            value={novoPassageiro.cpfResponsavel}
+                                            onChange={handleInputChange}
+                                        />
                                         <div className="modal-actions">
-                                            <button type="submit" className="confirm-btn">Adicionar</button>
-                                            <button 
-                                                type="button" 
+                                            <button type="submit" className="confirm-btn" disabled={cadastrandoPassageiro}>
+                                                {cadastrandoPassageiro ? 'Cadastrando...' : 'Adicionar'}
+                                            </button>
+                                            <button
+                                                type="button"
                                                 className="cancel-btn"
                                                 onClick={() => setShowAddPassenger(false)}
+                                                disabled={cadastrandoPassageiro}
                                             >
                                                 Cancelar
                                             </button>
@@ -739,41 +836,25 @@ const Motorista = () => {
                                             <span className="detail-value">{selectedPassageiro.nome}</span>
                                         </div>
                                         <div className="detail-row">
-                                            <span className="detail-label">Telefone:</span>
-                                            <span className="detail-value">{selectedPassageiro.telefone}</span>
+                                            <span className="detail-label">Telefone do responsável:</span>
+                                            <span className="detail-value">{selectedPassageiro.telefoneResponsavel}</span>
                                         </div>
                                         <div className="detail-row">
-                                            <span className="detail-label">Endereço:</span>
-                                            <span className="detail-value">{selectedPassageiro.endereco}</span>
+                                            <span className="detail-label">Endereço de embarque:</span>
+                                            <span className="detail-value">{selectedPassageiro.enderecoEmbarque}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Endereço de desembarque:</span>
+                                            <span className="detail-value">{selectedPassageiro.enderecoDesembarque || '-'}</span>
                                         </div>
                                         <div className="detail-row">
                                             <span className="detail-label">Escola:</span>
                                             <span className="detail-value">{selectedPassageiro.escola}</span>
                                         </div>
                                         <div className="detail-row">
-                                            <span className="detail-label">Valor Mensal:</span>
-                                            <span className="detail-value">R$ {selectedPassageiro.valor}</span>
+                                            <span className="detail-label">Turno:</span>
+                                            <span className="detail-value">{selectedPassageiro.turno || '-'}</span>
                                         </div>
-                                        <div className="detail-row">
-                                            <span className="detail-label">Responsável:</span>
-                                            <span className="detail-value">{selectedPassageiro.nomeResponsavel}</span>
-                                        </div>
-                                        <div className="detail-row">
-                                            <span className="detail-label">Telefone do Responsável:</span>
-                                            <span className="detail-value">{selectedPassageiro.telefoneResponsavel}</span>
-                                        </div>
-                                        {selectedPassageiro.login && (
-                                            <>
-                                                <div className="detail-row">
-                                                    <span className="detail-label">Login:</span>
-                                                    <span className="detail-value">{selectedPassageiro.login}</span>
-                                                </div>
-                                                <div className="detail-row">
-                                                    <span className="detail-label">Senha:</span>
-                                                    <span className="detail-value">{selectedPassageiro.senha}</span>
-                                                </div>
-                                            </>
-                                        )}
                                     </div>
                                     <div className="modal-actions">
                                         <button 
@@ -808,19 +889,26 @@ const Motorista = () => {
                                         />
                                         <input
                                             type="tel"
-                                            name="telefone"
-                                            placeholder="Telefone"
-                                            value={editingPassageiro.telefone}
+                                            name="telefoneResponsavel"
+                                            placeholder="Telefone do responsável"
+                                            value={editingPassageiro.telefoneResponsavel}
                                             onChange={handleEditPassageiroInputChange}
                                             required
                                         />
                                         <input
                                             type="text"
-                                            name="endereco"
-                                            placeholder="Endereço"
-                                            value={editingPassageiro.endereco}
+                                            name="enderecoEmbarque"
+                                            placeholder="Endereço de embarque"
+                                            value={editingPassageiro.enderecoEmbarque}
                                             onChange={handleEditPassageiroInputChange}
                                             required
+                                        />
+                                        <input
+                                            type="text"
+                                            name="enderecoDesembarque"
+                                            placeholder="Endereço de desembarque"
+                                            value={editingPassageiro.enderecoDesembarque || ''}
+                                            onChange={handleEditPassageiroInputChange}
                                         />
                                         <select
                                             name="escola"
@@ -835,32 +923,16 @@ const Motorista = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <input
-                                            type="number"
-                                            name="valor"
-                                            placeholder="Valor mensal (R$)"
-                                            value={editingPassageiro.valor}
+                                        <select
+                                            name="turno"
+                                            value={editingPassageiro.turno || ''}
                                             onChange={handleEditPassageiroInputChange}
-                                            min="0"
-                                            step="0.01"
-                                            required
-                                        />
-                                        <input
-                                            type="text"
-                                            name="nomeResponsavel"
-                                            placeholder="Nome do responsável"
-                                            value={editingPassageiro.nomeResponsavel}
-                                            onChange={handleEditPassageiroInputChange}
-                                            required
-                                        />
-                                        <input
-                                            type="tel"
-                                            name="telefoneResponsavel"
-                                            placeholder="Telefone do responsável"
-                                            value={editingPassageiro.telefoneResponsavel}
-                                            onChange={handleEditPassageiroInputChange}
-                                            required
-                                        />
+                                        >
+                                            <option value="">Selecione o turno</option>
+                                            <option value="MANHA">Manhã</option>
+                                            <option value="TARDE">Tarde</option>
+                                            <option value="NOITE">Noite</option>
+                                        </select>
                                         <div className="modal-actions">
                                             <button type="submit" className="confirm-btn">Salvar</button>
                                             <button 

@@ -12,8 +12,10 @@ const ADMIN_USER_KEY = 'admin_user'
 const ADMIN_TOKEN_KEY = 'admin_token'
 const ADMIN_REFRESH_TOKEN_KEY = 'admin_refresh_token'
 
-// Chave de localStorage usada pelo fluxo de responsável/motorista logado (login comum).
+// Chaves de localStorage usadas pelo fluxo de responsável/motorista logado (login comum).
 const GUARDIAN_USER_KEY = 'vanmos_logged_user'
+const GUARDIAN_TOKEN_KEY = 'vanmos_guardian_token'
+const GUARDIAN_REFRESH_TOKEN_KEY = 'vanmos_guardian_refresh_token'
 
 const readJSON = (key, fallback) => {
   try {
@@ -65,8 +67,14 @@ export const AuthProvider = ({ children }) => {
 
   // --- Fluxo Responsável/Motorista (/api/login) ---
 
-  const loginGuardian = useCallback((usuario) => {
+  // tokens é opcional pra não quebrar chamadas existentes que só atualizam o
+  // usuário (ex: updateGuardian), mas o login em si deve sempre passar
+  // { accessToken, refreshToken } — sem isso, nenhuma chamada autenticada
+  // como motorista (ex: cadastrar passageiro) funciona.
+  const loginGuardian = useCallback((usuario, tokens) => {
     localStorage.setItem(GUARDIAN_USER_KEY, JSON.stringify(usuario))
+    if (tokens?.accessToken) localStorage.setItem(GUARDIAN_TOKEN_KEY, tokens.accessToken)
+    if (tokens?.refreshToken) localStorage.setItem(GUARDIAN_REFRESH_TOKEN_KEY, tokens.refreshToken)
     setGuardianUser(usuario)
   }, [])
 
@@ -77,6 +85,8 @@ export const AuthProvider = ({ children }) => {
 
   const logoutGuardian = useCallback(() => {
     localStorage.removeItem(GUARDIAN_USER_KEY)
+    localStorage.removeItem(GUARDIAN_TOKEN_KEY)
+    localStorage.removeItem(GUARDIAN_REFRESH_TOKEN_KEY)
     setGuardianUser(null)
   }, [])
 
