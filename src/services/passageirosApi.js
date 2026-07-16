@@ -18,4 +18,14 @@ export const passageirosApi = {
       guardianAuth: true,
       fallbackMessage: 'Erro ao cadastrar passageiro',
     }),
+
+  // PUT /api/passageiros/{id}/senha — exige a senha atual; o backend confere
+  // com BCrypt antes de trocar (ver PassageiroService.alterarSenha).
+  alterarSenha: async (id, senhaAtual, novaSenha) =>
+    apiRequest(`/passageiros/${id}/senha`, {
+      method: 'PUT',
+      body: { senhaAtual, novaSenha },
+      guardianAuth: true,
+      fallbackMessage: 'Erro ao alterar senha',
+    }),
 }

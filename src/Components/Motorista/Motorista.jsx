@@ -4,10 +4,11 @@
     import { useAuth } from '../../contexts/AuthContext'
     import { passageirosApi } from '../../services/passageirosApi'
     import { alunosApi } from '../../services/alunosApi'
+    import { isValidPassword } from '../../utils/validators'
     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
     import {faChartSimple, faSun, faGear, faUsers, faMap, faUser, faLocationPin, faClock,
     faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faCheck, faPhone, faMapPin, faTrashCan,
-    faPlus, faArrowsUpDown, faPencil, faMapLocation, faIdCard}
+    faPlus, faArrowsUpDown, faPencil, faMapLocation, faIdCard, faLock}
     from '@fortawesome/free-solid-svg-icons'
     import './Motorista.css'
     import { buscarEscolasPorNome } from '../../services/googlePlaces'
@@ -64,6 +65,9 @@ const Motorista = () => {
     const [showPerfil, setShowPerfil] = useState(false)
     const [loggedUser, setLoggedUser] = useState({})
     const [editingPerfil, setEditingPerfil] = useState(false)
+    const [ajustesTab, setAjustesTab] = useState('senha')
+    const [senhaForm, setSenhaForm] = useState({ senhaAtual: '', novaSenha: '', confirmarNovaSenha: '' })
+    const [alterandoSenha, setAlterandoSenha] = useState(false)
     const [bgElements, setBgElements] = useState([
         { id: 1, x: 5, y: 10, size: 300, speedX: 0.5, speedY: 0.3 },
         { id: 2, x: 80, y: 60, size: 200, speedX: -0.3, speedY: 0.4 },
@@ -367,6 +371,37 @@ const Motorista = () => {
         }
     }
 
+    const handleSenhaInputChange = (e) => {
+        setSenhaForm({
+            ...senhaForm,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleAlterarSenha = async (e) => {
+        e.preventDefault()
+
+        if (senhaForm.novaSenha !== senhaForm.confirmarNovaSenha) {
+            alert('A nova senha e a confirmação não coincidem')
+            return
+        }
+        if (!isValidPassword(senhaForm.novaSenha)) {
+            alert('A nova senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número')
+            return
+        }
+
+        setAlterandoSenha(true)
+        try {
+            await passageirosApi.alterarSenha(guardianUser.id, senhaForm.senhaAtual, senhaForm.novaSenha)
+            alert('Senha alterada com sucesso!')
+            setSenhaForm({ senhaAtual: '', novaSenha: '', confirmarNovaSenha: '' })
+        } catch (error) {
+            alert(error.message || 'Erro ao alterar senha')
+        } finally {
+            setAlterandoSenha(false)
+        }
+    }
+
     const handleEditPassageiroInputChange = (e) => {
         setEditingPassageiro({
             ...editingPassageiro,
@@ -419,6 +454,12 @@ const Motorista = () => {
                             onClick={() => setActiveTab('rota')}
                         >
                             <FontAwesomeIcon icon={faMap} style={{color: "#691569ff"}} /> Rota
+                        </button>
+                        <button
+                            className={`nav-btn ${activeTab === 'ajustes' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('ajustes')}
+                        >
+                            <FontAwesomeIcon icon={faGear} style={{color: "#691569ff"}} /> Ajustes
                         </button>
                     </nav>
                     
@@ -1220,6 +1261,65 @@ const Motorista = () => {
                                         </div>
                                     </form>
                                 </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {activeTab === 'ajustes' && (
+                    <div className="ajustes-section">
+                        <div className="section-header-dashboard">
+                            <h2>Ajustes</h2>
+                            <p>Gerencie as configurações da sua conta</p>
+                        </div>
+
+                        <div className="ajustes-tabs">
+                            <button
+                                className={`ajustes-tab-btn ${ajustesTab === 'senha' ? 'active' : ''}`}
+                                onClick={() => setAjustesTab('senha')}
+                            >
+                                <FontAwesomeIcon icon={faLock} /> Alterar Senha
+                            </button>
+                        </div>
+
+                        {ajustesTab === 'senha' && (
+                            <div className="ajustes-card">
+                                <h3><FontAwesomeIcon icon={faLock} style={{color: "#b38fc6"}} /> Alterar Senha</h3>
+                                <p className="form-section-label">Confirme sua senha atual para definir uma nova senha de acesso.</p>
+                                <form className="ajustes-form" onSubmit={handleAlterarSenha}>
+                                    <input
+                                        type="password"
+                                        name="senhaAtual"
+                                        placeholder="Senha atual"
+                                        value={senhaForm.senhaAtual}
+                                        onChange={handleSenhaInputChange}
+                                        required
+                                    />
+                                    <input
+                                        type="password"
+                                        name="novaSenha"
+                                        placeholder="Nova senha"
+                                        value={senhaForm.novaSenha}
+                                        onChange={handleSenhaInputChange}
+                                        required
+                                    />
+                                    <input
+                                        type="password"
+                                        name="confirmarNovaSenha"
+                                        placeholder="Confirmar nova senha"
+                                        value={senhaForm.confirmarNovaSenha}
+                                        onChange={handleSenhaInputChange}
+                                        required
+                                    />
+                                    <small className="ajustes-hint">
+                                        A nova senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número.
+                                    </small>
+                                    <div className="modal-actions">
+                                        <button type="submit" className="confirm-btn" disabled={alterandoSenha}>
+                                            {alterandoSenha ? 'Salvando...' : 'Salvar nova senha'}
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         )}
                     </div>
