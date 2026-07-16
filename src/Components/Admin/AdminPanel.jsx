@@ -8,6 +8,8 @@ const AdminPanel = () => {
   const [motoristas, setMotoristas] = useState([])
   const [editingMotorista, setEditingMotorista] = useState(null)
   const [showEditModal, setShowEditModal] = useState(false)
+  const [carregando, setCarregando] = useState(true)
+  const [erroCarregamento, setErroCarregamento] = useState('')
 
 
   useEffect(() => {
@@ -15,12 +17,17 @@ const AdminPanel = () => {
   }, [])
 
   const carregarMotoristas = async () => {
+    setCarregando(true)
+    setErroCarregamento('')
     try {
       const data = await motoristasApi.listar()
-      setMotoristas(Array.isArray(data) ? data : [])
+      setMotoristas(data)
     } catch (error) {
       console.error('Erro ao carregar motoristas:', error)
       setMotoristas([])
+      setErroCarregamento(error.message || 'Não foi possível carregar os motoristas cadastrados.')
+    } finally {
+      setCarregando(false)
     }
   }
 
@@ -34,8 +41,10 @@ const AdminPanel = () => {
       alert('Usuário inativado com sucesso!')
       
       try {
-        await motoristasApi.inativar(motorista.id)
-      } catch (error) {
+        await motoristasApi.inativar(motorista.id || motorista._id)
+      } catch {
+        await carregarMotoristas()
+        alert('Nao foi possivel inativar o motorista.')
         // Se der erro, não mostra nada pois já atualizou a interface
       }
     } else {
@@ -46,8 +55,10 @@ const AdminPanel = () => {
       alert('Usuário ativado com sucesso!')
       
       try {
-        await motoristasApi.ativar(motorista.id)
-      } catch (error) {
+        await motoristasApi.ativar(motorista.id || motorista._id)
+      } catch {
+        await carregarMotoristas()
+        alert('Nao foi possivel ativar o motorista.')
         // Se der erro, não mostra nada pois já atualizou a interface
       }
     }
@@ -65,7 +76,7 @@ const AdminPanel = () => {
       setShowEditModal(false)
       setEditingMotorista(null)
       carregarMotoristas()
-    } catch (error) {
+    } catch {
       alert('Erro ao editar motorista')
     }
   }
@@ -129,7 +140,15 @@ const AdminPanel = () => {
               </tr>
             </thead>
             <tbody>
-              {motoristas.length === 0 ? (
+              {carregando ? (
+                <tr>
+                  <td colSpan="7" className="empty-state">Carregando motoristas...</td>
+                </tr>
+              ) : erroCarregamento ? (
+                <tr>
+                  <td colSpan="7" className="empty-state">{erroCarregamento}</td>
+                </tr>
+              ) : motoristas.length === 0 ? (
                 <tr>
                   <td colSpan="7" className="empty-state">Nenhum motorista cadastrado</td>
                 </tr>

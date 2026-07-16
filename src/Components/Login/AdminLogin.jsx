@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './AdminLogin.css'
 import { useNavigate } from 'react-router-dom'
+import { adminApi } from '../../services/AdminLogin'
 
 const AdminLogin = () => {
   const navigate = useNavigate()
@@ -22,22 +23,16 @@ const AdminLogin = () => {
     e.preventDefault()
     
     try {
-      const response = await fetch('http://localhost:8080/api/login-admin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          email_ou_cpf: formData.email_ou_cpf, 
-          senha: formData.senha 
-        }),
-      })
-      
-      const data = await response.json()
+      const data = await adminApi.login(
+        formData.email_ou_cpf,
+        formData.senha,
+      )
       
       if (data.sucesso) {
         localStorage.setItem('admin_logged', 'true')
         localStorage.setItem('admin_user', JSON.stringify(data.usuario || {}))
+        if (data.accessToken) localStorage.setItem('admin_token', data.accessToken)
+        if (data.refreshToken) localStorage.setItem('admin_refresh_token', data.refreshToken)
         navigate('/admin-panel')
       } else {
         alert(data.mensagem || 'Email ou senha incorretos')

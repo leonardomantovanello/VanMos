@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './Motoristas.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faVanShuttle, faStar, faPhone, faMap, faSchool, faFilter } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faMap, faSchool } from '@fortawesome/free-solid-svg-icons'
 import { motoristasApi } from '../../services/motoristasApi'
 
 
@@ -22,29 +22,28 @@ const Motoristas = () => {
 
     const carregarMotoristasAtivos = async () => {
         try {
-            const data = await motoristasApi.listar()
-            const motoristasAtivos = data.filter(motorista => motorista.ativo)
-            setAllMotoristas(motoristasAtivos)
+            const data = await motoristasApi.listarPublico()
+            setAllMotoristas(data)
         } catch (error) {
             console.error('Erro ao carregar motoristas:', error)
         }
     }
-    
+
     useEffect(() => {
         let motoristasFiltrados = allMotoristas
-        
+
         if (filtroLocalizacao) {
-            motoristasFiltrados = motoristasFiltrados.filter(motorista => 
-                motorista.localizacao.toLowerCase().includes(filtroLocalizacao.toLowerCase())
+            motoristasFiltrados = motoristasFiltrados.filter(motorista =>
+                (motorista.placaVan || '').toLowerCase().includes(filtroLocalizacao.toLowerCase())
             )
         }
-        
+
         if (filtroEscola) {
-            motoristasFiltrados = motoristasFiltrados.filter(motorista => 
-                motorista.escola.toLowerCase().includes(filtroEscola.toLowerCase())
+            motoristasFiltrados = motoristasFiltrados.filter(motorista =>
+                (motorista.modeloVan || '').toLowerCase().includes(filtroEscola.toLowerCase())
             )
         }
-        
+
         setMotoristas(motoristasFiltrados)
     }, [filtroLocalizacao, filtroEscola, allMotoristas])
 
@@ -58,56 +57,47 @@ const Motoristas = () => {
                     
                     <div className="filters-inputs">
                         <div className="filter-group">
-                            <label htmlFor="localizacao">
-                                <FontAwesomeIcon icon={faMap} /> Localização
+                            <label htmlFor="placa">
+                                <FontAwesomeIcon icon={faMap} /> Placa da van
                             </label>
                             <input
                                 type="text"
-                                id="localizacao"
-                                placeholder="Digite a localização..."
+                                id="placa"
+                                placeholder="Digite a placa..."
                                 value={filtroLocalizacao}
                                 onChange={(e) => setFiltroLocalizacao(e.target.value)}
                             />
                         </div>
                         <div className="filter-group">
-                            <label htmlFor="escola">
-                                <FontAwesomeIcon icon={faSchool} /> Escola
+                            <label htmlFor="modelo">
+                                <FontAwesomeIcon icon={faSchool} /> Modelo da van
                             </label>
                             <input
                                 type="text"
-                                id="escola"
-                                placeholder="Digite o nome da escola..."
+                                id="modelo"
+                                placeholder="Digite o modelo..."
                                 value={filtroEscola}
                                 onChange={(e) => setFiltroEscola(e.target.value)}
                             />
                         </div>
                     </div>
-                    
+
                     <div className="motoristas-grid">
                         {motoristas.map(motorista => (
                             <div key={motorista.id} className="motorista-card">
                                 <div className="motorista-foto">
-                                    <span className="foto-emoji">{motorista.foto}</span>
+                                    <FontAwesomeIcon icon={faUser} />
                                 </div>
                                 <div className="motorista-info">
-                                    <h3>{motorista.nome || motorista.nomeCompleto}</h3>
+                                    <h3>{motorista.nomeCompleto}</h3>
                                     <div className="info-item">
-                                        <span className="icon"><FontAwesomeIcon icon={faPhone} style={{color: "#9243bdff",}} /></span>
-                                        <span>{motorista.email || motorista.gmail}</span>
+                                        <span className="icon"><FontAwesomeIcon icon={faMap} style={{color: "#9243bdff"}} /></span>
+                                        <span>Placa: {motorista.placaVan || 'Não informado'}</span>
                                     </div>
                                     <div className="info-item">
-                                        <span className="icon"><FontAwesomeIcon icon={faUser} style={{color: "#9243bdff"}} /></span>
-                                        <span>CPF: {motorista.cpf ? motorista.cpf.slice(0, -2) + '**' : 'Não informado'}</span>
+                                        <span className="icon"><FontAwesomeIcon icon={faSchool} style={{color: "#9243bdff"}} /></span>
+                                        <span>Van: {motorista.modeloVan || 'Não informado'}</span>
                                     </div>
-                                    <div className="info-item">
-                                        <span className="icon"><FontAwesomeIcon icon={faMap} style={{color: "#9243bdff",}} /></span>
-                                        <span>Idade: {motorista.idade} anos</span>
-                                    </div>
-                                    <div className="info-item">
-                                        <span className="icon"><FontAwesomeIcon icon={faUser} style={{color: "#9243bdff",}} /></span>
-                                        <span>Gênero: {motorista.genero || 'Não informado'}</span>
-                                    </div>
-
                                 </div>
                             </div>
                         ))}
