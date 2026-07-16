@@ -1,19 +1,23 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { AuthProvider } from './contexts/AuthContext'
 import Nav from './Nav'
-import Login from './Components/Login/Login'
-import AdminLogin from './Components/Login/AdminLogin'
-import AdminPanel from './Components/Admin/AdminPanel'
-import Register from './Components/Register/Register'
-import ForgotPassword from './Components/ForgotPassword/ForgotPassword'
-import QuemSomos from './Components/QuemSomos/QuemSomos'
-import Contato from './Components/Contato/Contato'
-import Motorista from './Components/Motorista/Motorista'
-import Motoristas from './Components/Motoristas/Motoristas'
-import PaginaInicial from './Paginainicial'
+import LoadingSpinner from './Components/LoadingSpinner/LoadingSpinner'
 import './App.css'
+
+// Componentes de rota carregados sob demanda (code splitting) — cada um vira
+// seu próprio chunk em vez de tudo ser empacotado junto no bundle inicial.
+const Login = lazy(() => import('./Components/Login/Login'))
+const AdminLogin = lazy(() => import('./Components/Login/AdminLogin'))
+const AdminPanel = lazy(() => import('./Components/Admin/AdminPanel'))
+const Register = lazy(() => import('./Components/Register/Register'))
+const ForgotPassword = lazy(() => import('./Components/ForgotPassword/ForgotPassword'))
+const QuemSomos = lazy(() => import('./Components/QuemSomos/QuemSomos'))
+const Contato = lazy(() => import('./Components/Contato/Contato'))
+const Motorista = lazy(() => import('./Components/Motorista/Motorista'))
+const Motoristas = lazy(() => import('./Components/Motoristas/Motoristas'))
+const PaginaInicial = lazy(() => import('./Paginainicial'))
 
 const AppContent = () => {
     const location = useLocation()
@@ -22,18 +26,20 @@ const AppContent = () => {
     return (
         <>
             {!hideNav && <Nav />}
-            <Routes>
-                <Route path="/" element={<PaginaInicial />} />
-                <Route path="/quem-somos" element={<QuemSomos />} />
-                <Route path="/contato" element={<Contato />} />
-                <Route path="/motoristas" element={<Motoristas />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/admin-login" element={<AdminLogin />} />
-                <Route path="/admin-panel" element={<AdminPanel />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/motorista" element={<Motorista />} />
-            </Routes>
+            <Suspense fallback={<LoadingSpinner size="large" />}>
+                <Routes>
+                    <Route path="/" element={<PaginaInicial />} />
+                    <Route path="/quem-somos" element={<QuemSomos />} />
+                    <Route path="/contato" element={<Contato />} />
+                    <Route path="/motoristas" element={<Motoristas />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/admin-login" element={<AdminLogin />} />
+                    <Route path="/admin-panel" element={<AdminPanel />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/motorista" element={<Motorista />} />
+                </Routes>
+            </Suspense>
         </>
     )
 }
