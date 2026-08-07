@@ -339,6 +339,8 @@
     font-weight: 600;
     color: #e6ccff;
     margin-bottom: 0.8rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .contato-desc {

@@ -5,6 +5,7 @@ import { faEnvelope, faMessage, faPhone, faPaperPlane } from '@fortawesome/free-
 import InteractiveButton from '../InteractiveButton/InteractiveButton'
 import AnimatedCard from '../AnimatedCard/AnimatedCard'
 import Toast from '../Toast/Toast'
+import { contatoApi } from '../../services/contatoApi'
 
 const Contato = () => {
     const [isVisible, setIsVisible] = useState(false)
@@ -41,14 +42,29 @@ const Contato = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        const nome = formData.nome.trim()
+        const email = formData.email.trim()
+        const mensagem = formData.mensagem.trim()
+
+        if (!nome || !email || !formData.assunto || !mensagem) {
+            setToastMessage('Preencha nome, e-mail, assunto e mensagem antes de enviar.')
+            setToastType('error')
+            setShowToast(true)
+            return
+        }
+
         setIsSubmitting(true)
-        
+
         try {
-            // Simula envio do formulário
-            await new Promise(resolve => setTimeout(resolve, 2000))
-            
-            console.log('Formulário enviado:', formData)
-            
+            const resposta = await contatoApi.enviar({
+                nome,
+                email,
+                telefone: formData.telefone.trim(),
+                assunto: formData.assunto,
+                mensagem,
+            })
+
             setFormData({
                 nome: '',
                 email: '',
@@ -56,12 +72,12 @@ const Contato = () => {
                 assunto: '',
                 mensagem: ''
             })
-            
-            setToastMessage('Mensagem enviada com sucesso! Entraremos em contato em breve.')
+
+            setToastMessage(resposta?.mensagem || 'Mensagem enviada com sucesso! Entraremos em contato em breve.')
             setToastType('success')
             setShowToast(true)
-        } catch {
-            setToastMessage('Erro ao enviar mensagem. Tente novamente.')
+        } catch (error) {
+            setToastMessage(error.message || 'Erro ao enviar mensagem. Tente novamente.')
             setToastType('error')
             setShowToast(true)
         } finally {
@@ -109,12 +125,12 @@ const Contato = () => {
                                 <FontAwesomeIcon icon={faEnvelope} style={{color: "#9243bdff"}} />
                             </div>
                             <h3>E-mail</h3>
-                            <p className="contato-info">contato@vanmos.com.br</p>
+                            <p className="contato-info">vanmos.support@gmail.com</p>
                             <p className="contato-desc">Envie sua dúvida ou sugestão</p>
-                            <InteractiveButton 
+                            <InteractiveButton
                                 variant="primary"
                                 icon={faEnvelope}
-                                onClick={() => window.open('mailto:contato@vanmos.com.br', '_blank')}
+                                onClick={() => window.open('mailto:vanmos.support@gmail.com', '_blank')}
                             >
                                 Enviar E-mail
                             </InteractiveButton>

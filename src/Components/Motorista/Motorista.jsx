@@ -6,12 +6,11 @@
     import { alunosApi } from '../../services/alunosApi'
     import { isValidPassword } from '../../utils/validators'
     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-    import {faChartSimple, faSun, faGear, faUsers, faMap, faUser, faLocationPin, faClock,
+    import {faChartSimple, faSun, faGear, faUsers, faUser, faClock,
     faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faCheck, faPhone, faMapPin, faTrashCan,
-    faPlus, faArrowsUpDown, faPencil, faMapLocation, faIdCard, faLock}
+    faPlus, faPencil, faMapLocation, faIdCard, faLock}
     from '@fortawesome/free-solid-svg-icons'
     import './Motorista.css'
-    import { buscarEscolasPorNome } from '../../services/googlePlaces'
 
 
 const Motorista = () => {
@@ -20,42 +19,26 @@ const Motorista = () => {
     const { guardianUser, isGuardianAuthenticated, updateGuardian, logoutGuardian } = useAuth()
     const [activeTab, setActiveTab] = useState('dashboard')
     const [showAddPassenger, setShowAddPassenger] = useState(false)
-    const [showAddRota, setShowAddRota] = useState(false)
     const [isSettingsOpen, setIsSettingsOpen] = useState(false)
     const [driverName, setDriverName] = useState('Motorista')
     const [passageiros, setPassageiros] = useState([])
     const [carregandoPassageiros, setCarregandoPassageiros] = useState(true)
     const [erroPassageiros, setErroPassageiros] = useState('')
-    const [rotas, setRotas] = useState([
-        { id: 1, nome: 'Terminal Central', endereco: 'Av. Central, 100', horario: '07:00' },
-        { id: 2, nome: 'Avenida Principal', endereco: 'Av. Principal, 500', horario: '07:15' },
-        { id: 3, nome: 'Centro Comercial', endereco: 'Rua Comercial, 200', horario: '07:30' },
-        { id: 4, nome: 'Bairro Residencial', endereco: 'Rua Residencial, 300', horario: '07:45' }
-    ])
     const [novoPassageiro, setNovoPassageiro] = useState({
         nomeAluno: '', telefoneResponsavel: '', enderecoEmbarque: '', enderecoDesembarque: '', escola: '', turno: '',
         valor: '',
         nomeResponsavel: '', cpfResponsavel: '', emailResponsavel: '', idadeResponsavel: '', generoResponsavel: ''
     })
     const [cadastrandoPassageiro, setCadastrandoPassageiro] = useState(false)
-    const [escolas, setEscolas] = useState([
+    // Lista estática: cadastro/remoção de escola só existia na aba Rota
+    // (removida) — hoje só serve pro <select> do modal de passageiro.
+    const [escolas] = useState([
         { nome: 'Escola Municipal A', endereco: 'Rua das Flores, 123 - Centro' },
         { nome: 'Colégio Estadual B', endereco: 'Av. Principal, 456 - Bairro Norte' },
         { nome: 'Escola Particular C', endereco: 'Rua da Educação, 789 - Vila Sul' },
         { nome: 'Instituto Federal', endereco: 'Av. Tecnológica, 100 - Campus' },
         { nome: 'Universidade Local', endereco: 'Rua Universitária, 500 - Centro Acadêmico' }
     ])
-    const [showAddEscola, setShowAddEscola] = useState(false)
-    const [novaEscola, setNovaEscola] = useState({ nome: '', endereco: '' })
-    const [escolasSugeridas, setEscolasSugeridas] = useState([])
-    const [buscandoEscolas, setBuscandoEscolas] = useState(false)
-    const [novaRota, setNovaRota] = useState({
-        nome: '', endereco: '', horario: ''
-    })
-    const [selectedRotas, setSelectedRotas] = useState([])
-    const [showEditRota, setShowEditRota] = useState(false)
-    const [editingRota, setEditingRota] = useState(null)
-    const [draggedItem, setDraggedItem] = useState(null)
     const [alunosAdicionadosSemana, setAlunosAdicionadosSemana] = useState(2)
     const [receitaMensal, setReceitaMensal] = useState(850)
     const [showPassageiroDetails, setShowPassageiroDetails] = useState(false)
@@ -222,124 +205,6 @@ const Motorista = () => {
         })
     }
 
-    const handleAddRota = (e) => {
-        e.preventDefault()
-        const newId = Math.max(...rotas.map(r => r.id)) + 1
-        const newRotas = [...rotas, { 
-            ...novaRota, 
-            id: newId
-        }].sort((a, b) => a.horario.localeCompare(b.horario))
-        setRotas(newRotas)
-        setNovaRota({ nome: '', endereco: '', horario: '' })
-        setShowAddRota(false)
-    }
-
-    const handleRemoveRota = (id) => {
-        setRotas(rotas.filter(r => r.id !== id))
-    }
-
-    const handleSelectRota = (id) => {
-        setSelectedRotas(prev => 
-            prev.includes(id) 
-                ? prev.filter(rotaId => rotaId !== id)
-                : [...prev, id]
-        )
-    }
-
-    const handleRemoveSelectedRotas = () => {
-        setRotas(rotas.filter(r => !selectedRotas.includes(r.id)))
-        setSelectedRotas([])
-    }
-
-    const handleEditRota = (rota) => {
-        setEditingRota(rota)
-        setShowEditRota(true)
-    }
-
-    const handleUpdateRota = (e) => {
-        e.preventDefault()
-        const updatedRotas = rotas.map(r => 
-            r.id === editingRota.id ? editingRota : r
-        ).sort((a, b) => a.horario.localeCompare(b.horario))
-        setRotas(updatedRotas)
-        setShowEditRota(false)
-        setEditingRota(null)
-    }
-
-    const handleEditInputChange = (e) => {
-        setEditingRota({
-            ...editingRota,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const handleDragStart = (e, index) => {
-        setDraggedItem(index)
-        e.dataTransfer.effectAllowed = 'move'
-    }
-
-    const handleDragOver = (e) => {
-        e.preventDefault()
-        e.dataTransfer.dropEffect = 'move'
-    }
-
-    const handleDrop = (e, dropIndex) => {
-        e.preventDefault()
-        if (draggedItem === null) return
-        
-        const newRotas = [...rotas]
-        const draggedRota = newRotas[draggedItem]
-        newRotas.splice(draggedItem, 1)
-        newRotas.splice(dropIndex, 0, draggedRota)
-        
-        setRotas(newRotas)
-        setDraggedItem(null)
-    }
-
-    const handleRotaInputChange = (e) => {
-        setNovaRota({
-            ...novaRota,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const handleAddEscola = (e) => {
-        e.preventDefault()
-        if (novaEscola.nome.trim() && !escolas.find(e => e.nome === novaEscola.nome.trim())) {
-            setEscolas([...escolas, { nome: novaEscola.nome.trim(), endereco: novaEscola.endereco.trim() }])
-            setNovaEscola({ nome: '', endereco: '' })
-            setShowAddEscola(false)
-            setEscolasSugeridas([])
-        }
-    }
-
-    const buscarEscolas = async (query) => {
-        if (query.length < 3) {
-            setEscolasSugeridas([])
-            return
-        }
-        
-        setBuscandoEscolas(true)
-        try {
-            const resultados = await buscarEscolasPorNome(query)
-            setEscolasSugeridas(resultados)
-        } catch (error) {
-            console.error('Erro ao buscar escolas:', error)
-            setEscolasSugeridas([])
-        } finally {
-            setBuscandoEscolas(false)
-        }
-    }
-
-    const selecionarEscola = (escola) => {
-        setNovaEscola(escola)
-        setEscolasSugeridas([])
-    }
-
-    const handleRemoveEscola = (escolaNome) => {
-        setEscolas(escolas.filter(e => e.nome !== escolaNome))
-    }
-
     const handleShowPassageiroDetails = (passageiro) => {
         setSelectedPassageiro(passageiro)
         setShowPassageiroDetails(true)
@@ -448,12 +313,6 @@ const Motorista = () => {
                             onClick={() => setActiveTab('passageiros')}
                         >
                             <FontAwesomeIcon icon={faUsers} style={{color: "#691569ff"}} /> Passageiros
-                        </button>
-                        <button 
-                            className={`nav-btn ${activeTab === 'rota' ? 'active' : ''}`}
-                            onClick={() => setActiveTab('rota')}
-                        >
-                            <FontAwesomeIcon icon={faMap} style={{color: "#691569ff"}} /> Rota
                         </button>
                         <button
                             className={`nav-btn ${activeTab === 'ajustes' ? 'active' : ''}`}
@@ -581,22 +440,6 @@ const Motorista = () => {
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon"><FontAwesomeIcon icon={faLocationPin} style={{color: "#b852b8ff"}} /></div>
-                                <div className="stat-info">
-                                    <h3>{rotas.length}</h3>
-                                    <p>Pontos de Parada</p>
-                                    <span className="stat-trend">Rota otimizada</span>
-                                </div>
-                            </div>
-                            <div className="stat-card">
-                                <div className="stat-icon"><FontAwesomeIcon icon={faClock} style={{color: "#b852b8ff"}} /></div>
-                                <div className="stat-info">
-                                    <h3>{rotas.length * 10}min</h3>
-                                    <p>Tempo Médio</p>
-                                    <span className="stat-trend">-5min hoje</span>
-                                </div>
-                            </div>
-                            <div className="stat-card">
                                 <div className="stat-icon"><FontAwesomeIcon icon={faMoneyBill} style={{color: "#b852b8ff"}} /></div>
                                 <div className="stat-info">
                                     <h3>R$ {receitaMensal.toFixed(2).replace('.', ',')}</h3>
@@ -647,14 +490,6 @@ const Motorista = () => {
                                     <button className="quick-action-btn" onClick={() => setActiveTab('passageiros')}>
                                         <FontAwesomeIcon icon={faUser} />
                                         <span>Adicionar Passageiro</span>
-                                    </button>
-                                    <button className="quick-action-btn" onClick={() => setActiveTab('rota')}>
-                                        <FontAwesomeIcon icon={faMapPin} />
-                                        <span>Nova Rota</span>
-                                    </button>
-                                    <button className="quick-action-btn" onClick={() => setActiveTab('rota')}>
-                                        <FontAwesomeIcon icon={faMapLocation} />
-                                        <span>Adicionar Escola</span>
                                     </button>
                                 </div>
                             </div>
@@ -982,278 +817,6 @@ const Motorista = () => {
                                                 onClick={() => {
                                                     setShowEditPassageiro(false)
                                                     setEditingPassageiro(null)
-                                                }}
-                                            >
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {activeTab === 'rota' && (
-                    <div className="rota-section">
-                        <div className="section-header">
-                            <h2>Gerenciar Rotas<br />e Escolas</h2>
-                            <div className="header-buttons">
-                                <button 
-                                    className="add-btn"
-                                    onClick={() => setShowAddRota(true)}
-                                >
-                                    <FontAwesomeIcon icon={faPlus} /> Adicionar Rota
-                                </button>
-                                <button 
-                                    className="add-btn escola-btn"
-                                    onClick={() => setShowAddEscola(true)}
-                                >
-                                    <FontAwesomeIcon icon={faPlus} /> Adicionar Escola
-                                </button>
-                                {selectedRotas.length > 0 && (
-                                    <button 
-                                        className="remove-selected-btn"
-                                        onClick={handleRemoveSelectedRotas}
-                                    >
-                                        <FontAwesomeIcon icon={faTrashCan} /> Remover Selecionadas ({selectedRotas.length})
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-                        
-                        <div className="rota-info">
-                            <div className="rota-card">
-                                <h3><FontAwesomeIcon icon={faMapLocation} style={{color: "#b38fc6"}} /> Rota Principal</h3>
-                                <div className="rota-details">
-                                    <p><strong>Origem:</strong> {rotas[0]?.nome || 'Terminal Central'}</p>
-                                    <p><strong>Destino:</strong> {rotas[rotas.length - 1]?.nome || 'Bairro Residencial'}</p>
-                                    <p><strong>Total de Paradas:</strong> {rotas.length}</p>
-                                    <p><strong>Tempo Estimado:</strong> {rotas.length * 10} minutos</p>
-                                </div>
-                            </div>
-
-                            <div className="pontos-parada">
-                                <h3><FontAwesomeIcon icon={faMapPin} style={{color: "#b38fc6"}} /> Pontos de Parada</h3>
-                                <div className="pontos-list">
-                                    {rotas.map((rota, index) => (
-                                        <div 
-                                            key={rota.id} 
-                                            className={`ponto-item ${selectedRotas.includes(rota.id) ? 'selected' : ''} ${draggedItem === index ? 'dragging' : ''}`}
-                                            draggable
-                                            onDragStart={(e) => handleDragStart(e, index)}
-                                            onDragOver={handleDragOver}
-                                            onDrop={(e) => handleDrop(e, index)}
-                                        >
-                                            <div className="drag-handle"><FontAwesomeIcon icon={faArrowsUpDown} style={{color: "#b38fc6"}} /></div>
-                                            <input 
-                                                type="checkbox"
-                                                className="rota-checkbox"
-                                                checked={selectedRotas.includes(rota.id)}
-                                                onChange={() => handleSelectRota(rota.id)}
-                                            />
-                                            <span className="ponto-numero">{index + 1}</span>
-                                            <div className="ponto-info">
-                                                <h4>{rota.nome}</h4>
-                                                <p>{rota.endereco} - {rota.horario}</p>
-                                            </div>
-                                            <div className="ponto-actions">
-                                                <button 
-                                                    className="edit-btn"
-                                                    onClick={() => handleEditRota(rota)}
-                                                >
-                                                    <FontAwesomeIcon icon={faPencil} style={{color: "#28a745"}} />
-                                                </button>
-                                                <button 
-                                                    className="remove-btn"
-                                                    onClick={() => handleRemoveRota(rota.id)}
-                                                >
-                                                    <FontAwesomeIcon icon={faTrashCan} style={{color: "#dc3545"}} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="escolas-card">
-                                <h3><FontAwesomeIcon icon={faMapLocation} style={{color: "#b38fc6"}} /> Escolas Cadastradas</h3>
-                                <div className="escolas-list">
-                                    {escolas.map(escola => (
-                                        <div key={escola.nome} className="escola-item">
-                                            <div className="escola-info">
-                                                <strong>{escola.nome}</strong>
-                                                <small>{escola.endereco}</small>
-                                            </div>
-                                            <button 
-                                                className="remove-escola-btn"
-                                                onClick={() => handleRemoveEscola(escola.nome)}
-                                            >
-                                                <FontAwesomeIcon icon={faTrashCan} style={{color: "#dc3545"}} />
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="horarios-card">
-                                <h3><FontAwesomeIcon icon={faClock} style={{color: "#b38fc6"}} /> Horários de Operação</h3>
-                                <div className="horarios-grid">
-                                    <div className="horario-item">
-                                        <strong>Manhã:</strong> 07:00 - 12:00
-                                    </div>
-                                    <div className="horario-item">
-                                        <strong>Tarde:</strong> 13:00 - 18:00
-                                    </div>
-                                    <div className="horario-item">
-                                        <strong>Intervalo:</strong> 30 minutos
-                                    </div>
-                                    <div className="horario-item">
-                                        <strong>Dias:</strong> Segunda a Sábado
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {showAddRota && (
-                            <div className="modal-overlay">
-                                <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-add-rota">
-                                    <h3 id="modal-title-add-rota">Adicionar Nova Rota</h3>
-                                    <form onSubmit={handleAddRota}>
-                                        <input
-                                            type="text"
-                                            name="nome"
-                                            placeholder="Nome da parada"
-                                            value={novaRota.nome}
-                                            onChange={handleRotaInputChange}
-                                            required
-                                        />
-                                        <input
-                                            type="text"
-                                            name="endereco"
-                                            placeholder="Endereço completo"
-                                            value={novaRota.endereco}
-                                            onChange={handleRotaInputChange}
-                                            required
-                                        />
-                                        <input
-                                            type="time"
-                                            name="horario"
-                                            placeholder="Horário"
-                                            value={novaRota.horario}
-                                            onChange={handleRotaInputChange}
-                                            required
-                                        />
-                                        <div className="modal-actions">
-                                            <button type="submit" className="confirm-btn">Adicionar</button>
-                                            <button 
-                                                type="button" 
-                                                className="cancel-btn"
-                                                onClick={() => setShowAddRota(false)}
-                                            >
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        )}
-
-                        {showEditRota && editingRota && (
-                            <div className="modal-overlay">
-                                <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-edit-rota">
-                                    <h3 id="modal-title-edit-rota">Editar Rota</h3>
-                                    <form onSubmit={handleUpdateRota}>
-                                        <input
-                                            type="text"
-                                            name="nome"
-                                            placeholder="Nome da parada"
-                                            value={editingRota.nome}
-                                            onChange={handleEditInputChange}
-                                            required
-                                        />
-                                        <input
-                                            type="text"
-                                            name="endereco"
-                                            placeholder="Endereço completo"
-                                            value={editingRota.endereco}
-                                            onChange={handleEditInputChange}
-                                            required
-                                        />
-                                        <input
-                                            type="time"
-                                            name="horario"
-                                            placeholder="Horário"
-                                            value={editingRota.horario}
-                                            onChange={handleEditInputChange}
-                                            required
-                                        />
-                                        <div className="modal-actions">
-                                            <button type="submit" className="confirm-btn">Salvar</button>
-                                            <button 
-                                                type="button" 
-                                                className="cancel-btn"
-                                                onClick={() => {
-                                                    setShowEditRota(false)
-                                                    setEditingRota(null)
-                                                }}
-                                            >
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        )}
-
-                        {showAddEscola && (
-                            <div className="modal-overlay">
-                                <div className="modal escola-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-add-escola">
-                                    <h3 id="modal-title-add-escola">Adicionar Nova Escola</h3>
-                                    <form onSubmit={handleAddEscola}>
-                                        <div className="search-container">
-                                            <input
-                                                type="text"
-                                                placeholder="Digite o nome da escola para buscar..."
-                                                value={novaEscola.nome}
-                                                onChange={(e) => {
-                                                    setNovaEscola({ ...novaEscola, nome: e.target.value })
-                                                    buscarEscolas(e.target.value)
-                                                }}
-                                                required
-                                            />
-                                            {buscandoEscolas && <div className="loading-search">Buscando...</div>}
-                                            {escolasSugeridas.length > 0 && (
-                                                <div className="sugestoes-lista">
-                                                    {escolasSugeridas.map((escola, index) => (
-                                                        <div 
-                                                            key={index} 
-                                                            className="sugestao-item"
-                                                            onClick={() => selecionarEscola(escola)}
-                                                        >
-                                                            <strong>{escola.nome}</strong>
-                                                            <small>{escola.endereco}</small>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                        <input
-                                            type="text"
-                                            placeholder="Endereço da escola"
-                                            value={novaEscola.endereco}
-                                            onChange={(e) => setNovaEscola({ ...novaEscola, endereco: e.target.value })}
-                                            required
-                                        />
-                                        <div className="modal-actions">
-                                            <button type="submit" className="confirm-btn">Adicionar</button>
-                                            <button 
-                                                type="button" 
-                                                className="cancel-btn"
-                                                onClick={() => {
-                                                    setShowAddEscola(false)
-                                                    setNovaEscola({ nome: '', endereco: '' })
-                                                    setEscolasSugeridas([])
                                                 }}
                                             >
                                                 Cancelar
