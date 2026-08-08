@@ -214,31 +214,6 @@
     font-family: "pack";
 }
 
-.stats-mini {
-    display: flex;
-    gap: 40px;
-    margin-top: 40px;
-}
-
-.stats-mini .stat {
-    text-align: center;
-}
-
-.stats-mini .number {
-    display: block;
-    font-size: 2rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, #b38fc6 0%, #ffffff 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.stats-mini .label {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
-}
-
 .image-content {
     display: flex;
     justify-content: center;
@@ -481,12 +456,7 @@
         gap: 40px;
         text-align: center;
     }
-    
-    .stats-mini {
-        justify-content: center;
-        gap: 30px;
-    }
-    
+
     .section-title {
         font-size: 2rem;
     }
@@ -586,11 +556,6 @@
 }
 
 [data-theme="light"] .text-content p {
-    color: #2c2c2c;
-    font-weight: 500;
-}
-
-[data-theme="light"] .stats-mini .label {
     color: #2c2c2c;
     font-weight: 500;
 }

@@ -56,16 +56,6 @@ const QuemSomos = () => {
                                 que buscavam um transporte mais seguro, confortável e confiável. Hoje, somos referência 
                                 em mobilidade urbana inteligente.
                             </p>
-                            <div className="stats-mini">
-                                <div className="stat">
-                                    <span className="number">1</span>
-                                    <span className="label">Ano de Experiência</span>
-                                </div>
-                                <div className="stat">
-                                    <span className="number">500+</span>
-                                    <span className="label">Motoristas Ativos</span>
-                                </div>
-                            </div>
                         </div>
                         <div className="image-content">
                             <div className="story-card">

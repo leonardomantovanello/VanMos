@@ -13,6 +13,7 @@ const AdminLogin = lazy(() => import('./Components/Login/AdminLogin'))
 const AdminPanel = lazy(() => import('./Components/Admin/AdminPanel'))
 const Register = lazy(() => import('./Components/Register/Register'))
 const ForgotPassword = lazy(() => import('./Components/ForgotPassword/ForgotPassword'))
+const ResetPassword = lazy(() => import('./Components/ResetPassword/ResetPassword'))
 const QuemSomos = lazy(() => import('./Components/QuemSomos/QuemSomos'))
 const Contato = lazy(() => import('./Components/Contato/Contato'))
 const Motorista = lazy(() => import('./Components/Motorista/Motorista'))
@@ -21,7 +22,7 @@ const PaginaInicial = lazy(() => import('./Paginainicial'))
 
 const AppContent = () => {
     const location = useLocation()
-    const hideNav = location.pathname === '/login' || location.pathname === '/admin-login' || location.pathname === '/admin-panel' || location.pathname === '/register' || location.pathname === '/motorista' || location.pathname === '/forgot-password'
+    const hideNav = location.pathname === '/login' || location.pathname === '/admin-login' || location.pathname === '/admin-panel' || location.pathname === '/register' || location.pathname === '/motorista' || location.pathname === '/forgot-password' || location.pathname === '/redefinir-senha'
 
     return (
         <>
@@ -37,6 +38,7 @@ const AppContent = () => {
                     <Route path="/admin-panel" element={<AdminPanel />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/redefinir-senha" element={<ResetPassword />} />
                     <Route path="/motorista" element={<Motorista />} />
                 </Routes>
             </Suspense>

@@ -1,59 +1,35 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './ForgotPassword.css'
-import { findMockUserByEmail, updateMockUserPassword } from '../../utils/mockUsersStore'
-import { isValidEmail, isValidPassword } from '../../utils/validators'
+import { passageirosApi } from '../../services/passageirosApi'
+import { isValidEmail } from '../../utils/validators'
 
 const ForgotPassword = () => {
     const navigate = useNavigate()
-    const [step, setStep] = useState(1)
-    const [formData, setFormData] = useState({
-        email: '',
-        newPassword: '',
-        confirmPassword: ''
-    })
+    const [email, setEmail] = useState('')
+    const [enviando, setEnviando] = useState(false)
+    const [enviado, setEnviado] = useState(false)
 
-    const handleInputChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const handleVerifyEmail = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (!isValidEmail(formData.email)) {
+        if (!isValidEmail(email)) {
             alert('Por favor, insira um e-mail válido')
             return
         }
 
-        const user = findMockUserByEmail(formData.email)
-
-        if (!user) {
-            alert('E-mail não encontrado. Verifique o endereço digitado.')
-            return
+        setEnviando(true)
+        try {
+            // Resposta é sempre a mesma mensagem genérica, exista ou não o
+            // e-mail — o backend evita confirmar cadastro de terceiros de
+            // propósito, então não há "sucesso"/"falha" a distinguir aqui.
+            await passageirosApi.esqueciSenha(email)
+            setEnviado(true)
+        } catch (error) {
+            alert(error.message || 'Não foi possível processar o pedido. Tente novamente.')
+        } finally {
+            setEnviando(false)
         }
-
-        setStep(2)
-    }
-
-    const handleResetPassword = (e) => {
-        e.preventDefault()
-
-        if (!isValidPassword(formData.newPassword)) {
-            alert('A senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número')
-            return
-        }
-
-        if (formData.newPassword !== formData.confirmPassword) {
-            alert('As senhas não coincidem')
-            return
-        }
-
-        updateMockUserPassword(formData.email, formData.newPassword)
-        alert('Senha alterada com sucesso!')
-        navigate('/login')
     }
 
     return (
@@ -63,26 +39,34 @@ const ForgotPassword = () => {
                 <div className="bg-circle circle-2"></div>
                 <div className="bg-circle circle-3"></div>
             </div>
-            
-            <button 
-                type="button" 
+
+            <button
+                type="button"
                 className="voltar-btn"
-                onClick={() => navigate('/login')} 
+                onClick={() => navigate('/login')}
             >
                 <span>←</span> Voltar ao Login
             </button>
 
             <div className="forgot-password-content">
-                {step === 1 ? (
+                {enviado ? (
+                    <div className="forgot-password-header">
+                        <h1 className="forgot-password-title">Verifique seu e-mail</h1>
+                        <p className="forgot-password-subtitle">
+                            Se esse e-mail estiver cadastrado, enviamos um link de redefinição para ele.
+                            O link vale por 30 minutos — clique nele para escolher uma nova senha.
+                        </p>
+                    </div>
+                ) : (
                     <>
                         <div className="forgot-password-header">
                             <h1 className="forgot-password-title">Esqueceu a senha?</h1>
                             <p className="forgot-password-subtitle">
-                                Digite seu e-mail para recuperar sua conta
+                                Digite seu e-mail cadastrado e enviaremos um link de redefinição de senha
                             </p>
                         </div>
 
-                        <form className="forgot-password-form" onSubmit={handleVerifyEmail}>
+                        <form className="forgot-password-form" onSubmit={handleSubmit}>
                             <div className="input-group">
                                 <label htmlFor="email">E-mail</label>
                                 <input
@@ -90,55 +74,14 @@ const ForgotPassword = () => {
                                     id="email"
                                     name="email"
                                     placeholder="Digite seu e-mail"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                 />
                             </div>
 
-                            <button type="submit" className="verify-btn">
-                                Verificar E-mail
-                            </button>
-                        </form>
-                    </>
-                ) : (
-                    <>
-                        <div className="forgot-password-header">
-                            <h1 className="forgot-password-title">Nova Senha</h1>
-                            <p className="forgot-password-subtitle">
-                                Digite sua nova senha
-                            </p>
-                        </div>
-
-                        <form className="forgot-password-form" onSubmit={handleResetPassword}>
-                            <div className="input-group">
-                                <label htmlFor="newPassword">Nova Senha</label>
-                                <input
-                                    type="password"
-                                    id="newPassword"
-                                    name="newPassword"
-                                    placeholder="Digite sua nova senha"
-                                    value={formData.newPassword}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-                            </div>
-
-                            <div className="input-group">
-                                <label htmlFor="confirmPassword">Confirmar Senha</label>
-                                <input
-                                    type="password"
-                                    id="confirmPassword"
-                                    name="confirmPassword"
-                                    placeholder="Confirme sua nova senha"
-                                    value={formData.confirmPassword}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-                            </div>
-
-                            <button type="submit" className="reset-btn">
-                                Alterar Senha
+                            <button type="submit" className="verify-btn" disabled={enviando}>
+                                {enviando ? 'Enviando...' : 'Enviar link de redefinição'}
                             </button>
                         </form>
                     </>

@@ -1,0 +1,89 @@
+.donut-chart {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.donut-chart-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.donut-chart-segment {
+    transition: stroke-dasharray 0.6s ease;
+}
+
+.donut-chart-center {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.donut-chart-center-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #b38fc6;
+    font-family: "akira";
+}
+
+.donut-chart-center-label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.donut-chart-legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    min-width: 140px;
+}
+
+.donut-chart-legend li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.donut-chart-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.donut-chart-legend-label {
+    flex: 1;
+}
+
+.donut-chart-legend li strong {
+    color: #b38fc6;
+}
+
+[data-theme="light"] .donut-chart-center-value {
+    color: #6d1a6d;
+}
+
+[data-theme="light"] .donut-chart-center-label {
+    color: rgba(33, 37, 41, 0.7);
+}
+
+[data-theme="light"] .donut-chart-legend li {
+    color: rgba(33, 37, 41, 0.85);
+}
+
+[data-theme="light"] .donut-chart-legend li strong {
+    color: #6d1a6d;
+}

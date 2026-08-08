@@ -1,4 +1,4 @@
-    import React, { useState, useEffect } from 'react'
+    import React, { useState, useEffect, useMemo } from 'react'
     import { useNavigate } from 'react-router-dom'
     import { useTheme } from '../../contexts/ThemeContext'
     import { useAuth } from '../../contexts/AuthContext'
@@ -6,10 +6,12 @@
     import { alunosApi } from '../../services/alunosApi'
     import { isValidPassword } from '../../utils/validators'
     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-    import {faChartSimple, faSun, faGear, faUsers, faUser, faClock,
-    faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faCheck, faPhone, faMapPin, faTrashCan,
+    import {faChartSimple, faChartPie, faSun, faGear, faUsers, faUser,
+    faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faPhone, faMapPin, faTrashCan,
     faPlus, faPencil, faMapLocation, faIdCard, faLock}
     from '@fortawesome/free-solid-svg-icons'
+    import DonutChart from '../Charts/DonutChart'
+    import BarChart from '../Charts/BarChart'
     import './Motorista.css'
 
 
@@ -39,8 +41,6 @@ const Motorista = () => {
         { nome: 'Instituto Federal', endereco: 'Av. Tecnológica, 100 - Campus' },
         { nome: 'Universidade Local', endereco: 'Rua Universitária, 500 - Centro Acadêmico' }
     ])
-    const [alunosAdicionadosSemana, setAlunosAdicionadosSemana] = useState(2)
-    const [receitaMensal, setReceitaMensal] = useState(850)
     const [showPassageiroDetails, setShowPassageiroDetails] = useState(false)
     const [selectedPassageiro, setSelectedPassageiro] = useState(null)
     const [showEditPassageiro, setShowEditPassageiro] = useState(false)
@@ -51,14 +51,53 @@ const Motorista = () => {
     const [ajustesTab, setAjustesTab] = useState('senha')
     const [senhaForm, setSenhaForm] = useState({ senhaAtual: '', novaSenha: '', confirmarNovaSenha: '' })
     const [alterandoSenha, setAlterandoSenha] = useState(false)
-    const [bgElements, setBgElements] = useState([
-        { id: 1, x: 5, y: 10, size: 300, speedX: 0.5, speedY: 0.3 },
-        { id: 2, x: 80, y: 60, size: 200, speedX: -0.3, speedY: 0.4 },
-        { id: 3, x: 15, y: 80, size: 150, speedX: 0.4, speedY: -0.2 },
-        { id: 4, x: 70, y: 30, size: 100, speedX: -0.2, speedY: 0.5 },
-        { id: 5, x: 85, y: 60, size: 80, speedX: 0.3, speedY: -0.4 }
-    ])
 
+    // Passageiros agrupados por turno — vira o donut chart do dashboard.
+    const statsPorTurno = useMemo(() => {
+        const cores = { MANHA: '#b38fc6', TARDE: '#B197FC', NOITE: '#6d1a6d' }
+        const rotulos = { MANHA: 'Manhã', TARDE: 'Tarde', NOITE: 'Noite' }
+        const contagem = { MANHA: 0, TARDE: 0, NOITE: 0 }
+        let semTurno = 0
+
+        passageiros.forEach(p => {
+            if (p.turno && contagem[p.turno] !== undefined) contagem[p.turno]++
+            else semTurno++
+        })
+
+        const resultado = Object.keys(contagem)
+            .filter(turno => contagem[turno] > 0)
+            .map(turno => ({ label: rotulos[turno], value: contagem[turno], color: cores[turno] }))
+
+        if (semTurno > 0) {
+            resultado.push({ label: 'Não definido', value: semTurno, color: 'rgba(255, 255, 255, 0.25)' })
+        }
+
+        return resultado
+    }, [passageiros])
+
+    // Passageiros agrupados por escola (top 6) — vira o bar chart do dashboard.
+    const statsPorEscola = useMemo(() => {
+        const paleta = ['#b38fc6', '#B197FC', '#6d1a6d', '#4ade80', '#e6ccff', '#9333ea']
+        const contagem = {}
+
+        passageiros.forEach(p => {
+            const escola = p.escola || 'Não informada'
+            contagem[escola] = (contagem[escola] || 0) + 1
+        })
+
+        return Object.entries(contagem)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 6)
+            .map(([escola, valor], i) => ({ label: escola, value: valor, color: paleta[i % paleta.length] }))
+    }, [passageiros])
+
+    // Soma o valor mensal dos alunos ativos — só conta receita de quem está
+    // sendo transportado de fato agora, não alunos inativos/desligados.
+    const receitaMensal = useMemo(() => {
+        return passageiros
+            .filter(p => p.status === 'ativo')
+            .reduce((soma, p) => soma + (Number(p.valor) || 0), 0)
+    }, [passageiros])
 
     useEffect(() => {
         // Guarda de rota: redireciona para o login se não houver responsável logado.
@@ -73,39 +112,6 @@ const Motorista = () => {
         setDriverName(ultimoNome ? `${primeiroNome} ${ultimoNome}` : primeiroNome)
 
         carregarPassageiros()
-
-        // Animação dos elementos de fundo
-        const animateElements = () => {
-            setBgElements(prev => prev.map(element => {
-                let newX = element.x + element.speedX
-                let newY = element.y + element.speedY
-                let newSpeedX = element.speedX
-                let newSpeedY = element.speedY
-
-                // Rebater nas bordas
-                if (newX <= 0 || newX >= 95) {
-                    newSpeedX = -element.speedX
-                    newX = Math.max(0, Math.min(95, newX))
-                }
-                if (newY <= 0 || newY >= 90) {
-                    newSpeedY = -element.speedY
-                    newY = Math.max(0, Math.min(90, newY))
-                }
-
-                return {
-                    ...element,
-                    x: newX,
-                    y: newY,
-                    speedX: newSpeedX,
-                    speedY: newSpeedY
-                }
-            }))
-        }
-
-        const interval = setInterval(animateElements, 50)
-        return () => clearInterval(interval)
-
-
     }, [isGuardianAuthenticated, guardianUser, navigate])
 
     const handleLogout = () => {
@@ -123,6 +129,7 @@ const Motorista = () => {
         enderecoDesembarque: aluno.enderecoDesembarque,
         escola: aluno.escola,
         turno: aluno.turno,
+        valor: aluno.valor,
         ativo: aluno.ativo,
         status: aluno.ativo ? 'ativo' : 'inativo',
     })
@@ -163,14 +170,10 @@ const Motorista = () => {
                 enderecoDesembarque: novoPassageiro.enderecoDesembarque,
                 escola: novoPassageiro.escola,
                 turno: novoPassageiro.turno,
+                valor: novoPassageiro.valor ? Number(novoPassageiro.valor) : null,
             })
 
             await carregarPassageiros()
-
-            setAlunosAdicionadosSemana(prev => prev + 1)
-            if (novoPassageiro.valor) {
-                setReceitaMensal(prev => prev + parseFloat(novoPassageiro.valor))
-            }
 
             alert(`Aluno cadastrado com sucesso!\n\nA senha de acesso ao aplicativo do responsável foi enviada para ${novoPassageiro.emailResponsavel}.`)
 
@@ -226,6 +229,7 @@ const Motorista = () => {
                 enderecoDesembarque: editingPassageiro.enderecoDesembarque,
                 escola: editingPassageiro.escola,
                 turno: editingPassageiro.turno,
+                valor: editingPassageiro.valor ? Number(editingPassageiro.valor) : null,
                 ativo: editingPassageiro.ativo,
             })
             await carregarPassageiros()
@@ -276,23 +280,7 @@ const Motorista = () => {
 
     return (
         <div className="motorista-container">
-            {/* Background Elements */}
-            <div className="motorista-bg-elements">
-                {bgElements.map(element => (
-                    <div
-                        key={element.id}
-                        className="motorista-floating-shape"
-                        style={{
-                            left: `${element.x}%`,
-                            top: `${element.y}%`,
-                            width: `${element.size}px`,
-                            height: `${element.size}px`,
-                            transition: 'all 0.05s linear'
-                        }}
-                    ></div>
-                ))}
-            </div>
-            
+
             {/* Unified Header and Navigation */}
             <header className="motorista-header">
                 <div className="header-content">
@@ -302,35 +290,21 @@ const Motorista = () => {
                     </div>
                     
                     <nav className="motorista-nav">
-                        <button 
+                        <button
                             className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
                             onClick={() => setActiveTab('dashboard')}
                         >
                            <FontAwesomeIcon icon={faChartSimple} style={{color: "#691569ff"}} /> Dashboard
                         </button>
-                        <button 
+                        <button
                             className={`nav-btn ${activeTab === 'passageiros' ? 'active' : ''}`}
                             onClick={() => setActiveTab('passageiros')}
                         >
                             <FontAwesomeIcon icon={faUsers} style={{color: "#691569ff"}} /> Passageiros
                         </button>
-                        <button
-                            className={`nav-btn ${activeTab === 'ajustes' ? 'active' : ''}`}
-                            onClick={() => setActiveTab('ajustes')}
-                        >
-                            <FontAwesomeIcon icon={faGear} style={{color: "#691569ff"}} /> Ajustes
-                        </button>
                     </nav>
-                    
+
                     <div className="settings-container">
-                        <button
-                            className="perfil-btn"
-                            onClick={() => setShowPerfil(true)}
-                            title="Meu Perfil"
-                            aria-label="Meu Perfil"
-                        >
-                            <FontAwesomeIcon icon={faUser} />
-                        </button>
                         <button
                             className="settings-btn"
                             onClick={() => setIsSettingsOpen(!isSettingsOpen)}
@@ -342,13 +316,25 @@ const Motorista = () => {
                         </button>
                         {isSettingsOpen && (
                             <div className="settings-dropdown">
-                                <button 
+                                <button
+                                    className="perfil-option"
+                                    onClick={() => { setShowPerfil(true); setIsSettingsOpen(false) }}
+                                >
+                                    <FontAwesomeIcon icon={faUser} style={{color: "#b852b8ff"}} /> Meu Perfil
+                                </button>
+                                <button
+                                    className="ajustes-option"
+                                    onClick={() => { setActiveTab('ajustes'); setIsSettingsOpen(false) }}
+                                >
+                                    <FontAwesomeIcon icon={faGear} style={{color: "#b852b8ff"}} /> Ajustes
+                                </button>
+                                <button
                                     className="theme-toggle"
                                     onClick={toggleTheme}
                                 >
                                     {isDark ? <FontAwesomeIcon icon={faSun} style={{color: "#b852b8ff"}} /> : <FontAwesomeIcon icon={faMoon} style={{color: "#b852b8ff"}} />} {isDark ? 'Modo Claro' : 'Modo Escuro'}
                                 </button>
-                                <button 
+                                <button
                                     className="logout-option"
                                     onClick={handleLogout}
                                 >
@@ -434,9 +420,15 @@ const Motorista = () => {
                             <div className="stat-card">
                                 <div className="stat-icon"><FontAwesomeIcon icon={faUser} style={{color: "#b852b8ff"}} /></div>
                                 <div className="stat-info">
-                                    <h3>{passageiros.length}</h3>
+                                    <h3>{passageiros.filter(p => p.status === 'ativo').length}</h3>
                                     <p>Passageiros Ativos</p>
-                                    <span className="stat-trend">+{alunosAdicionadosSemana} esta semana</span>
+                                </div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-icon"><FontAwesomeIcon icon={faMapLocation} style={{color: "#b852b8ff"}} /></div>
+                                <div className="stat-info">
+                                    <h3>{new Set(passageiros.map(p => p.escola)).size}</h3>
+                                    <p>Escolas Atendidas</p>
                                 </div>
                             </div>
                             <div className="stat-card">
@@ -444,56 +436,31 @@ const Motorista = () => {
                                 <div className="stat-info">
                                     <h3>R$ {receitaMensal.toFixed(2).replace('.', ',')}</h3>
                                     <p>Receita Mensal</p>
-                                    <span className="stat-trend">+12% vs mês anterior</span>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div className="dashboard-grid">
-                            <div className="recent-activity">
-                                <div className="card-header">
-                                    <h3><FontAwesomeIcon icon={faClock} style={{color: "#b38fc6"}} /> Atividades Recentes</h3>
+
+                        {passageiros.length > 0 ? (
+                            <div className="charts-grid">
+                                <div className="chart-card">
+                                    <div className="card-header">
+                                        <h3><FontAwesomeIcon icon={faChartPie} style={{color: "#b38fc6"}} /> Passageiros por Turno</h3>
+                                    </div>
+                                    <DonutChart data={statsPorTurno} centerLabel="passageiros" />
                                 </div>
-                                <div className="activity-list">
-                                    <div className="activity-item">
-                                        <div className="activity-icon success"><FontAwesomeIcon icon={faCheck} /></div>
-                                        <div className="activity-content">
-                                            <span className="activity-title">Viagem concluída</span>
-                                            <span className="activity-desc">Centro → Bairro A</span>
-                                        </div>
-                                        <span className="activity-time">10:30</span>
+                                <div className="chart-card">
+                                    <div className="card-header">
+                                        <h3><FontAwesomeIcon icon={faMapLocation} style={{color: "#b38fc6"}} /> Passageiros por Escola</h3>
                                     </div>
-                                    <div className="activity-item">
-                                        <div className="activity-icon info"><FontAwesomeIcon icon={faVanShuttle} /></div>
-                                        <div className="activity-content">
-                                            <span className="activity-title">Rota iniciada</span>
-                                            <span className="activity-desc">Turno matinal</span>
-                                        </div>
-                                        <span className="activity-time">07:00</span>
-                                    </div>
-                                    <div className="activity-item">
-                                        <div className="activity-icon warning"><FontAwesomeIcon icon={faUser} /></div>
-                                        <div className="activity-content">
-                                            <span className="activity-title">Novo passageiro</span>
-                                            <span className="activity-desc">Maria Silva cadastrada</span>
-                                        </div>
-                                        <span className="activity-time">Ontem</span>
-                                    </div>
+                                    <BarChart data={statsPorEscola} />
                                 </div>
                             </div>
-                            
-                            <div className="quick-actions">
-                                <div className="card-header">
-                                    <h3><FontAwesomeIcon icon={faPlus} style={{color: "#b38fc6"}} /> Ações Rápidas</h3>
-                                </div>
-                                <div className="actions-grid">
-                                    <button className="quick-action-btn" onClick={() => setActiveTab('passageiros')}>
-                                        <FontAwesomeIcon icon={faUser} />
-                                        <span>Adicionar Passageiro</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        ) : (
+                            !carregandoPassageiros && (
+                                <p className="empty-state">Cadastre passageiros para ver os gráficos do dashboard.</p>
+                            )
+                        )}
+
                     </div>
                 )}
 
@@ -731,9 +698,15 @@ const Motorista = () => {
                                             <span className="detail-label">Turno:</span>
                                             <span className="detail-value">{selectedPassageiro.turno || '-'}</span>
                                         </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Valor mensal:</span>
+                                            <span className="detail-value">
+                                                {selectedPassageiro.valor ? `R$ ${Number(selectedPassageiro.valor).toFixed(2).replace('.', ',')}` : 'Não informado'}
+                                            </span>
+                                        </div>
                                     </div>
                                     <div className="modal-actions">
-                                        <button 
+                                        <button
                                             className="confirm-btn"
                                             onClick={() => handleEditPassageiro(selectedPassageiro)}
                                         >
@@ -809,6 +782,15 @@ const Motorista = () => {
                                             <option value="TARDE">Tarde</option>
                                             <option value="NOITE">Noite</option>
                                         </select>
+                                        <input
+                                            type="number"
+                                            name="valor"
+                                            placeholder="Valor mensal (R$)"
+                                            value={editingPassageiro.valor ?? ''}
+                                            onChange={handleEditPassageiroInputChange}
+                                            min="0"
+                                            step="0.01"
+                                        />
                                         <div className="modal-actions">
                                             <button type="submit" className="confirm-btn">Salvar</button>
                                             <button 

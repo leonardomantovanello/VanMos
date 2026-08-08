@@ -22,40 +22,10 @@
     z-index: 0;
 }
 
-/* Background Elements */
-.motorista-bg-elements {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.motorista-floating-shape {
-    position: absolute;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(147, 0, 211, 0.08), rgba(255, 20, 147, 0.06));
-    filter: blur(2px);
-    opacity: 0.4;
-}
-
-@keyframes motoristafloat {
-    0%, 100% {
-        transform: translateY(0px) scale(1);
-        opacity: 0.3;
-    }
-    50% {
-        transform: translateY(-30px) scale(1.1);
-        opacity: 0.5;
-    }
-}
-
 /* Header */
 .motorista-header {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.18);
     padding: 20px 0;
     position: relative;
@@ -74,27 +44,25 @@
 }
 
 .logo-section h1 {
-    font-size: 2.2rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, #ffffff 0%, #e6ccff 50%, #b38fc6 100%);
+    font-size: 2rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #ffffff 0%, #b38fc6 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0;
-    letter-spacing: 2px;
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-    filter: drop-shadow(0 2px 8px rgba(76, 0, 76, 0.8));
-    animation: glow 3s ease-in-out infinite;
+    letter-spacing: 0.5px;
     font-family: "akira";
 }
 
-@keyframes glow {
-    0%, 100% {
-        text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-    }
-    50% {
-        text-shadow: 0 0 40px rgba(255, 255, 255, 0.5), 0 0 60px rgba(179, 143, 198, 0.3);
-    }
+.logo-section h1 span {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
 }
 
 .driver-name {
@@ -131,27 +99,11 @@
     white-space: nowrap;
 }
 
-.nav-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s ease;
-}
-
-.nav-btn:hover::before {
-    left: 100%;
-}
-
 .nav-btn:hover, .nav-btn.active {
     background: linear-gradient(135deg, rgba(179, 143, 198, 0.15) 0%, rgba(76, 0, 76, 0.2) 100%);
     color: #ffffff;
     border-color: rgba(179, 143, 198, 0.3);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(76, 0, 76, 0.3), 0 0 20px rgba(179, 143, 198, 0.4);
+    box-shadow: 0 4px 12px rgba(76, 0, 76, 0.25);
 }
 
 /* Content */
@@ -170,13 +122,13 @@
 }
 
 .section-header-dashboard h2 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+    font-weight: 600;
     margin-bottom: 10px;
     background: linear-gradient(135deg, #ffffff 0%, #b38fc6 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-family: "akira";
 }
 
 .section-header-dashboard p {
@@ -184,70 +136,17 @@
     font-size: 1.1rem;
 }
 
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
-    margin-top: 40px;
-}
-
 .card-header {
     margin-bottom: 20px;
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-     font-family: "akira";
 }
 
 .card-header h3 {
     color: #b38fc6;
     font-size: 1.2rem;
+    font-weight: 600;
     margin: 0;
-    font-family: "akira";
-    
-}
-
-.stat-trend {
-    font-size: 0.8rem;
-    color: #4ade80;
-    font-weight: 500;
-}
-
-.quick-actions {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(25px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 20px;
-    padding: 30px;
-}
-
-.quick-actions .card-header h3 {
-    font-family: "pack";
-}
-
-.actions-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.quick-action-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 15px 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    color: rgba(255, 255, 255, 0.9);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-}
-
-.quick-action-btn:hover {
-    background: rgba(179, 143, 198, 0.1);
-    border-color: rgba(179, 143, 198, 0.3);
-    transform: translateX(5px);
 }
 
 .stats-grid {
@@ -259,7 +158,7 @@
 
 .stat-card {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 20px;
     padding: 30px;
@@ -269,27 +168,12 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 25px 70px rgba(76, 0, 76, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
-    transition: left 0.5s ease;
-}
-
-.stat-card:hover::before {
-    left: 100%;
+    box-shadow: 0 8px 20px rgba(76, 0, 76, 0.25);
 }
 
 .stat-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 35px 90px rgba(76, 0, 76, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(76, 0, 76, 0.35);
     border-color: rgba(179, 143, 198, 0.3);
 }
 
@@ -308,7 +192,6 @@
     font-weight: 700;
     margin: 0;
     color: #b38fc6;
-    font-family: "akira";
     white-space: nowrap;
 }
 
@@ -318,102 +201,30 @@
     font-size: 0.9rem;
 }
 
-.recent-activity {
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.chart-card {
     background: linear-gradient(135deg, rgba(179, 143, 198, 0.1) 0%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     padding: 25px;
 }
 
-.recent-activity h3 {
-    margin-bottom: 20px;
-    color: #b38fc6;
-    font-family: "akira";
-}
-
-.activity-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.activity-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 20px;
-    background: rgba(26, 0, 26, 0.6);
-    border-radius: 12px;
-    transition: all 0.3s ease;
-}
-
-.activity-item:hover {
-    background: rgba(26, 0, 26, 0.8);
-    transform: translateX(5px);
-}
-
-.activity-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-}
-
-.activity-icon.success {
-    background: rgba(34, 197, 94, 0.2);
-    color: #22c55e;
-}
-
-.activity-icon.info {
-    background: rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
-}
-
-.activity-icon.warning {
-    background: rgba(245, 158, 11, 0.2);
-    color: #f59e0b;
-}
-
-.activity-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.activity-title {
-    font-weight: 600;
-    color: #ffffff;
-}
-
-.activity-desc {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.activity-icon {
-    font-size: 1.2rem;
-}
-
-.activity-time {
-    margin-left: auto;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.8rem;
-}
-
 /* Passageiros */
 .section-title-group h2 {
     font-size: 2.2rem;
+    font-weight: 600;
     margin-bottom: 8px;
     background: linear-gradient(135deg, #ffffff 0%, #b38fc6 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-family: "akira";
 }
 
 .section-title-group p {
@@ -615,7 +426,7 @@
 
 .passageiro-card {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 20px;
     padding: 25px;
@@ -678,7 +489,7 @@
 
 .modal {
     background: linear-gradient(135deg, rgba(179, 143, 198, 0.1) 0%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     padding: 30px;
@@ -828,7 +639,7 @@
 
 .ajustes-card {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 20px;
     padding: 30px;
@@ -875,9 +686,9 @@
 /* Rota */
 .rota-section h2 {
     font-size: 2rem;
+    font-weight: 600;
     margin-bottom: 30px;
     text-align: center;
-    font-family: "akira";
 }
 
 .rota-info {
@@ -887,7 +698,7 @@
 
 .rota-card, .pontos-parada, .horarios-card, .escolas-card {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(179, 143, 198, 0.12) 50%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 20px;
     padding: 30px;
@@ -1237,11 +1048,6 @@
     .settings-container {
         order: 3;
     }
-    
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-    
     .motorista-content {
         padding: 20px 15px;
     }
@@ -1303,29 +1109,12 @@
     transform: rotate(90deg);
 }
 
-.perfil-btn {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.2rem;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.perfil-btn:hover {
-    background: rgba(179, 143, 198, 0.15);
-    color: #b38fc6;
-    transform: scale(1.15);
-}
-
 .settings-dropdown {
     position: absolute;
     top: 100%;
     right: 0;
     background: linear-gradient(135deg, rgba(179, 143, 198, 0.1) 0%, rgba(76, 0, 76, 0.15) 100%);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     padding: 10px;
@@ -1334,6 +1123,8 @@
     box-shadow: 0 8px 32px rgba(76, 0, 76, 0.3);
 }
 
+.perfil-option,
+.ajustes-option,
 .theme-toggle,
 .logout-option {
     width: 100%;
@@ -1349,6 +1140,8 @@
     margin-bottom: 5px;
 }
 
+.perfil-option:hover,
+.ajustes-option:hover,
 .theme-toggle:hover,
 .logout-option:hover {
     background: rgba(255, 255, 255, 0.1);
@@ -1398,11 +1191,15 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
+[data-theme="light"] .perfil-option,
+[data-theme="light"] .ajustes-option,
 [data-theme="light"] .theme-toggle,
 [data-theme="light"] .logout-option {
     color: rgba(33, 37, 41, 0.9);
 }
 
+[data-theme="light"] .perfil-option:hover,
+[data-theme="light"] .ajustes-option:hover,
 [data-theme="light"] .theme-toggle:hover,
 [data-theme="light"] .logout-option:hover {
     background: rgba(0, 0, 0, 0.1);
@@ -1437,7 +1234,7 @@
 }
 
 [data-theme="light"] .stat-card,
-[data-theme="light"] .recent-activity,
+[data-theme="light"] .chart-card,
 [data-theme="light"] .passageiro-card,
 [data-theme="light"] .rota-card,
 [data-theme="light"] .pontos-parada,
@@ -1501,7 +1298,7 @@
 }
 
 [data-theme="light"] .stat-info h3,
-[data-theme="light"] .recent-activity h3,
+[data-theme="light"] .chart-card h3,
 [data-theme="light"] .passageiro-info h4,
 [data-theme="light"] .rota-card h3,
 [data-theme="light"] .pontos-parada h3,
@@ -1516,16 +1313,10 @@
 [data-theme="light"] .passageiro-info p,
 [data-theme="light"] .rota-details p,
 [data-theme="light"] .ponto-info p,
-[data-theme="light"] .activity-item,
 [data-theme="light"] .horario-item {
     color: rgba(33, 37, 41, 0.8);
 }
 
-[data-theme="light"] .activity-time {
-    color: rgba(33, 37, 41, 0.6);
-}
-
-[data-theme="light"] .activity-item,
 [data-theme="light"] .ponto-item,
 [data-theme="light"] .horario-item,
 [data-theme="light"] .escola-info {
@@ -1578,9 +1369,4 @@
 
 [data-theme="light"] .drag-handle:hover {
     color: #4b004b;
-}
-
-[data-theme="light"] .motorista-floating-shape {
-    background: linear-gradient(135deg, rgba(109, 26, 109, 0.05), rgba(75, 0, 75, 0.03));
-    filter: blur(1px);
 }
