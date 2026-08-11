@@ -3,10 +3,14 @@ import { cadastroApi } from '../../services/cadastro'
 import './Register.css'
 import { useNavigate } from 'react-router-dom'
 import { formatCPF, isValidCPF, isValidEmail, isValidPassword } from '../../utils/validators'
+import { fileToBase64 } from '../../utils/fileToBase64'
+
+const TAMANHO_MAXIMO_DOCUMENTO = 5 * 1024 * 1024 // 5MB — tudo vira base64 no banco, sem storage externo
 
 const Register = () => {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
+  const [enviando, setEnviando] = useState(false)
   const [formData, setFormData] = useState({
     nome: '',
     idade: '',
@@ -14,6 +18,11 @@ const Register = () => {
     email: '',
     senha: '',
     genero: '',
+    telefone: '',
+    rg: '',
+    cnh: '',
+    rgDocumentoBase64: '',
+    cnhDocumentoBase64: '',
     aceitouTermos: false
   })
 
@@ -33,6 +42,18 @@ const Register = () => {
     })
   }
 
+  const handleDocumentoChange = async (campo, e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > TAMANHO_MAXIMO_DOCUMENTO) {
+      alert('O arquivo deve ter no máximo 5MB')
+      e.target.value = ''
+      return
+    }
+    const base64 = await fileToBase64(file)
+    setFormData((prev) => ({ ...prev, [campo]: base64 }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!isValidCPF(formData.cpf)) {
@@ -47,11 +68,22 @@ const Register = () => {
       alert('A senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número')
       return
     }
+    if (!formData.telefone.trim() || !formData.rg.trim() || !formData.cnh.trim()) {
+      alert('Telefone, RG e CNH são obrigatórios para o cadastro de motorista')
+      return
+    }
+    if (!formData.rgDocumentoBase64 || !formData.cnhDocumentoBase64) {
+      alert('Envie a foto/scan do RG e da CNH para concluir o cadastro')
+      return
+    }
     // Remove máscara do CPF antes de enviar e envia nome conforme backend.
     // Este formulário só é usado pelo fluxo de motorista do site (leva ao
     // dashboard /motorista após o cadastro) — por isso tipo é sempre
     // MOTORISTA. A mesma tabela/endpoint também serve PASSAGEIRO (ver
     // Passageiro.java no backend), mas essa opção não tem tela neste site.
+    // Motorista passa por aprovação manual do suporte por e-mail antes de
+    // poder logar (ver CadastroAprovacaoController no backend) — por isso
+    // exige RG/CNH/telefone/documentos, que PASSAGEIRO não precisa.
     const cadastro = {
       nome: formData.nome,
       idade: formData.idade,
@@ -59,19 +91,27 @@ const Register = () => {
       genero: formData.genero,
       email: formData.email,
       senha: formData.senha,
+      telefone: formData.telefone,
+      rg: formData.rg,
+      cnh: formData.cnh,
+      rgDocumentoBase64: formData.rgDocumentoBase64,
+      cnhDocumentoBase64: formData.cnhDocumentoBase64,
       aceitouTermos: formData.aceitouTermos,
       tipo: 'MOTORISTA'
     }
+    setEnviando(true)
     try {
       const response = await cadastroApi.criar(cadastro)
       if (response?.sucesso) {
-        alert('Cadastro realizado com sucesso!')
-        navigate('/motorista')
+        alert(response?.mensagem || 'Cadastro enviado! Aguarde a aprovação do nosso time.')
+        navigate('/login')
       } else {
         alert(response?.mensagem || 'Erro ao cadastrar usuário')
       }
     } catch {
       alert('Erro ao conectar com o servidor de cadastro')
+    } finally {
+      setEnviando(false)
     }
   }
 
@@ -162,6 +202,71 @@ const Register = () => {
             </div>
           </div>
 
+          <div className="form-row">
+            <div className="input-group">
+              <label htmlFor="telefone">Telefone</label>
+              <input
+                type="tel"
+                id="telefone"
+                name="telefone"
+                placeholder="(00) 00000-0000"
+                value={formData.telefone}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="rg">RG</label>
+              <input
+                type="text"
+                id="rg"
+                name="rg"
+                placeholder="00.000.000-0"
+                value={formData.rg}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="cnh">CNH</label>
+            <input
+              type="text"
+              id="cnh"
+              name="cnh"
+              placeholder="Número da CNH"
+              value={formData.cnh}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-row">
+            <div className="input-group">
+              <label htmlFor="rgDocumento">Foto/scan do RG</label>
+              <input
+                type="file"
+                id="rgDocumento"
+                accept="image/*"
+                onChange={(e) => handleDocumentoChange('rgDocumentoBase64', e)}
+                required
+              />
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="cnhDocumento">Foto/scan da CNH</label>
+              <input
+                type="file"
+                id="cnhDocumento"
+                accept="image/*"
+                onChange={(e) => handleDocumentoChange('cnhDocumentoBase64', e)}
+                required
+              />
+            </div>
+          </div>
+
           <div className="input-group">
             <label htmlFor="email">E-mail</label>
             <input
@@ -216,8 +321,8 @@ const Register = () => {
             </label>
           </div>
 
-          <button type="submit" className="register-btn">
-            Criar Conta
+          <button type="submit" className="register-btn" disabled={enviando}>
+            {enviando ? 'Enviando...' : 'Criar Conta'}
           </button>
 
           <div className="divider">

@@ -189,6 +189,35 @@
   padding: 10px;
 }
 
+/* File Inputs (documentos RG/CNH) — o botão nativo do navegador ignora o
+   background/border do input, precisa estilizar o pseudo-elemento à parte. */
+.input-group input[type="file"] {
+  padding: 10px 16px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.input-group input[type="file"]::file-selector-button,
+.input-group input[type="file"]::-webkit-file-upload-button {
+  padding: 10px 18px;
+  margin-right: 16px;
+  background: linear-gradient(135deg, #6d1a6d 0%, #4b004b 100%);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.input-group input[type="file"]:hover::file-selector-button,
+.input-group input[type="file"]:hover::-webkit-file-upload-button {
+  background: linear-gradient(135deg, #8b2a8b 0%, #6d1a6d 100%);
+}
+
 /* Password Field */
 .password-field {
   position: relative;

@@ -15,15 +15,6 @@ const extrairListaMotoristas = (data) => {
 }
 
 export const motoristasApi = {
-  // Cadastros pendentes/ativos para o painel admin — exige token de ADMIN.
-  listar: async () => {
-    const data = await apiRequest('/passageiros', {
-      auth: true,
-      fallbackMessage: 'Não foi possível carregar os motoristas',
-    })
-    return extrairListaMotoristas(data)
-  },
-
   // Lista pública (sem CPF/e-mail) de motoristas ativos, para a página "Nossos Motoristas".
   listarPublico: async () => {
     const data = await apiRequest('/motoristas-admin/publico', {
@@ -31,47 +22,4 @@ export const motoristasApi = {
     })
     return extrairListaMotoristas(data)
   },
-
-  adicionar: async (motorista) =>
-    apiRequest('/passageiros', {
-      method: 'POST',
-      body: motorista,
-      fallbackMessage: 'Erro na requisição',
-    }),
-
-  ativar: async (id) => {
-    return motoristasApi.alterarStatus(id, true)
-  },
-
-  inativar: async (id) => {
-    return motoristasApi.alterarStatus(id, false)
-  },
-
-  alterarStatus: async (id, ativo) => {
-    if (!id) {
-      throw new Error('Motorista sem identificador para atualizar')
-    }
-
-    const acao = ativo ? 'ativar' : 'inativar'
-    return apiRequest(`/passageiros/${id}/${acao}`, {
-      method: 'PUT',
-      auth: true,
-      fallbackMessage: 'Nao foi possivel atualizar o status do motorista',
-    })
-  },
-
-  editar: async (id, motorista) =>
-    apiRequest(`/passageiros/${id}`, {
-      method: 'PUT',
-      body: motorista,
-      auth: true,
-      fallbackMessage: 'Erro ao editar motorista',
-    }),
-
-  deletar: async (id) =>
-    apiRequest(`/passageiros/${id}`, {
-      method: 'DELETE',
-      auth: true,
-      fallbackMessage: 'Erro ao deletar motorista',
-    }),
 }

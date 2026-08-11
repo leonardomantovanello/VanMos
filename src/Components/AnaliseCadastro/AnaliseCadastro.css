@@ -1,0 +1,99 @@
+/* Página de revisão de cadastro de motorista — reaproveita o visual de
+   ForgotPassword.css (fundo, voltar-btn, header, reset-btn), só precisa de
+   um conteúdo mais largo (dados + documentos) e dos elementos abaixo. */
+
+.analise-cadastro-content {
+  max-width: 640px;
+}
+
+.analise-dados {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.analise-dado-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.analise-dado-rotulo {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.analise-dado-valor {
+  color: #fff;
+  font-size: 1rem;
+  word-break: break-word;
+}
+
+.analise-documentos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.analise-documento {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.analise-documento img {
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid rgba(179, 143, 198, 0.2);
+}
+
+.analise-documento-vazio {
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+}
+
+.analise-acoes {
+  display: flex;
+  gap: 16px;
+}
+
+.analise-acoes .reset-btn {
+  flex: 1;
+  margin-top: 0;
+}
+
+.analise-btn-aprovar {
+  background: linear-gradient(135deg, #1e8b4f 0%, #0d5c30 100%) !important;
+}
+
+.analise-btn-aprovar:hover {
+  background: linear-gradient(135deg, #26a862 0%, #1e8b4f 100%) !important;
+}
+
+.analise-btn-reprovar {
+  background: linear-gradient(135deg, #a3273b 0%, #6b1526 100%) !important;
+}
+
+.analise-btn-reprovar:hover {
+  background: linear-gradient(135deg, #c02f47 0%, #a3273b 100%) !important;
+}
+
+.analise-btn-cancelar {
+  background: linear-gradient(135deg, rgba(179, 143, 198, 0.2), rgba(76, 0, 76, 0.3)) !important;
+}
+
+@media (max-width: 640px) {
+  .analise-dados,
+  .analise-documentos {
+    grid-template-columns: 1fr;
+  }
+
+  .analise-acoes {
+    flex-direction: column;
+  }
+}

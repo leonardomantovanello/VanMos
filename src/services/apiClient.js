@@ -8,11 +8,6 @@
 
 const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://vanmosapi.onrender.com/api').replace(/\/+$/, '')
 
-const buildAuthHeader = () => {
-  const token = localStorage.getItem('admin_token')
-  return token ? { Authorization: `Bearer ${token}` } : {}
-}
-
 // Token do motorista/responsável logado (fluxo /api/login) — chave precisa
 // ficar em sincronia com GUARDIAN_TOKEN_KEY em contexts/AuthContext.jsx.
 const buildGuardianAuthHeader = () => {
@@ -37,7 +32,6 @@ const parseBody = async (response) => {
  * @param {object} [options]
  * @param {string} [options.method='GET']
  * @param {object} [options.body] - Corpo a ser serializado como JSON.
- * @param {boolean} [options.auth=false] - Se true, injeta "Authorization: Bearer <admin_token>".
  * @param {boolean} [options.guardianAuth=false] - Se true, injeta "Authorization: Bearer <token do motorista/responsável logado>".
  * @param {object} [options.headers] - Headers extras/sobrescritos.
  * @param {boolean} [options.throwOnError=true] - Se true (padrão), lança Error quando
@@ -53,7 +47,6 @@ export async function apiRequest(path, options = {}) {
   const {
     method = 'GET',
     body,
-    auth = false,
     guardianAuth = false,
     headers = {},
     throwOnError = true,
@@ -68,7 +61,6 @@ export async function apiRequest(path, options = {}) {
       method,
       headers: {
         'Content-Type': 'application/json',
-        ...(auth ? buildAuthHeader() : {}),
         ...(guardianAuth ? buildGuardianAuthHeader() : {}),
         ...headers,
       },

@@ -51,14 +51,6 @@ const Login = () => {
         <span>←</span> Voltar
       </button>
 
-      <button 
-        type="button" 
-        className="admin-btn"
-        onClick={() => navigate('/admin-login')} 
-      >
-        SOU ADMINISTRADOR
-      </button>
-
       <div className="login-content">
         <div className="login-header">
           <h1 className="login-title">Bem-vindo de volta!</h1>
