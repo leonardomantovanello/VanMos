@@ -3,16 +3,20 @@
     import { useTheme } from '../../contexts/ThemeContext'
     import { useAuth } from '../../contexts/AuthContext'
     import { passageirosApi } from '../../services/passageirosApi'
+    import { motoristasApi } from '../../services/motoristasApi'
     import { alunosApi } from '../../services/alunosApi'
     import { isValidPassword } from '../../utils/validators'
     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
     import {faChartSimple, faChartPie, faSun, faGear, faUsers, faUser,
     faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faPhone, faMapPin, faTrashCan,
-    faPlus, faPencil, faMapLocation, faIdCard, faLock}
+    faPlus, faPencil, faMapLocation, faIdCard, faLock, faCamera}
     from '@fortawesome/free-solid-svg-icons'
     import DonutChart from '../Charts/DonutChart'
     import BarChart from '../Charts/BarChart'
+    import { fileToBase64 } from '../../utils/fileToBase64'
     import './Motorista.css'
+
+    const TAMANHO_MAXIMO_AVATAR = 5 * 1024 * 1024 // 5MB — mesmo limite do upload de documentos no Register
 
 
 const Motorista = () => {
@@ -46,8 +50,14 @@ const Motorista = () => {
     const [showEditPassageiro, setShowEditPassageiro] = useState(false)
     const [editingPassageiro, setEditingPassageiro] = useState(null)
     const [showPerfil, setShowPerfil] = useState(false)
-    const [loggedUser, setLoggedUser] = useState({})
+    // Login só devolve id/nome/email/tipo — o perfil completo (cpf,
+    // telefone, cnh, van etc.) é buscado sob demanda quando o modal abre
+    // (ver handleAbrirPerfil / GET /api/motoristas/{id}).
+    const [perfil, setPerfil] = useState(null)
+    const [carregandoPerfil, setCarregandoPerfil] = useState(false)
     const [editingPerfil, setEditingPerfil] = useState(false)
+    const [perfilForm, setPerfilForm] = useState(null)
+    const [salvandoPerfil, setSalvandoPerfil] = useState(false)
     const [ajustesTab, setAjustesTab] = useState('senha')
     const [senhaForm, setSenhaForm] = useState({ senhaAtual: '', novaSenha: '', confirmarNovaSenha: '' })
     const [alterandoSenha, setAlterandoSenha] = useState(false)
@@ -105,14 +115,22 @@ const Motorista = () => {
             navigate('/login')
             return
         }
-        setLoggedUser(guardianUser)
+        // Segunda barreira (Login.jsx já barra isso no momento do login): um
+        // responsável/passageiro autenticado via /api/login unificado não
+        // pode acabar aqui, mesmo que chegue direto pela URL com uma sessão
+        // antiga salva antes dessa checagem existir.
+        if (guardianUser.tipo !== 'MOTORISTA') {
+            logoutGuardian()
+            navigate('/login')
+            return
+        }
         const nomes = guardianUser.nome.trim().split(' ')
         const primeiroNome = nomes[0]
         const ultimoNome = nomes.length > 1 ? nomes[nomes.length - 1] : ''
         setDriverName(ultimoNome ? `${primeiroNome} ${ultimoNome}` : primeiroNome)
 
         carregarPassageiros()
-    }, [isGuardianAuthenticated, guardianUser, navigate])
+    }, [isGuardianAuthenticated, guardianUser, navigate, logoutGuardian])
 
     const handleLogout = () => {
         logoutGuardian()
@@ -261,7 +279,7 @@ const Motorista = () => {
 
         setAlterandoSenha(true)
         try {
-            await passageirosApi.alterarSenha(guardianUser.id, senhaForm.senhaAtual, senhaForm.novaSenha)
+            await motoristasApi.alterarSenha(guardianUser.id, senhaForm.senhaAtual, senhaForm.novaSenha)
             alert('Senha alterada com sucesso!')
             setSenhaForm({ senhaAtual: '', novaSenha: '', confirmarNovaSenha: '' })
         } catch (error) {
@@ -276,6 +294,89 @@ const Motorista = () => {
             ...editingPassageiro,
             [e.target.name]: e.target.value
         })
+    }
+
+    const preencherFormularioPerfil = (dados) => ({
+        nome: dados.nome || '',
+        email: dados.email || '',
+        telefone: dados.telefone || '',
+        idade: dados.idade ?? '',
+        genero: dados.genero || '',
+        cpf: dados.cpf || '',
+        cnh: dados.cnh || '',
+        rg: dados.rg || '',
+        modeloVan: dados.modeloVan || '',
+        placaVan: dados.placaVan || '',
+        avatarBase64: dados.avatarBase64 || '',
+    })
+
+    const handleAbrirPerfil = () => {
+        setShowPerfil(true)
+        setIsSettingsOpen(false)
+        setEditingPerfil(false)
+        setCarregandoPerfil(true)
+        motoristasApi.buscarPerfil(guardianUser.id)
+            .then((dados) => {
+                setPerfil(dados)
+                setPerfilForm(preencherFormularioPerfil(dados))
+            })
+            .catch((error) => {
+                alert(error.message || 'Erro ao carregar perfil')
+                setShowPerfil(false)
+            })
+            .finally(() => setCarregandoPerfil(false))
+    }
+
+    const handlePerfilInputChange = (e) => {
+        setPerfilForm({
+            ...perfilForm,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleAvatarChange = async (e) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+        if (file.size > TAMANHO_MAXIMO_AVATAR) {
+            alert('A foto deve ter no máximo 5MB')
+            e.target.value = ''
+            return
+        }
+        const base64 = await fileToBase64(file)
+        setPerfilForm((prev) => ({ ...prev, avatarBase64: base64 }))
+        e.target.value = ''
+    }
+
+    const handleSalvarPerfil = async (e) => {
+        e.preventDefault()
+        setSalvandoPerfil(true)
+        try {
+            // CPF/CNH/RG não vão no corpo — são documentos de identidade e não
+            // podem ser alterados por aqui (só nome/e-mail/telefone/idade/
+            // gênero/dados da van/foto). O backend ignora campos ausentes
+            // (edição parcial, ver MotoristaService.update), então nem
+            // precisam ser enviados como estavam.
+            const atualizado = await motoristasApi.atualizarPerfil(guardianUser.id, {
+                nome: perfilForm.nome,
+                email: perfilForm.email,
+                telefone: perfilForm.telefone,
+                idade: perfilForm.idade ? Number(perfilForm.idade) : null,
+                genero: perfilForm.genero,
+                modeloVan: perfilForm.modeloVan,
+                placaVan: perfilForm.placaVan,
+                avatarBase64: perfilForm.avatarBase64 || null,
+            })
+            setPerfil(atualizado)
+            setPerfilForm(preencherFormularioPerfil(atualizado))
+            // Mantém nome/e-mail em sincronia com a sessão (cabeçalho exibe
+            // driverName derivado de guardianUser.nome).
+            updateGuardian({ ...guardianUser, nome: atualizado.nome, email: atualizado.email })
+            setEditingPerfil(false)
+        } catch (error) {
+            alert(error.message || 'Erro ao atualizar perfil')
+        } finally {
+            setSalvandoPerfil(false)
+        }
     }
 
     return (
@@ -318,7 +419,7 @@ const Motorista = () => {
                             <div className="settings-dropdown">
                                 <button
                                     className="perfil-option"
-                                    onClick={() => { setShowPerfil(true); setIsSettingsOpen(false) }}
+                                    onClick={handleAbrirPerfil}
                                 >
                                     <FontAwesomeIcon icon={faUser} style={{color: "#b852b8ff"}} /> Meu Perfil
                                 </button>
@@ -350,50 +451,113 @@ const Motorista = () => {
                 <div className="modal-overlay">
                     <div className="modal modal-flexible" role="dialog" aria-modal="true" aria-labelledby="modal-title-perfil">
                         <h3 id="modal-title-perfil"><FontAwesomeIcon icon={faIdCard} style={{color: "#b38fc6"}} /> Meu Perfil</h3>
-                        {editingPerfil ? (
-                            <form onSubmit={(e) => {
-                                e.preventDefault()
-                                updateGuardian(loggedUser)
-                                setEditingPerfil(false)
-                            }}>
-                                <input type="text" placeholder="Nome" value={loggedUser.nome || ''} onChange={(e) => setLoggedUser({...loggedUser, nome: e.target.value})} required />
-                                <input type="email" placeholder="Email" value={loggedUser.email || loggedUser.gmail || ''} onChange={(e) => setLoggedUser({...loggedUser, email: e.target.value})} />
-                                <input type="tel" placeholder="Telefone" value={loggedUser.telefone || ''} onChange={(e) => setLoggedUser({...loggedUser, telefone: e.target.value})} />
-                                <input type="number" placeholder="Idade" value={loggedUser.idade || ''} onChange={(e) => setLoggedUser({...loggedUser, idade: e.target.value})} />
+                        {carregandoPerfil || !perfil || !perfilForm ? (
+                            <p className="empty-state">Carregando perfil...</p>
+                        ) : editingPerfil ? (
+                            <form onSubmit={handleSalvarPerfil}>
+                                <div className="perfil-avatar-editor">
+                                    <div className="perfil-avatar-preview">
+                                        {perfilForm.avatarBase64 ? (
+                                            <img src={perfilForm.avatarBase64} alt="Foto de perfil" />
+                                        ) : (
+                                            <FontAwesomeIcon icon={faUser} />
+                                        )}
+                                    </div>
+                                    <label className="perfil-avatar-upload-btn">
+                                        <FontAwesomeIcon icon={faCamera} /> Alterar foto
+                                        <input type="file" accept="image/*" onChange={handleAvatarChange} hidden />
+                                    </label>
+                                </div>
+
+                                <input type="text" name="nome" placeholder="Nome" value={perfilForm.nome} onChange={handlePerfilInputChange} required />
+                                <input type="email" name="email" placeholder="E-mail" value={perfilForm.email} onChange={handlePerfilInputChange} required />
+                                <input type="tel" name="telefone" placeholder="Telefone" value={perfilForm.telefone} onChange={handlePerfilInputChange} />
+                                <input type="number" name="idade" placeholder="Idade" value={perfilForm.idade} onChange={handlePerfilInputChange} min="0" max="120" />
+                                <select name="genero" value={perfilForm.genero} onChange={handlePerfilInputChange}>
+                                    <option value="">Selecione o gênero</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Feminino">Feminino</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                                <input type="text" name="modeloVan" placeholder="Modelo da van" value={perfilForm.modeloVan} onChange={handlePerfilInputChange} />
+                                <input type="text" name="placaVan" placeholder="Placa da van" value={perfilForm.placaVan} onChange={handlePerfilInputChange} />
+
+                                <p className="form-section-label">
+                                    <FontAwesomeIcon icon={faLock} /> Documentos — não editáveis, entre em contato com o suporte para corrigir
+                                </p>
+                                <input type="text" value={perfilForm.cpf || 'Não informado'} readOnly disabled className="input-locked" />
+                                <input type="text" value={perfilForm.cnh || 'Não informado'} readOnly disabled className="input-locked" />
+                                <input type="text" value={perfilForm.rg || 'Não informado'} readOnly disabled className="input-locked" />
+
                                 <div className="modal-actions">
-                                    <button type="submit" className="confirm-btn">Salvar</button>
-                                    <button type="button" className="cancel-btn" onClick={() => setEditingPerfil(false)}>Cancelar</button>
+                                    <button type="submit" className="confirm-btn" disabled={salvandoPerfil}>
+                                        {salvandoPerfil ? 'Salvando...' : 'Salvar'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="cancel-btn"
+                                        onClick={() => {
+                                            setPerfilForm(preencherFormularioPerfil(perfil))
+                                            setEditingPerfil(false)
+                                        }}
+                                        disabled={salvandoPerfil}
+                                    >
+                                        Cancelar
+                                    </button>
                                 </div>
                             </form>
                         ) : (
                             <>
+                                <div className="perfil-avatar-editor">
+                                    <div className="perfil-avatar-preview">
+                                        {perfil.avatarBase64 ? (
+                                            <img src={perfil.avatarBase64} alt="Foto de perfil" />
+                                        ) : (
+                                            <FontAwesomeIcon icon={faUser} />
+                                        )}
+                                    </div>
+                                </div>
                                 <div className="passageiro-details-modal">
                                     <div className="detail-row">
                                         <span className="detail-label">Nome</span>
-                                        <span className="detail-value">{loggedUser.nome}</span>
+                                        <span className="detail-value">{perfil.nome}</span>
                                     </div>
                                     <div className="detail-row">
                                         <span className="detail-label">Email</span>
-                                        <span className="detail-value">{loggedUser.email || loggedUser.gmail || 'Não informado'}</span>
+                                        <span className="detail-value">{perfil.email || 'Não informado'}</span>
                                     </div>
-                                    {loggedUser.cpf && (
-                                        <div className="detail-row">
-                                            <span className="detail-label">CPF</span>
-                                            <span className="detail-value">{loggedUser.cpf.slice(0, -2) + '**'}</span>
-                                        </div>
-                                    )}
-                                    {loggedUser.telefone && (
-                                        <div className="detail-row">
-                                            <span className="detail-label">Telefone</span>
-                                            <span className="detail-value">{loggedUser.telefone}</span>
-                                        </div>
-                                    )}
-                                    {loggedUser.idade && (
-                                        <div className="detail-row">
-                                            <span className="detail-label">Idade</span>
-                                            <span className="detail-value">{loggedUser.idade} anos</span>
-                                        </div>
-                                    )}
+                                    <div className="detail-row">
+                                        <span className="detail-label">Telefone</span>
+                                        <span className="detail-value">{perfil.telefone || 'Não informado'}</span>
+                                    </div>
+                                    <div className="detail-row">
+                                        <span className="detail-label">Idade</span>
+                                        <span className="detail-value">{perfil.idade ? `${perfil.idade} anos` : 'Não informado'}</span>
+                                    </div>
+                                    <div className="detail-row">
+                                        <span className="detail-label">Gênero</span>
+                                        <span className="detail-value">{perfil.genero || 'Não informado'}</span>
+                                    </div>
+                                    <div className="detail-row">
+                                        <span className="detail-label">CPF</span>
+                                        <span className="detail-value">{perfil.cpf ? perfil.cpf.slice(0, -2) + '**' : 'Não informado'}</span>
+                                    </div>
+                                    <div className="detail-row">
+                                        <span className="detail-label">CNH</span>
+                                        <span className="detail-value">{perfil.cnh || 'Não informado'}</span>
+                                    </div>
+                                    <div className="detail-row">
+                                        <span className="detail-label">RG</span>
+                                        <span className="detail-value">{perfil.rg || 'Não informado'}</span>
+                                    </div>
+                                    <div className="detail-row">
+                                        <span className="detail-label">Modelo da van</span>
+                                        <span className="detail-value">{perfil.modeloVan || 'Não informado'}</span>
+                                    </div>
+                                    <div className="detail-row">
+                                        <span className="detail-label">Placa da van</span>
+                                        <span className="detail-value">{perfil.placaVan || 'Não informado'}</span>
+                                    </div>
                                 </div>
                                 <div className="modal-actions">
                                     <button className="confirm-btn" onClick={() => setEditingPerfil(true)}>

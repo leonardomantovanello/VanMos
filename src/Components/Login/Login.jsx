@@ -27,7 +27,16 @@ const Login = () => {
     const emailOuCpf = /^\d/.test(formData.email_ou_cpf) ? formData.email_ou_cpf.replace(/\D/g, '') : formData.email_ou_cpf;
     const resultado = await loginApi.login(emailOuCpf, formData.senha, formData.lembrar_me);
     if (resultado.sucesso) {
-      loginGuardian(resultado.usuario || { nome: formData.email_ou_cpf }, {
+      // POST /api/login é unificado (autentica responsável/passageiro E
+      // motorista, ver LoginController) — mas este site é exclusivo do
+      // painel de motorista. Sem esse filtro, um responsável com senha
+      // válida conseguia logar aqui e cair direto no dashboard do
+      // motorista (que só existe pra quem tem role MOTORISTA de verdade).
+      if (resultado.usuario?.tipo !== 'MOTORISTA') {
+        alert('Esta área é exclusiva para motoristas. Se você é responsável/passageiro, use o aplicativo VanMos.')
+        return
+      }
+      loginGuardian(resultado.usuario, {
         accessToken: resultado.accessToken,
         refreshToken: resultado.refreshToken,
       })

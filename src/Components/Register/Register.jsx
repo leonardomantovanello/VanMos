@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { cadastroApi } from '../../services/cadastro'
+import { motoristasApi } from '../../services/motoristasApi'
 import './Register.css'
 import { useNavigate } from 'react-router-dom'
 import { formatCPF, isValidCPF, isValidEmail, isValidPassword } from '../../utils/validators'
@@ -76,14 +76,13 @@ const Register = () => {
       alert('Envie a foto/scan do RG e da CNH para concluir o cadastro')
       return
     }
-    // Remove máscara do CPF antes de enviar e envia nome conforme backend.
-    // Este formulário só é usado pelo fluxo de motorista do site (leva ao
-    // dashboard /motorista após o cadastro) — por isso tipo é sempre
-    // MOTORISTA. A mesma tabela/endpoint também serve PASSAGEIRO (ver
-    // Passageiro.java no backend), mas essa opção não tem tela neste site.
+    // Remove máscara do CPF antes de enviar. Este formulário só é usado pelo
+    // fluxo de motorista do site (leva ao dashboard /motorista após o
+    // cadastro) — a tabela `motorista` (ver Motorista.java no backend) é
+    // exclusiva desse papel, por isso não precisa mais de um campo "tipo".
     // Motorista passa por aprovação manual do suporte por e-mail antes de
-    // poder logar (ver CadastroAprovacaoController no backend) — por isso
-    // exige RG/CNH/telefone/documentos, que PASSAGEIRO não precisa.
+    // poder logar (ver MotoristaAprovacaoController no backend) — por isso
+    // exige RG/CNH/telefone/documentos.
     const cadastro = {
       nome: formData.nome,
       idade: formData.idade,
@@ -96,12 +95,11 @@ const Register = () => {
       cnh: formData.cnh,
       rgDocumentoBase64: formData.rgDocumentoBase64,
       cnhDocumentoBase64: formData.cnhDocumentoBase64,
-      aceitouTermos: formData.aceitouTermos,
-      tipo: 'MOTORISTA'
+      aceitoTermos: formData.aceitouTermos,
     }
     setEnviando(true)
     try {
-      const response = await cadastroApi.criar(cadastro)
+      const response = await motoristasApi.criar(cadastro)
       if (response?.sucesso) {
         alert(response?.mensagem || 'Cadastro enviado! Aguarde a aprovação do nosso time.')
         navigate('/login')

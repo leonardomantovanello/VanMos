@@ -1,6 +1,6 @@
 import { apiRequest } from './apiClient'
 
-const BASE_PATH = '/passageiros/aprovacao'
+const BASE_PATH = '/motoristas/aprovacao'
 
 // Fluxo público de aprovação/reprovação de cadastro de motorista por
 // e-mail — sem login, a prova de identidade é o token do link recebido.
