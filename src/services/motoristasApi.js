@@ -15,6 +15,37 @@ const extrairListaMotoristas = (data) => {
 }
 
 export const motoristasApi = {
+  // GET /api/motoristas — lista completa (com CPF/e-mail/status) para o painel
+  // do administrador. Exige token de ADMIN (ver SecurityConfig). O backend
+  // responde no envelope ApiResponse ({ sucesso, dados: [...] }).
+  listarAdmin: async () => {
+    const data = await apiRequest('/motoristas', {
+      adminAuth: true,
+      fallbackMessage: 'Não foi possível carregar os motoristas',
+    })
+    return extrairListaMotoristas(data)
+  },
+
+  // PUT /api/motoristas/{id}/ativar — libera o motorista (ativo = true). Admin.
+  ativar: async (id) => {
+    if (!id) throw new Error('Motorista sem identificador para ativar')
+    return apiRequest(`/motoristas/${id}/ativar`, {
+      method: 'PUT',
+      adminAuth: true,
+      fallbackMessage: 'Não foi possível ativar o motorista',
+    })
+  },
+
+  // PUT /api/motoristas/{id}/inativar — bloqueia o motorista (ativo = false). Admin.
+  inativar: async (id) => {
+    if (!id) throw new Error('Motorista sem identificador para inativar')
+    return apiRequest(`/motoristas/${id}/inativar`, {
+      method: 'PUT',
+      adminAuth: true,
+      fallbackMessage: 'Não foi possível inativar o motorista',
+    })
+  },
+
   // Lista pública (sem CPF/e-mail) de motoristas ativos, para a página "Nossos Motoristas".
   listarPublico: async () => {
     const data = await apiRequest('/motoristas/publico', {

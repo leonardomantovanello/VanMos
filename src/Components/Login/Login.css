@@ -82,6 +82,13 @@
   box-shadow: 0 8px 25px rgba(76, 0, 76, 0.3);
 }
 
+/* Título: também é o gatilho oculto do acesso admin (5 cliques).
+   user-select:none evita selecionar o texto durante os cliques rápidos. */
+.login-title {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 /* Login Content */
 .login-content {
   background: linear-gradient(135deg, rgba(179, 143, 198, 0.1) 0%, rgba(76, 0, 76, 0.15) 100%);
@@ -348,6 +355,7 @@
     padding: 10px 16px;
     font-size: 0.9rem;
   }
+
   
   .login-content {
     padding: 30px 24px;

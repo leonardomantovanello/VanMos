@@ -15,6 +15,13 @@ const buildGuardianAuthHeader = () => {
   return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
+// Token do administrador logado (fluxo /api/login-admin) — chave precisa
+// ficar em sincronia com ADMIN_TOKEN_KEY em contexts/AuthContext.jsx.
+const buildAdminAuthHeader = () => {
+  const token = localStorage.getItem('vanmos_admin_token')
+  return token ? { Authorization: `Bearer ${token}` } : {}
+}
+
 const parseBody = async (response) => {
   const contentType = response.headers.get('content-type') || ''
   if (!contentType.includes('application/json')) return null
@@ -33,6 +40,7 @@ const parseBody = async (response) => {
  * @param {string} [options.method='GET']
  * @param {object} [options.body] - Corpo a ser serializado como JSON.
  * @param {boolean} [options.guardianAuth=false] - Se true, injeta "Authorization: Bearer <token do motorista/responsável logado>".
+ * @param {boolean} [options.adminAuth=false] - Se true, injeta "Authorization: Bearer <token do administrador logado>".
  * @param {object} [options.headers] - Headers extras/sobrescritos.
  * @param {boolean} [options.throwOnError=true] - Se true (padrão), lança Error quando
  *   `response.ok` é falso, usando a mensagem do backend (`mensagem`/`message`). Se false,
@@ -48,6 +56,7 @@ export async function apiRequest(path, options = {}) {
     method = 'GET',
     body,
     guardianAuth = false,
+    adminAuth = false,
     headers = {},
     throwOnError = true,
     fallbackMessage = 'Não foi possível completar a requisição',
@@ -62,6 +71,7 @@ export async function apiRequest(path, options = {}) {
       headers: {
         'Content-Type': 'application/json',
         ...(guardianAuth ? buildGuardianAuthHeader() : {}),
+        ...(adminAuth ? buildAdminAuthHeader() : {}),
         ...headers,
       },
       body: body !== undefined ? JSON.stringify(body) : undefined,

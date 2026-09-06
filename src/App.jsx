@@ -17,11 +17,13 @@ const Contato = lazy(() => import('./Components/Contato/Contato'))
 const Motorista = lazy(() => import('./Components/Motorista/Motorista'))
 const Motoristas = lazy(() => import('./Components/Motoristas/Motoristas'))
 const AnaliseCadastro = lazy(() => import('./Components/AnaliseCadastro/AnaliseCadastro'))
+const AdminLogin = lazy(() => import('./Components/Login/AdminLogin'))
+const AdminPanel = lazy(() => import('./Components/Admin/AdminPanel'))
 const PaginaInicial = lazy(() => import('./Paginainicial'))
 
 const AppContent = () => {
     const location = useLocation()
-    const hideNav = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/motorista' || location.pathname === '/forgot-password' || location.pathname === '/redefinir-senha' || location.pathname === '/motorista/analise-cadastro'
+    const hideNav = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/motorista' || location.pathname === '/forgot-password' || location.pathname === '/redefinir-senha' || location.pathname === '/motorista/analise-cadastro' || location.pathname === '/admin-login' || location.pathname === '/admin-panel'
 
     return (
         <>
@@ -38,6 +40,8 @@ const AppContent = () => {
                     <Route path="/redefinir-senha" element={<ResetPassword />} />
                     <Route path="/motorista" element={<Motorista />} />
                     <Route path="/motorista/analise-cadastro" element={<AnaliseCadastro />} />
+                    <Route path="/admin-login" element={<AdminLogin />} />
+                    <Route path="/admin-panel" element={<AdminPanel />} />
                 </Routes>
             </Suspense>
         </>

@@ -141,10 +141,21 @@
   gap: 20px;
 }
 
+/* Linha dos documentos (RG/CNH): o input de arquivo nativo é largo demais pra
+   caber em meia coluna sem cortar o nome do arquivo — ocupa a linha inteira,
+   um embaixo do outro. */
+.form-row:has(input[type="file"]) {
+  grid-template-columns: 1fr;
+}
+
 .input-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  /* Sem isto, uma track "1fr" não encolhe abaixo do min-content do filho.
+     O input de arquivo (botão "Escolher arquivo" + nome do arquivo) tem um
+     min-content largo e estourava a coluna da direita pra fora do card. */
+  min-width: 0;
 }
 
 .input-group label {
@@ -196,6 +207,10 @@
   cursor: pointer;
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
+  width: 100%;
+  min-width: 0;
+  /* nome de arquivo longo é cortado dentro do campo em vez de esticar a coluna */
+  overflow: hidden;
 }
 
 .input-group input[type="file"]::file-selector-button,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import './Login.css'
 import { useNavigate } from 'react-router-dom'
 import { loginApi } from '../../services/login'
@@ -13,6 +13,28 @@ const Login = () => {
     senha: '',
     lembrar_me: false
   })
+
+  // Acesso oculto ao painel de administrador: 5 cliques no título dentro de
+  // ~1,5s abrem /admin-login. Não há botão visível na tela — é um "gesto
+  // secreto" (estilo modo desenvolvedor do Android) pra não expor a área
+  // restrita a passageiros/motoristas comuns.
+  const adminCliquesRef = useRef(0)
+  const adminTimerRef = useRef(null)
+
+  const handleAcessoAdmin = () => {
+    adminCliquesRef.current += 1
+    clearTimeout(adminTimerRef.current)
+
+    if (adminCliquesRef.current >= 5) {
+      adminCliquesRef.current = 0
+      navigate('/admin-login')
+      return
+    }
+
+    adminTimerRef.current = setTimeout(() => {
+      adminCliquesRef.current = 0
+    }, 1500)
+  }
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -52,17 +74,17 @@ const Login = () => {
     <div className="login-container">
 
       
-      <button 
-        type="button" 
+      <button
+        type="button"
         className="voltar-btn"
-        onClick={() => navigate('/')} 
+        onClick={() => navigate('/')}
       >
         <span>←</span> Voltar
       </button>
 
       <div className="login-content">
         <div className="login-header">
-          <h1 className="login-title">Bem-vindo de volta!</h1>
+          <h1 className="login-title" onClick={handleAcessoAdmin}>Bem-vindo de volta!</h1>
           <p className="login-subtitle">Faça login para continuar sua jornada</p>
         </div>
 

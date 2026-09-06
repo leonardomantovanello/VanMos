@@ -1,4 +1,7 @@
-// services/adminApi.js
+// services/AdminLogin.js — cliente do fluxo de login de administrador
+// (POST /api/login-admin). O backend responde com um Map cru
+// { sucesso, mensagem, accessToken, refreshToken, usuario } — NÃO o envelope
+// ApiResponse — então os campos são lidos direto da resposta.
 import { apiRequest } from './apiClient'
 
 export const adminApi = {
