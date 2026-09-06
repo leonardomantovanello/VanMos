@@ -250,15 +250,15 @@
         padding: 15px 4%;
         gap: 10px;
     }
-    
+
     .logo-text {
         font-size: 1.6rem;
     }
-    
+
     .logo-subtitle {
         font-size: 0.6rem;
     }
-    
+
     .header .login-btn {
         padding: 8px 16px;
         font-size: 0.8rem;
@@ -270,21 +270,21 @@
         padding: 12px 3%;
         gap: 8px;
     }
-    
+
     .logo-text {
         font-size: 1.4rem;
     }
-    
+
     .logo-subtitle {
         font-size: 0.55rem;
         letter-spacing: 2px;
     }
-    
+
     .header .login-btn {
         padding: 6px 12px;
         font-size: 0.75rem;
     }
-    
+
     .hamburger-btn {
         font-size: 1.3rem;
         padding: 6px;

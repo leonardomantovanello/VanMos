@@ -65,15 +65,15 @@
     z-index: 1;
 }
 
-.floating-shape {
+.motoristas-container .floating-shape {
     position: absolute;
     border-radius: 50%;
     background: linear-gradient(135deg, rgba(179, 143, 198, 0.1), rgba(76, 0, 76, 0.05));
     filter: blur(2px);
-    animation: float 8s ease-in-out infinite;
+    animation: floatMotoristas 8s ease-in-out infinite;
 }
 
-.shape-1 {
+.motoristas-container .shape-1 {
     width: 200px;
     height: 200px;
     top: 20%;
@@ -81,7 +81,7 @@
     animation-delay: 0s;
 }
 
-.shape-2 {
+.motoristas-container .shape-2 {
     width: 150px;
     height: 150px;
     top: 60%;
@@ -89,7 +89,7 @@
     animation-delay: 3s;
 }
 
-.shape-3 {
+.motoristas-container .shape-3 {
     width: 100px;
     height: 100px;
     bottom: 30%;
@@ -257,7 +257,7 @@
     }
 }
 
-@keyframes float {
+@keyframes floatMotoristas {
     0%, 100% {
         transform: translateY(0px) rotate(0deg);
     }
@@ -361,7 +361,7 @@
     color: rgba(33, 37, 41, 0.9);
 }
 
-[data-theme="light"] .floating-shape {
+[data-theme="light"] .motoristas-container .floating-shape {
     background: linear-gradient(135deg, rgba(109, 26, 109, 0.1), rgba(75, 0, 75, 0.05));
 }
 

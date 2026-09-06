@@ -65,12 +65,14 @@
     pointer-events: none;
 }
 
-.floating-shape {
+.contato-container .floating-shape {
     position: absolute;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(179, 143, 198, 0.1), rgba(230, 204, 255, 0.1));
-    backdrop-filter: blur(10px);
-    animation: float 8s ease-in-out infinite;
+    background: linear-gradient(135deg, #b38fc6 0%, #e91e63 50%, #ff69b4 100%);
+    opacity: 0.6;
+    border: 2px solid rgba(179, 143, 198, 0.8);
+    box-shadow: 0 0 20px rgba(179, 143, 198, 0.4);
+    animation: floatContato 8s ease-in-out infinite;
 }
 
 .cursor-glow {
@@ -85,7 +87,7 @@
     opacity: 0.5;
 }
 
-.shape-1 {
+.contato-container .shape-1 {
     width: 200px;
     height: 200px;
     top: 15%;
@@ -93,7 +95,7 @@
     animation-delay: 0s;
 }
 
-.shape-2 {
+.contato-container .shape-2 {
     width: 150px;
     height: 150px;
     top: 60%;
@@ -101,7 +103,7 @@
     animation-delay: 3s;
 }
 
-.shape-3 {
+.contato-container .shape-3 {
     width: 100px;
     height: 100px;
     bottom: 20%;
@@ -110,7 +112,7 @@
 }
 
 /* Info section shapes */
-.info-shape-1 {
+.contato-container .info-shape-1 {
     width: 120px;
     height: 120px;
     top: 20%;
@@ -118,7 +120,7 @@
     animation-delay: 2s;
 }
 
-.info-shape-2 {
+.contato-container .info-shape-2 {
     width: 80px;
     height: 80px;
     bottom: 30%;
@@ -127,7 +129,7 @@
 }
 
 /* Form section shapes */
-.form-shape-1 {
+.contato-container .form-shape-1 {
     width: 140px;
     height: 140px;
     top: 15%;
@@ -135,7 +137,7 @@
     animation-delay: 1s;
 }
 
-.form-shape-2 {
+.contato-container .form-shape-2 {
     width: 90px;
     height: 90px;
     bottom: 20%;
@@ -144,7 +146,7 @@
 }
 
 /* Horario section shapes */
-.horario-shape-1 {
+.contato-container .horario-shape-1 {
     width: 110px;
     height: 110px;
     top: 25%;
@@ -152,7 +154,7 @@
     animation-delay: 3s;
 }
 
-.horario-shape-2 {
+.contato-container .horario-shape-2 {
     width: 70px;
     height: 70px;
     bottom: 25%;
@@ -160,13 +162,13 @@
     animation-delay: 7s;
 }
 
-@keyframes float {
-    0%, 100% { 
-        transform: translateY(0) scale(1); 
+@keyframes floatContato {
+    0%, 100% {
+        transform: translateY(0) scale(1);
         opacity: 0.7;
     }
-    50% { 
-        transform: translateY(-30px) scale(1.1); 
+    50% {
+        transform: translateY(-30px) scale(1.1);
         opacity: 1;
     }
 }
@@ -733,8 +735,9 @@
     color: #6d1a6d;
 }
 
-[data-theme="light"] .floating-shape {
-    background: linear-gradient(135deg, rgba(109, 26, 109, 0.1), rgba(230, 204, 255, 0.1));
+[data-theme="light"] .contato-container .floating-shape {
+    background: linear-gradient(135deg, #8b2a8b 0%, #d6336c 50%, #ff69b4 100%);
+    opacity: 0.4;
 }
 
 [data-theme="light"] .cursor-glow {

@@ -4,6 +4,18 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: "akira";
+    src: url("../src/assets/Akira\ Expanded\ Demo.otf");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "nexa";
+    src: url("../src/assets/Nexa-Heavy.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
 /* Quem Somos Styles */
 .quem-somos-container {
     width: 100%;
@@ -12,13 +24,13 @@
 
 /* Hero Section */
 .hero-about {
-    min-height: 70vh;
+    min-height: 78vh;
     background: #000000;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    padding: 120px 5% 80px;
+    padding: 300px 5% 90px;
     opacity: 0;
     transform: translateY(30px);
     transition: all 1s ease-out;
@@ -72,7 +84,7 @@
     z-index: 1;
 }
 
-.floating-shape {
+.quem-somos-container .floating-shape {
     position: absolute;
     border-radius: 50%;
     background: linear-gradient(135deg, #b38fc6 0%, #e91e63 50%, #ff69b4 100%);
@@ -81,7 +93,7 @@
     box-shadow: 0 0 20px rgba(179, 143, 198, 0.4);
 }
 
-.shape-1 {
+.quem-somos-container .shape-1 {
     width: 200px;
     height: 200px;
     top: 20%;
@@ -89,7 +101,7 @@
     animation: floatSimple 8s ease-in-out infinite;
 }
 
-.shape-2 {
+.quem-somos-container .shape-2 {
     width: 150px;
     height: 150px;
     top: 60%;
@@ -97,7 +109,7 @@
     animation: floatSimple 6s ease-in-out infinite reverse;
 }
 
-.shape-3 {
+.quem-somos-container .shape-3 {
     width: 100px;
     height: 100px;
     bottom: 20%;
@@ -110,9 +122,6 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 5%;
-}
-.container h2{
-    font-family: "pack";
 }
 
 /* Section Title */
@@ -128,6 +137,11 @@
     font-family: "akira";
 }
 
+/* "Nossa História" usa uma fonte própria; os outros títulos ficam na akira */
+.nossa-historia .section-title {
+    font-family: "nexa";
+}
+
 
 .section-subtitle {
     font-size: 1.2rem;
@@ -140,7 +154,6 @@
 .nossa-historia {
     padding: 100px 0;
     background: #000000;
-    font-family: "pack";
     position: relative;
     overflow: hidden;
 }
@@ -209,9 +222,6 @@
     line-height: 1.8;
     font-size: 1.1rem;
     margin-bottom: 24px;
-}
-.text-content h2{
-    font-family: "pack";
 }
 
 .image-content {
@@ -376,16 +386,20 @@
     padding: 100px 0;
     background: #000000;
     text-align: center;
+    font-family: "akira";
 }
 
 .diferenciais-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 30px;
     margin-top: 60px;
 }
 
 .diferencial-item {
+    flex: 1 1 240px;
+    max-width: 290px;
     background: linear-gradient(135deg, rgba(179, 143, 198, 0.05) 0%, rgba(76, 0, 76, 0.08) 100%);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -443,10 +457,15 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .hero-about {
+        padding: 175px 5% 70px;
+        min-height: 60vh;
+    }
+
     .hero-title {
         font-size: 2.5rem;
     }
-    
+
     .hero-description {
         font-size: 1.2rem;
     }
@@ -462,10 +481,18 @@
     }
     
     .mvv-grid,
-    .team-grid,
-    .diferenciais-grid {
+    .team-grid {
         grid-template-columns: 1fr;
         gap: 30px;
+    }
+
+    .diferenciais-grid {
+        gap: 24px;
+    }
+
+    .diferencial-item {
+        flex-basis: 100%;
+        max-width: 420px;
     }
     
     .cta-buttons {
@@ -607,6 +634,6 @@
     color: #6d1a6d;
 }
 
-[data-theme="light"] .floating-shape {
+[data-theme="light"] .quem-somos-container .floating-shape {
     background: linear-gradient(135deg, rgba(109, 26, 109, 0.1), rgba(75, 0, 75, 0.05));
 }

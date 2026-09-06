@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 @import './light-theme-improvements.css';
 
+@font-face {
+    font-family: "bebas";
+    src: url("./assets/Bebas-Regular.otf");
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Reset e configurações globais */
 * {
   margin: 0;
