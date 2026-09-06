@@ -8,6 +8,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: "nexa";
+    src: url("./assets/Nexa-Heavy.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Reset e configurações globais */
 * {
   margin: 0;
@@ -103,8 +110,8 @@ a {
   color: #ffffff;
 }
 
-/* Focus styles */
-*:focus {
+/* Focus styles — só no foco por teclado, pra não deixar contorno depois de clicar */
+*:focus-visible {
   outline: 2px solid #b38fc6;
   outline-offset: 2px;
 }

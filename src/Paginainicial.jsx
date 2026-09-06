@@ -58,33 +58,24 @@ const PaginaInicial = () => {
                     <div className="features-grid">
                         <div className="feature-card interactive-feature">
                             <div className="feature-icon bounce-icon">
-                                <FontAwesomeIcon icon={faBolt} style={{color: "#913b91ff"}} />
+                                <FontAwesomeIcon icon={faBolt} />
                             </div>
                             <h3>Rápido & Eficiente</h3>
                             <p>Otimização de rotas em tempo real para chegar ao seu destino mais rapidamente.</p>
-                            <div className="feature-progress">
-                                <div className="progress-bar" style={{width: '95%'}}></div>
-                            </div>
                         </div>
                         <div className="feature-card interactive-feature">
                             <div className="feature-icon bounce-icon">
-                                <FontAwesomeIcon icon={faShield} style={{color: "#913b91ff"}} />
+                                <FontAwesomeIcon icon={faShield} />
                             </div>
                             <h3>Seguro & Confiável</h3>
                             <p>Motoristas verificados e veículos monitorados para sua total segurança.</p>
-                            <div className="feature-progress">
-                                <div className="progress-bar" style={{width: '98%'}}></div>
-                            </div>
                         </div>
                         <div className="feature-card interactive-feature">
                             <div className="feature-icon bounce-icon">
-                                <FontAwesomeIcon icon={faMoneyBillTrendUp} style={{color: "#913b91ff"}} />
+                                <FontAwesomeIcon icon={faMoneyBillTrendUp} />
                             </div>
                             <h3>Preços Justos</h3>
                             <p>Tarifas transparentes e competitivas sem taxas ocultas.</p>
-                            <div className="feature-progress">
-                                <div className="progress-bar" style={{width: '92%'}}></div>
-                            </div>
                         </div>
                     </div>
                 </div>

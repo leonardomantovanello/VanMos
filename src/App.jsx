@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react'
+import React, { Suspense, lazy, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { AuthProvider } from './contexts/AuthContext'
@@ -24,6 +24,14 @@ const PaginaInicial = lazy(() => import('./Paginainicial'))
 const AppContent = () => {
     const location = useLocation()
     const hideNav = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/motorista' || location.pathname === '/forgot-password' || location.pathname === '/redefinir-senha' || location.pathname === '/motorista/analise-cadastro' || location.pathname === '/admin-login' || location.pathname === '/admin-panel'
+
+    // Ao trocar de rota, sempre volta ao topo (SPA não faz isso sozinho).
+    // O container de scroll aqui é o #root (tem height:100% + overflow-y:auto
+    // no index.css), então a janela em si não rola — precisa rolar o #root.
+    useEffect(() => {
+        document.getElementById('root')?.scrollTo({ top: 0, left: 0 })
+        window.scrollTo(0, 0)
+    }, [location.pathname])
 
     return (
         <>

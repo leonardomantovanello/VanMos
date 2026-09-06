@@ -36,16 +36,10 @@ const QuemSomos = () => {
 
             {/* Nossa História */}
             <section className="nossa-historia">
-                {/* Floating cubes background */}
-                <div className="floating-cubes">
-                    <div className="floating-cube cube-1"></div>
-                    <div className="floating-cube cube-2"></div>
-                    <div className="floating-cube cube-3"></div>
-                </div>
                 <div className="container">
                     <div className="content-grid">
                         <div className="text-content">
-                            <h2 className="section-title">Nossa História</h2>
+                            <h2 className="section-title">Nossa Jornada</h2>
                             <p>
                                 Fundada em 2025, a VanMos nasceu da necessidade de transformar o transporte urbano 
                                 brasileiro. Identificamos que havia uma lacuna entre a demanda por transporte de 
@@ -59,9 +53,8 @@ const QuemSomos = () => {
                         </div>
                         <div className="image-content">
                             <div className="story-card">
-                                <div className="card-icon"><FontAwesomeIcon icon={faVanShuttle} style={{color: "#b38fc6"}} /></div>
+                                <div className="story-monogram">VM</div>
                                 <h3>2025</h3>
-                                <p>Fundação da VanMos</p>
                             </div>
                         </div>
                     </div>
@@ -73,7 +66,7 @@ const QuemSomos = () => {
                 <div className="container">
                     <div className="mvv-grid">
                         <div className="mvv-card">
-                            <div className="mvv-icon"><FontAwesomeIcon icon={faVanShuttle} style={{color: "#b38fc6"}} /></div>
+                            <div className="mvv-icon"><FontAwesomeIcon icon={faVanShuttle} /></div>
                             <h3>Missão</h3>
                             <p>
                                 Conectar pessoas através de um transporte seguro, eficiente e sustentável, 
@@ -81,7 +74,7 @@ const QuemSomos = () => {
                             </p>
                         </div>
                         <div className="mvv-card">
-                            <div className="mvv-icon"><FontAwesomeIcon icon={faMapLocation} style={{color: "#b38fc6"}} /></div>
+                            <div className="mvv-icon"><FontAwesomeIcon icon={faMapLocation} /></div>
                             <h3>Visão</h3>
                             <p>
                                 Ser a principal plataforma de mobilidade urbana do Brasil, reconhecida pela 
@@ -89,7 +82,7 @@ const QuemSomos = () => {
                             </p>
                         </div>
                         <div className="mvv-card">
-                            <div className="mvv-icon"><FontAwesomeIcon icon={faUsers} style={{color: "#b38fc6"}} /></div>
+                            <div className="mvv-icon"><FontAwesomeIcon icon={faUsers} /></div>
                             <h3>Valores</h3>
                             <p>
                                 Segurança, transparência, sustentabilidade, inovação e compromisso com a 
@@ -164,7 +157,19 @@ const QuemSomos = () => {
                             <h4>Pedro Souza</h4>
                             <p className="role">Diretor de Operações</p>
                             <p className="bio">
-                                Responsável pela qualidade dos serviços e relacionamento com motoristas parceiros 
+                                Responsável pela qualidade dos serviços e relacionamento com motoristas parceiros
+                                em todo o país.
+                            </p>
+                        </div>
+
+                        <div className="team-member">
+                            <div className="member-avatar">
+                                <span><FontAwesomeIcon icon={faUser} style={{color: "#b38fc6"}}/></span>
+                            </div>
+                            <h4>Ruan Robert</h4>
+                            <p className="role">Diretor de Operações</p>
+                            <p className="bio">
+                                Responsável pela qualidade dos serviços e relacionamento com motoristas parceiros
                                 em todo o país.
                             </p>
                         </div>

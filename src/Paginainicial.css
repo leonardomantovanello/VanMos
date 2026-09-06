@@ -457,20 +457,80 @@
 }
 
 .feature-card {
-    background: linear-gradient(135deg, rgba(179, 143, 198, 0.05) 0%, rgba(76, 0, 76, 0.1) 100%);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    padding: 40px 30px;
-    text-align: center;
+    --glow-a: #8b5cf6;
+    --glow-b: #c026d3;
     position: relative;
-    overflow: hidden;
+    isolation: isolate;
+    background:
+        linear-gradient(90deg, var(--glow-a), var(--glow-b)) bottom / 100% 2px no-repeat,
+        radial-gradient(120% 80% at 50% 120%, rgba(255, 255, 255, 0.06) 0%, transparent 55%),
+        linear-gradient(180deg, rgba(24, 14, 30, 0.55) 0%, rgba(12, 6, 18, 0.75) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 22px;
+    padding: 44px 30px 40px;
+    text-align: center;
+    overflow: visible;
+    transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+                border-color 0.45s ease,
+                box-shadow 0.45s ease;
 }
 
+/* Brilho colorido saindo da base do card */
+.feature-card::after {
+    content: '';
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    bottom: -2px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, var(--glow-a), var(--glow-b));
+    box-shadow: 0 0 22px 2px var(--glow-b);
+    filter: blur(13px);
+    opacity: 0.55;
+    z-index: -1;
+    transition: opacity 0.45s ease, height 0.45s ease, filter 0.45s ease;
+}
+
+/* Tint interno subindo do brilho */
+.feature-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(115% 70% at 50% 118%, var(--glow-b) 0%, transparent 55%);
+    opacity: 0.14;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 34px 70px -24px rgba(0, 0, 0, 0.75);
+}
+
+.feature-card:hover::after {
+    opacity: 0.8;
+    height: 30px;
+    filter: blur(16px);
+}
+
+.feature-card:hover::before {
+    opacity: 0.28;
+}
+
+/* Cor de destaque por card */
+.features-grid .feature-card:nth-child(1) { --glow-a: #7c3aed; --glow-b: #c026d3; }
+.features-grid .feature-card:nth-child(2) { --glow-a: #db2777; --glow-b: #f472b6; }
+.features-grid .feature-card:nth-child(3) { --glow-a: #4f46e5; --glow-b: #a855f7; }
+
 .feature-card h3{
-    font-family: "edge";
-    letter-spacing: 2px;
-    
+    font-family: "nexa";
+    letter-spacing: 1px;
+
 }
 
 
@@ -504,10 +564,27 @@
 }
 
 .feature-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    
+    width: 62px;
+    height: 62px;
+    margin: 0 auto 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #f3e6ff;
+    border-radius: 18px;
+    background: linear-gradient(150deg, var(--glow-a), var(--glow-b));
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 8px 18px -8px var(--glow-b);
+    transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
+
+.feature-card:hover .feature-icon {
+    transform: translateY(-3px) scale(1.06);
+}
+
 .feature-card h3 {
     color: #ffffff;
     font-size: 1.4rem;
@@ -779,10 +856,12 @@
     }
     
     .feature-icon {
-        font-size: 2.2rem;
-        margin-bottom: 15px;
+        width: 54px;
+        height: 54px;
+        font-size: 1.4rem;
+        margin-bottom: 16px;
     }
-    
+
     .feature-card h3 {
         font-size: 1.2rem;
         margin-bottom: 12px;
@@ -908,12 +987,26 @@
 }
 
 [data-theme="light"] .feature-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 249, 250, 0.9) 100%);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: linear-gradient(180deg, #ffffff 0%, #f6f4fa 100%);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .feature-card::after {
+    bottom: -8px;
+    height: 22px;
+    opacity: 0.42;
+}
+
+[data-theme="light"] .feature-card::before {
+    opacity: 0.07;
+}
+
+[data-theme="light"] .feature-card:hover::after {
+    opacity: 0.55;
 }
 
 [data-theme="light"] .feature-card:hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 24px 45px -18px rgba(0, 0, 0, 0.25);
     border-color: rgba(109, 26, 109, 0.2);
 }
 
