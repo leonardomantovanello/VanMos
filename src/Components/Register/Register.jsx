@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { motoristasApi } from '../../services/motoristasApi'
 import './Register.css'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { formatCPF, isValidCPF, isValidEmail, isValidPassword } from '../../utils/validators'
 import { fileToBase64 } from '../../utils/fileToBase64'
 
@@ -315,7 +315,7 @@ const Register = () => {
                 required
               />
               <span className="checkmark"></span>
-              Concordo com os <a href="#" className="link">Termos de Uso</a> e <a href="#" className="link">Política de Privacidade</a>
+              Concordo com os <Link to="/termos-de-uso" target="_blank" rel="noopener noreferrer" className="link">Termos de Uso</Link> e <Link to="/politica-de-privacidade" target="_blank" rel="noopener noreferrer" className="link">Política de Privacidade</Link>
             </label>
           </div>
 

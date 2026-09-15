@@ -23,7 +23,7 @@
   font-family: 'Poppins', sans-serif;
 }
 
-html {
+html, #root {
   scroll-behavior: smooth;
 }
 

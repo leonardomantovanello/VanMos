@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import './Login.css'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { loginApi } from '../../services/login'
 import { useAuth } from '../../contexts/AuthContext'
 
@@ -163,7 +163,7 @@ const Login = () => {
         </form>
 
         <div className="login-footer">
-          <p>Ao continuar, você concorda com nossos <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a></p>
+          <p>Ao continuar, você concorda com nossos <Link to="/termos-de-uso" target="_blank" rel="noopener noreferrer">Termos de Uso</Link> e <Link to="/politica-de-privacidade" target="_blank" rel="noopener noreferrer">Política de Privacidade</Link></p>
         </div>
       </div>
     </div>

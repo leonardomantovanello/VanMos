@@ -20,6 +20,8 @@ const AnaliseCadastro = lazy(() => import('./Components/AnaliseCadastro/AnaliseC
 const AdminLogin = lazy(() => import('./Components/Login/AdminLogin'))
 const AdminPanel = lazy(() => import('./Components/Admin/AdminPanel'))
 const PaginaInicial = lazy(() => import('./Paginainicial'))
+const TermosDeUso = lazy(() => import('./Components/Legal/TermosDeUso'))
+const PoliticaDePrivacidade = lazy(() => import('./Components/Legal/PoliticaDePrivacidade'))
 
 const AppContent = () => {
     const location = useLocation()
@@ -50,6 +52,8 @@ const AppContent = () => {
                     <Route path="/motorista/analise-cadastro" element={<AnaliseCadastro />} />
                     <Route path="/admin-login" element={<AdminLogin />} />
                     <Route path="/admin-panel" element={<AdminPanel />} />
+                    <Route path="/termos-de-uso" element={<TermosDeUso />} />
+                    <Route path="/politica-de-privacidade" element={<PoliticaDePrivacidade />} />
                 </Routes>
             </Suspense>
         </>
