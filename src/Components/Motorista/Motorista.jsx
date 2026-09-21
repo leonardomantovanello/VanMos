@@ -5,6 +5,7 @@
     import { passageirosApi } from '../../services/passageirosApi'
     import { motoristasApi } from '../../services/motoristasApi'
     import { alunosApi } from '../../services/alunosApi'
+    import { escolasApi } from '../../services/escolasApi'
     import { isValidPassword } from '../../utils/validators'
     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
     import {faChartSimple, faChartPie, faSun, faGear, faUsers, faUser,
@@ -33,18 +34,13 @@ const Motorista = () => {
     const [novoPassageiro, setNovoPassageiro] = useState({
         nomeAluno: '', telefoneResponsavel: '', enderecoEmbarque: '', enderecoDesembarque: '', escola: '', turno: '',
         valor: '',
-        nomeResponsavel: '', cpfResponsavel: '', emailResponsavel: '', idadeResponsavel: '', generoResponsavel: ''
+        nomeResponsavel: '', cpfResponsavel: '', emailResponsavel: '', dataNascimentoResponsavel: '', generoResponsavel: ''
     })
     const [cadastrandoPassageiro, setCadastrandoPassageiro] = useState(false)
-    // Lista estática: cadastro/remoção de escola só existia na aba Rota
-    // (removida) — hoje só serve pro <select> do modal de passageiro.
-    const [escolas] = useState([
-        { nome: 'Escola Municipal A', endereco: 'Rua das Flores, 123 - Centro' },
-        { nome: 'Colégio Estadual B', endereco: 'Av. Principal, 456 - Bairro Norte' },
-        { nome: 'Escola Particular C', endereco: 'Rua da Educação, 789 - Vila Sul' },
-        { nome: 'Instituto Federal', endereco: 'Av. Tecnológica, 100 - Campus' },
-        { nome: 'Universidade Local', endereco: 'Rua Universitária, 500 - Centro Acadêmico' }
-    ])
+    // Escolas de Barueri-SP pro <select> do modal de passageiro (ver
+    // src/services/escolasApi.js — lista própria no front, já pensada pra
+    // virar uma chamada de API real mais adiante).
+    const [escolas, setEscolas] = useState([])
     const [showPassageiroDetails, setShowPassageiroDetails] = useState(false)
     const [selectedPassageiro, setSelectedPassageiro] = useState(null)
     const [showEditPassageiro, setShowEditPassageiro] = useState(false)
@@ -132,6 +128,10 @@ const Motorista = () => {
         carregarPassageiros()
     }, [isGuardianAuthenticated, guardianUser, navigate, logoutGuardian])
 
+    useEffect(() => {
+        escolasApi.listar().then(setEscolas).catch(() => setEscolas([]))
+    }, [])
+
     const handleLogout = () => {
         logoutGuardian()
         navigate('/')
@@ -167,6 +167,21 @@ const Motorista = () => {
         }
     }
 
+    // O backend guarda idade (não data de nascimento) do responsável — o
+    // campo no formulário pede a data e a idade é calculada aqui antes de
+    // enviar, pra não precisar mudar o contrato da API.
+    const calcularIdadeAPartirDaData = (dataNascimento) => {
+        if (!dataNascimento) return null
+        const hoje = new Date()
+        const nascimento = new Date(dataNascimento)
+        let idade = hoje.getFullYear() - nascimento.getFullYear()
+        const aindaNaoFezAniversarioEsteAno =
+            hoje.getMonth() < nascimento.getMonth() ||
+            (hoje.getMonth() === nascimento.getMonth() && hoje.getDate() < nascimento.getDate())
+        if (aindaNaoFezAniversarioEsteAno) idade--
+        return idade
+    }
+
     const handleAddPassenger = async (e) => {
         e.preventDefault()
         setCadastrandoPassageiro(true)
@@ -180,7 +195,7 @@ const Motorista = () => {
                 nomeResponsavel: novoPassageiro.nomeResponsavel,
                 cpfResponsavel: novoPassageiro.cpfResponsavel,
                 emailResponsavel: novoPassageiro.emailResponsavel,
-                idadeResponsavel: novoPassageiro.idadeResponsavel ? Number(novoPassageiro.idadeResponsavel) : null,
+                idadeResponsavel: calcularIdadeAPartirDaData(novoPassageiro.dataNascimentoResponsavel),
                 generoResponsavel: novoPassageiro.generoResponsavel,
                 nomeAluno: novoPassageiro.nomeAluno,
                 telefoneResponsavel: novoPassageiro.telefoneResponsavel,
@@ -198,7 +213,7 @@ const Motorista = () => {
             setNovoPassageiro({
                 nomeAluno: '', telefoneResponsavel: '', enderecoEmbarque: '', enderecoDesembarque: '', escola: '', turno: '',
                 valor: '',
-                nomeResponsavel: '', cpfResponsavel: '', emailResponsavel: '', idadeResponsavel: '', generoResponsavel: ''
+                nomeResponsavel: '', cpfResponsavel: '', emailResponsavel: '', dataNascimentoResponsavel: '', generoResponsavel: ''
             })
             setShowAddPassenger(false)
         } catch (error) {
@@ -727,94 +742,149 @@ const Motorista = () => {
                                     <h3 id="modal-title-add-passageiro">Adicionar Novo Passageiro</h3>
                                     <form onSubmit={handleAddPassenger}>
                                         <p className="form-section-label">Dados do aluno</p>
-                                        <input
-                                            type="text"
-                                            name="nomeAluno"
-                                            placeholder="Nome completo do aluno"
-                                            value={novoPassageiro.nomeAluno}
-                                            onChange={handleInputChange}
-                                            required
-                                        />
-                                        <input
-                                            type="text"
-                                            name="enderecoEmbarque"
-                                            placeholder="Endereço de embarque"
-                                            value={novoPassageiro.enderecoEmbarque}
-                                            onChange={handleInputChange}
-                                            required
-                                        />
-                                        <input
-                                            type="text"
-                                            name="enderecoDesembarque"
-                                            placeholder="Endereço de desembarque"
-                                            value={novoPassageiro.enderecoDesembarque}
-                                            onChange={handleInputChange}
-                                        />
-                                        <select
-                                            name="escola"
-                                            value={novoPassageiro.escola}
-                                            onChange={handleInputChange}
-                                            required
-                                        >
-                                            <option value="">Selecione a escola</option>
-                                            {escolas.map(escola => (
-                                                <option key={escola.nome} value={escola.nome}>
-                                                    {escola.nome}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <select
-                                            name="turno"
-                                            value={novoPassageiro.turno}
-                                            onChange={handleInputChange}
-                                        >
-                                            <option value="">Selecione o turno</option>
-                                            <option value="MANHA">Manhã</option>
-                                            <option value="TARDE">Tarde</option>
-                                            <option value="NOITE">Noite</option>
-                                        </select>
-                                        <input
-                                            type="number"
-                                            name="valor"
-                                            placeholder="Valor mensal (R$)"
-                                            value={novoPassageiro.valor}
-                                            onChange={handleInputChange}
-                                            min="0"
-                                            step="0.01"
-                                        />
+                                        <div className="input-group">
+                                            <label htmlFor="nomeAluno">Nome completo do aluno <span className="required-mark">*</span></label>
+                                            <input
+                                                type="text"
+                                                id="nomeAluno"
+                                                name="nomeAluno"
+                                                placeholder="Nome completo do aluno"
+                                                value={novoPassageiro.nomeAluno}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="input-group">
+                                            <label htmlFor="enderecoEmbarque">Endereço de embarque <span className="required-mark">*</span></label>
+                                            <input
+                                                type="text"
+                                                id="enderecoEmbarque"
+                                                name="enderecoEmbarque"
+                                                placeholder="Endereço de embarque"
+                                                value={novoPassageiro.enderecoEmbarque}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="input-group">
+                                            <label htmlFor="enderecoDesembarque">Endereço de desembarque</label>
+                                            <input
+                                                type="text"
+                                                id="enderecoDesembarque"
+                                                name="enderecoDesembarque"
+                                                placeholder="Endereço de desembarque"
+                                                value={novoPassageiro.enderecoDesembarque}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+                                        <div className="input-group">
+                                            <label htmlFor="escola">Escola <span className="required-mark">*</span></label>
+                                            <select
+                                                id="escola"
+                                                name="escola"
+                                                value={novoPassageiro.escola}
+                                                onChange={handleInputChange}
+                                                required
+                                            >
+                                                <option value="">Selecione a escola</option>
+                                                {['Estadual', 'Municipal', 'Técnica (ITB/FIEB)', 'Particular'].map(rede => (
+                                                    <optgroup key={rede} label={rede}>
+                                                        {escolas.filter(escola => escola.rede === rede).map(escola => (
+                                                            <option key={escola.nome} value={escola.nome}>
+                                                                {escola.nome}
+                                                            </option>
+                                                        ))}
+                                                    </optgroup>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="input-group">
+                                            <label htmlFor="turno">Turno</label>
+                                            <select
+                                                id="turno"
+                                                name="turno"
+                                                value={novoPassageiro.turno}
+                                                onChange={handleInputChange}
+                                            >
+                                                <option value="">Selecione o turno</option>
+                                                <option value="MANHA">Manhã</option>
+                                                <option value="TARDE">Tarde</option>
+                                                <option value="NOITE">Noite</option>
+                                            </select>
+                                        </div>
+                                        <div className="input-group">
+                                            <label htmlFor="valor">Valor mensal (R$)</label>
+                                            <input
+                                                type="number"
+                                                id="valor"
+                                                name="valor"
+                                                placeholder="Valor mensal (R$)"
+                                                value={novoPassageiro.valor}
+                                                onChange={handleInputChange}
+                                                min="0"
+                                                step="0.01"
+                                            />
+                                        </div>
 
                                         <p className="form-section-label">Dados do responsável (recebe o acesso ao app)</p>
-                                        <input
-                                            type="text"
-                                            name="nomeResponsavel"
-                                            placeholder="Nome do responsável"
-                                            value={novoPassageiro.nomeResponsavel}
-                                            onChange={handleInputChange}
-                                            required
-                                        />
-                                        <input
-                                            type="tel"
-                                            name="telefoneResponsavel"
-                                            placeholder="Telefone do responsável"
-                                            value={novoPassageiro.telefoneResponsavel}
-                                            onChange={handleInputChange}
-                                            required
-                                        />
-                                        <input
-                                            type="email"
-                                            name="emailResponsavel"
-                                            placeholder="E-mail do responsável (a senha de acesso é enviada aqui)"
-                                            value={novoPassageiro.emailResponsavel}
-                                            onChange={handleInputChange}
-                                            required
-                                        />
-                                        <input
-                                            type="text"
-                                            name="cpfResponsavel"
-                                            placeholder="CPF do responsável"
-                                            value={novoPassageiro.cpfResponsavel}
-                                            onChange={handleInputChange}
-                                        />
+                                        <div className="input-group">
+                                            <label htmlFor="nomeResponsavel">Nome completo do responsável <span className="required-mark">*</span></label>
+                                            <input
+                                                type="text"
+                                                id="nomeResponsavel"
+                                                name="nomeResponsavel"
+                                                placeholder="Nome completo do responsável"
+                                                value={novoPassageiro.nomeResponsavel}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="input-group">
+                                            <label htmlFor="telefoneResponsavel">Telefone do responsável <span className="required-mark">*</span></label>
+                                            <input
+                                                type="tel"
+                                                id="telefoneResponsavel"
+                                                name="telefoneResponsavel"
+                                                placeholder="Telefone do responsável"
+                                                value={novoPassageiro.telefoneResponsavel}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="input-group">
+                                            <label htmlFor="emailResponsavel">E-mail do responsável <span className="required-mark">*</span></label>
+                                            <input
+                                                type="email"
+                                                id="emailResponsavel"
+                                                name="emailResponsavel"
+                                                placeholder="A senha de acesso é enviada aqui"
+                                                value={novoPassageiro.emailResponsavel}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="input-group">
+                                            <label htmlFor="cpfResponsavel">CPF do responsável</label>
+                                            <input
+                                                type="text"
+                                                id="cpfResponsavel"
+                                                name="cpfResponsavel"
+                                                placeholder="CPF do responsável"
+                                                value={novoPassageiro.cpfResponsavel}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+                                        <div className="input-group">
+                                            <label htmlFor="dataNascimentoResponsavel">Data de nascimento do responsável</label>
+                                            <input
+                                                type="date"
+                                                id="dataNascimentoResponsavel"
+                                                name="dataNascimentoResponsavel"
+                                                max={new Date().toISOString().split('T')[0]}
+                                                value={novoPassageiro.dataNascimentoResponsavel}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
                                         <div className="modal-actions">
                                             <button type="submit" className="confirm-btn" disabled={cadastrandoPassageiro}>
                                                 {cadastrandoPassageiro ? 'Cadastrando...' : 'Adicionar'}

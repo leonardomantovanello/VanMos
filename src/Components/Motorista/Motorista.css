@@ -552,6 +552,22 @@
     gap: 20px;
 }
 
+.modal .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modal .input-group label {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.modal .required-mark {
+    color: #ff6b9d;
+}
+
 .modal input, .modal select {
     padding: 15px;
     background: rgba(26, 0, 26, 0.6);
@@ -1395,6 +1411,14 @@
     background: rgba(255, 255, 255, 0.8);
     border: 2px solid rgba(109, 26, 109, 0.2);
     color: #212529;
+}
+
+[data-theme="light"] .modal .input-group label {
+    color: rgba(33, 37, 41, 0.85);
+}
+
+[data-theme="light"] .modal .required-mark {
+    color: #c0246b;
 }
 
 [data-theme="light"] .modal input:focus,

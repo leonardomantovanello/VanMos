@@ -11,6 +11,9 @@ const Register = () => {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [enviando, setEnviando] = useState(false)
+  // Formulário em duas etapas pra não jogar 11 campos na tela de uma vez:
+  // 1) dados pessoais, 2) documentos (que exigem aprovação manual do suporte).
+  const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     nome: '',
     idade: '',
@@ -54,7 +57,7 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [campo]: base64 }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleAvancarEtapa = (e) => {
     e.preventDefault()
     if (!isValidCPF(formData.cpf)) {
       alert('Por favor, insira um CPF válido')
@@ -68,8 +71,19 @@ const Register = () => {
       alert('A senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e número')
       return
     }
-    if (!formData.telefone.trim() || !formData.rg.trim() || !formData.cnh.trim()) {
-      alert('Telefone, RG e CNH são obrigatórios para o cadastro de motorista')
+    if (!formData.telefone.trim()) {
+      alert('Telefone é obrigatório para o cadastro de motorista')
+      return
+    }
+    setStep(2)
+  }
+
+  const handleVoltarEtapa = () => setStep(1)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!formData.rg.trim() || !formData.cnh.trim()) {
+      alert('RG e CNH são obrigatórios para o cadastro de motorista')
       return
     }
     if (!formData.rgDocumentoBase64 || !formData.cnhDocumentoBase64) {
@@ -121,11 +135,11 @@ const Register = () => {
         <div className="bg-circle circle-3" style={{background: 'linear-gradient(135deg, #9300d3, #ff1493)'}}></div>
         <div className="bg-circle circle-4" style={{background: 'linear-gradient(135deg, #9300d3, #ff1493)'}}></div>
       </div>
-      
-      <button 
-        type="button" 
+
+      <button
+        type="button"
         className="voltar-btn"
-        onClick={() => navigate('/')} 
+        onClick={() => navigate('/')}
       >
         <span>←</span> Voltar
       </button>
@@ -136,204 +150,240 @@ const Register = () => {
           <p className="register-subtitle">Junte-se à nossa comunidade de transporte inteligente</p>
         </div>
 
-        <form className="register-form" onSubmit={handleSubmit}>
-          <div className="form-row">
-            <div className="input-group">
-              <label htmlFor="nome">Nome Completo</label>
-              <input
-                type="text"
-                id="nome"
-                name="nome"
-                placeholder="Digite seu nome completo"
-                value={formData.nome}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-
-            <div className="input-group">
-              <label htmlFor="idade">Idade</label>
-              <input
-                type="number"
-                id="idade"
-                name="idade"
-                placeholder="Sua idade"
-                min="18"
-                max="100"
-                value={formData.idade}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
+        <div className="register-steps">
+          <div className={`step-indicator ${step >= 1 ? 'active' : ''}`}>
+            <span className="step-number">1</span>
+            <span className="step-name">Dados pessoais</span>
           </div>
-
-          <div className="form-row">
-            <div className="input-group">
-              <label htmlFor="cpf">CPF</label>
-              <input
-                type="text"
-                id="cpf"
-                name="cpf"
-                placeholder="000.000.000-00"
-                maxLength="14"
-                value={formData.cpf}
-                onChange={handleCPFChange}
-                required
-              />
-            </div>
-
-            <div className="input-group">
-              <label htmlFor="genero">Gênero</label>
-              <select
-                id="genero"
-                name="genero"
-                value={formData.genero}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Selecione seu gênero</option>
-                <option value="masculino">Masculino</option>
-                <option value="feminino">Feminino</option>
-                <option value="outro">Outro</option>
-                <option value="nao-informar">Prefiro não informar</option>
-              </select>
-            </div>
+          <div className="step-connector"></div>
+          <div className={`step-indicator ${step >= 2 ? 'active' : ''}`}>
+            <span className="step-number">2</span>
+            <span className="step-name">Documentos</span>
           </div>
+        </div>
 
-          <div className="form-row">
-            <div className="input-group">
-              <label htmlFor="telefone">Telefone</label>
-              <input
-                type="tel"
-                id="telefone"
-                name="telefone"
-                placeholder="(00) 00000-0000"
-                value={formData.telefone}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
+        <form className="register-form" onSubmit={step === 1 ? handleAvancarEtapa : handleSubmit}>
+          {step === 1 && (
+            <>
+              <div className="form-row">
+                <div className="input-group">
+                  <label htmlFor="nome">Nome Completo <span className="required-mark">*</span></label>
+                  <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    placeholder="Digite seu nome completo"
+                    value={formData.nome}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
 
-            <div className="input-group">
-              <label htmlFor="rg">RG</label>
-              <input
-                type="text"
-                id="rg"
-                name="rg"
-                placeholder="00.000.000-0"
-                value={formData.rg}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-          </div>
+                <div className="input-group">
+                  <label htmlFor="idade">Idade <span className="required-mark">*</span></label>
+                  <input
+                    type="number"
+                    id="idade"
+                    name="idade"
+                    placeholder="Sua idade"
+                    min="18"
+                    max="100"
+                    value={formData.idade}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="input-group">
-            <label htmlFor="cnh">CNH</label>
-            <input
-              type="text"
-              id="cnh"
-              name="cnh"
-              placeholder="Número da CNH"
-              value={formData.cnh}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
+              <div className="form-row">
+                <div className="input-group">
+                  <label htmlFor="cpf">CPF <span className="required-mark">*</span></label>
+                  <input
+                    type="text"
+                    id="cpf"
+                    name="cpf"
+                    placeholder="000.000.000-00"
+                    maxLength="14"
+                    value={formData.cpf}
+                    onChange={handleCPFChange}
+                    required
+                  />
+                </div>
 
-          <div className="form-row">
-            <div className="input-group">
-              <label htmlFor="rgDocumento">Foto/scan do RG</label>
-              <input
-                type="file"
-                id="rgDocumento"
-                accept="image/*"
-                onChange={(e) => handleDocumentoChange('rgDocumentoBase64', e)}
-                required
-              />
-            </div>
+                <div className="input-group">
+                  <label htmlFor="genero">Gênero <span className="required-mark">*</span></label>
+                  <select
+                    id="genero"
+                    name="genero"
+                    value={formData.genero}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Selecione seu gênero</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="feminino">Feminino</option>
+                    <option value="outro">Outro</option>
+                    <option value="nao-informar">Prefiro não informar</option>
+                  </select>
+                </div>
+              </div>
 
-            <div className="input-group">
-              <label htmlFor="cnhDocumento">Foto/scan da CNH</label>
-              <input
-                type="file"
-                id="cnhDocumento"
-                accept="image/*"
-                onChange={(e) => handleDocumentoChange('cnhDocumentoBase64', e)}
-                required
-              />
-            </div>
-          </div>
+              <div className="form-row">
+                <div className="input-group">
+                  <label htmlFor="telefone">Telefone <span className="required-mark">*</span></label>
+                  <input
+                    type="tel"
+                    id="telefone"
+                    name="telefone"
+                    placeholder="(00) 00000-0000"
+                    value={formData.telefone}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
 
-          <div className="input-group">
-            <label htmlFor="email">E-mail</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="seu.email@exemplo.com"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
+                <div className="input-group">
+                  <label htmlFor="email">E-mail <span className="required-mark">*</span></label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="seu.email@exemplo.com"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="input-group">
-            <label htmlFor="senha">Senha</label>
-            <div className="password-field">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="senha"
-                name="senha"
-                placeholder="Crie uma senha segura"
-                minLength="6"
-                value={formData.senha}
-                onChange={handleInputChange}
-                required
-              />
+              <div className="input-group">
+                <label htmlFor="senha">Senha <span className="required-mark">*</span></label>
+                <div className="password-field">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="senha"
+                    name="senha"
+                    placeholder="Crie uma senha segura"
+                    minLength="6"
+                    value={formData.senha}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="show-password-btn"
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex="-1"
+                  >
+                    {showPassword ? "👁️" : "👁️‍🗨️"}
+                  </button>
+                </div>
+                <div className="password-hint">
+                  A senha deve ter pelo menos 6 caracteres
+                </div>
+              </div>
+
+              <button type="submit" className="register-btn">
+                Próximo
+              </button>
+
+              <div className="divider">
+                <span>ou</span>
+              </div>
+
               <button
                 type="button"
-                className="show-password-btn"
-                onClick={() => setShowPassword(!showPassword)}
-                tabIndex="-1"
+                className="login-link-btn"
+                onClick={() => navigate('/login')}
               >
-                {showPassword ? "👁️" : "👁️‍🗨️"}
+                Já possui uma conta? Faça login
               </button>
-            </div>
-            <div className="password-hint">
-              A senha deve ter pelo menos 6 caracteres
-            </div>
-          </div>
+            </>
+          )}
 
-          <div className="form-options">
-            <label className="checkbox-container">
-              <input
-                type="checkbox"
-                name="aceitouTermos"
-                checked={formData.aceitouTermos}
-                onChange={handleInputChange}
-                required
-              />
-              <span className="checkmark"></span>
-              Concordo com os <Link to="/termos-de-uso" target="_blank" rel="noopener noreferrer" className="link">Termos de Uso</Link> e <Link to="/politica-de-privacidade" target="_blank" rel="noopener noreferrer" className="link">Política de Privacidade</Link>
-            </label>
-          </div>
+          {step === 2 && (
+            <>
+              <div className="form-row">
+                <div className="input-group">
+                  <label htmlFor="rg">RG <span className="required-mark">*</span></label>
+                  <input
+                    type="text"
+                    id="rg"
+                    name="rg"
+                    placeholder="00.000.000-0"
+                    value={formData.rg}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
 
-          <button type="submit" className="register-btn" disabled={enviando}>
-            {enviando ? 'Enviando...' : 'Criar Conta'}
-          </button>
+                <div className="input-group">
+                  <label htmlFor="cnh">CNH <span className="required-mark">*</span></label>
+                  <input
+                    type="text"
+                    id="cnh"
+                    name="cnh"
+                    placeholder="Número da CNH"
+                    value={formData.cnh}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="divider">
-            <span>ou</span>
-          </div>
+              <div className="form-row">
+                <div className="input-group">
+                  <label htmlFor="rgDocumento">Foto/scan do RG <span className="required-mark">*</span></label>
+                  <input
+                    type="file"
+                    id="rgDocumento"
+                    accept="image/*"
+                    onChange={(e) => handleDocumentoChange('rgDocumentoBase64', e)}
+                    required
+                  />
+                </div>
 
-          <button
-            type="button"
-            className="login-link-btn"
-            onClick={() => navigate('/login')}
-          >
-            Já possui uma conta? Faça login
-          </button>
+                <div className="input-group">
+                  <label htmlFor="cnhDocumento">Foto/scan da CNH <span className="required-mark">*</span></label>
+                  <input
+                    type="file"
+                    id="cnhDocumento"
+                    accept="image/*"
+                    onChange={(e) => handleDocumentoChange('cnhDocumentoBase64', e)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-options">
+                <label className="checkbox-container">
+                  <input
+                    type="checkbox"
+                    name="aceitouTermos"
+                    checked={formData.aceitouTermos}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <span className="checkmark"></span>
+                  Concordo com os <Link to="/termos-de-uso" target="_blank" rel="noopener noreferrer" className="link">Termos de Uso</Link> e <Link to="/politica-de-privacidade" target="_blank" rel="noopener noreferrer" className="link">Política de Privacidade</Link>
+                </label>
+              </div>
+
+              <div className="step-actions">
+                <button
+                  type="button"
+                  className="login-link-btn"
+                  onClick={handleVoltarEtapa}
+                  disabled={enviando}
+                >
+                  Voltar
+                </button>
+                <button type="submit" className="register-btn" disabled={enviando}>
+                  {enviando ? 'Enviando...' : 'Criar Conta'}
+                </button>
+              </div>
+            </>
+          )}
         </form>
       </div>
     </div>

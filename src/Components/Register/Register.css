@@ -128,6 +128,76 @@
   line-height: 1.4;
 }
 
+/* Steps */
+.register-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.step-indicator.active {
+  opacity: 1;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(179, 143, 198, 0.15);
+  border: 2px solid rgba(179, 143, 198, 0.3);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.step-indicator.active .step-number {
+  background: linear-gradient(135deg, #6d1a6d 0%, #4b004b 100%);
+  border-color: #b38fc6;
+}
+
+.step-name {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.step-connector {
+  width: 40px;
+  height: 2px;
+  background: rgba(179, 143, 198, 0.25);
+}
+
+.step-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.step-actions .login-link-btn,
+.step-actions .register-btn {
+  flex: 1;
+  margin-top: 0;
+}
+
+.required-mark {
+  color: #ff6b9d;
+}
+
 /* Form */
 .register-form {
   display: flex;
@@ -435,7 +505,11 @@ input[type="number"]::-webkit-inner-spin-button {
   .checkbox-container {
     align-items: flex-start;
   }
-  
+
+  .step-actions {
+    flex-direction: column;
+  }
+
   .bg-circle {
     opacity: 0.4;
   }
@@ -473,7 +547,15 @@ input[type="number"]::-webkit-inner-spin-button {
   .register-subtitle {
     font-size: 0.9rem;
   }
-  
+
+  .step-name {
+    display: none;
+  }
+
+  .step-connector {
+    width: 24px;
+  }
+
   .input-group input,
   .input-group select {
     padding: 14px 16px;
