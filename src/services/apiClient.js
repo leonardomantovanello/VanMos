@@ -6,7 +6,10 @@
 //   { sucesso, status, mensagem, dados, erros, timestamp }
 // então "mensagem" é o campo confiável para mostrar ao usuário em caso de erro.
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://vanmosapi.onrender.com/api').replace(/\/+$/, '')
+// Sem VITE_API_URL, cai em '/api' relativo: em dev o proxy do Vite (vite.config.js)
+// encaminha pro backend local em http://localhost:8080; em produção, o servidor
+// que serve os arquivos estáticos (nginx.conf) precisa fazer o mesmo proxy_pass.
+const API_BASE_URL = (import.meta.env.VITE_API_URL || '/api').replace(/\/+$/, '')
 
 // Token do motorista/responsável logado (fluxo /api/login) — chave precisa
 // ficar em sincronia com GUARDIAN_TOKEN_KEY em contexts/AuthContext.jsx.

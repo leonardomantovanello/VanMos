@@ -2,8 +2,6 @@
 
 Frontend web do **VanMos**, sistema de gestão de transporte escolar desenvolvido como projeto de TCC.
 
-🔗 Deploy: https://van-mos-two.vercel.app
-
 ## Sobre o projeto
 Interface web para motoristas e responsáveis acompanharem informações do transporte escolar (rotas, perfil, páginas do motorista, entre outras).
 

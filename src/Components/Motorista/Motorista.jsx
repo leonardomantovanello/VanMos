@@ -1,6 +1,5 @@
     import React, { useState, useEffect, useMemo } from 'react'
     import { useNavigate } from 'react-router-dom'
-    import { useTheme } from '../../contexts/ThemeContext'
     import { useAuth } from '../../contexts/AuthContext'
     import { passageirosApi } from '../../services/passageirosApi'
     import { motoristasApi } from '../../services/motoristasApi'
@@ -8,8 +7,8 @@
     import { escolasApi } from '../../services/escolasApi'
     import { isValidPassword } from '../../utils/validators'
     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-    import {faChartSimple, faChartPie, faSun, faGear, faUsers, faUser,
-    faMoneyBill, faVanShuttle, faDoorClosed,faMoon, faPhone, faMapPin, faTrashCan,
+    import {faChartSimple, faChartPie, faGear, faUsers, faUser,
+    faMoneyBill, faVanShuttle, faDoorClosed, faPhone, faMapPin, faTrashCan,
     faPlus, faPencil, faMapLocation, faIdCard, faLock, faCamera}
     from '@fortawesome/free-solid-svg-icons'
     import DonutChart from '../Charts/DonutChart'
@@ -22,7 +21,6 @@
 
 const Motorista = () => {
     const navigate = useNavigate()
-    const { isDark, toggleTheme } = useTheme()
     const { guardianUser, isGuardianAuthenticated, updateGuardian, logoutGuardian } = useAuth()
     const [activeTab, setActiveTab] = useState('dashboard')
     const [showAddPassenger, setShowAddPassenger] = useState(false)
@@ -443,12 +441,6 @@ const Motorista = () => {
                                     onClick={() => { setActiveTab('ajustes'); setIsSettingsOpen(false) }}
                                 >
                                     <FontAwesomeIcon icon={faGear} style={{color: "#b852b8ff"}} /> Ajustes
-                                </button>
-                                <button
-                                    className="theme-toggle"
-                                    onClick={toggleTheme}
-                                >
-                                    {isDark ? <FontAwesomeIcon icon={faSun} style={{color: "#b852b8ff"}} /> : <FontAwesomeIcon icon={faMoon} style={{color: "#b852b8ff"}} />} {isDark ? 'Modo Claro' : 'Modo Escuro'}
                                 </button>
                                 <button
                                     className="logout-option"

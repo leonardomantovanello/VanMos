@@ -278,36 +278,6 @@ const Contato = () => {
                 </div>
             </section>
 
-            {/* Horários de Atendimento */}
-            <section className="horarios-atendimento">
-                <div className="bg-elements">
-                    <div className="floating-shape horario-shape-1"></div>
-                    <div className="floating-shape horario-shape-2"></div>
-                </div>
-                <div className="container">
-                    <div className="horarios-content">
-                        <h2>Horários de Atendimento</h2>
-                        <div className="horarios-grid">
-                            <div className="horario-item">
-                                <span className="dia">Segunda a Sexta</span>
-                                <span className="hora">8h às 18h</span>
-                            </div>
-                            <div className="horario-item">
-                                <span className="dia">Sábado</span>
-                                <span className="hora">9h às 14h</span>
-                            </div>
-                            <div className="horario-item">
-                                <span className="dia">Domingo</span>
-                                <span className="hora">Fechado</span>
-                            </div>
-                        </div>
-                        <p className="horario-obs">
-                            * WhatsApp disponível 24h para emergências
-                        </p>
-                    </div>
-                </div>
-            </section>
-            
             {showToast && (
                 <Toast 
                     message={toastMessage}

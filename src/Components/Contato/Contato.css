@@ -145,23 +145,6 @@
     animation-delay: 5s;
 }
 
-/* Horario section shapes */
-.contato-container .horario-shape-1 {
-    width: 110px;
-    height: 110px;
-    top: 25%;
-    left: 15%;
-    animation-delay: 3s;
-}
-
-.contato-container .horario-shape-2 {
-    width: 70px;
-    height: 70px;
-    bottom: 25%;
-    right: 20%;
-    animation-delay: 7s;
-}
-
 @keyframes floatContato {
     0%, 100% {
         transform: translateY(0) scale(1);
@@ -522,69 +505,6 @@
     box-shadow: 0 15px 35px rgba(179, 143, 198, 0.5);
 }
 
-/* Horários de Atendimento */
-.horarios-atendimento {
-    padding: 80px 0;
-    background: #000000;
-    color: white;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.horarios-content h2 {
-    font-size: 2.5rem;
-    margin-bottom: 2.5rem;
-    font-weight: 700;
-    color: #ffffff;
-}
-
-.horarios-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.5rem;
-    max-width: 600px;
-    margin: 0 auto 2rem;
-}
-
-.horario-item {
-    flex: 1 1 240px;
-    max-width: 270px;
-    background: rgba(179, 143, 198, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 2rem 1.5rem;
-    border-radius: 20px;
-    border: 1px solid rgba(179, 143, 198, 0.2);
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    transition: all 0.3s ease;
-}
-
-.horario-item:hover {
-    background: rgba(179, 143, 198, 0.15);
-    transform: translateY(-5px);
-}
-
-.dia {
-    font-weight: 600;
-    font-size: 1.2rem;
-    color: #e6ccff;
-}
-
-.hora {
-    opacity: 0.9;
-    font-size: 1rem;
-}
-
-.horario-obs {
-    margin-top: 1.5rem;
-    opacity: 0.8;
-    font-style: italic;
-    color: #b38fc6;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
     .form-row {
@@ -607,11 +527,6 @@
     
     .hero-contato {
         min-height: 40vh;
-    }
-    
-    .horario-item {
-        flex-basis: 100%;
-        max-width: 340px;
     }
 }
 
@@ -656,8 +571,7 @@
 }
 
 [data-theme="light"] .info-contato,
-[data-theme="light"] .formulario-contato,
-[data-theme="light"] .horarios-atendimento {
+[data-theme="light"] .formulario-contato {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
 }
 
@@ -719,31 +633,6 @@
 [data-theme="light"] .input-group select option {
     background: #ffffff;
     color: #212529;
-}
-
-[data-theme="light"] .horarios-content h2 {
-    color: #212529;
-}
-
-[data-theme="light"] .horario-item {
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(109, 26, 109, 0.2);
-}
-
-[data-theme="light"] .horario-item:hover {
-    background: rgba(255, 255, 255, 0.9);
-}
-
-[data-theme="light"] .dia {
-    color: #6d1a6d;
-}
-
-[data-theme="light"] .hora {
-    color: rgba(33, 37, 41, 0.9);
-}
-
-[data-theme="light"] .horario-obs {
-    color: #6d1a6d;
 }
 
 [data-theme="light"] .contato-container .floating-shape {

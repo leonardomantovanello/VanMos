@@ -1,32 +1,9 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
-
-const ThemeContext = createContext()
-
-// eslint-disable-next-line react-refresh/only-export-components -- hook lives alongside its provider
-export const useTheme = () => {
-    const context = useContext(ThemeContext)
-    if (!context) {
-        throw new Error('useTheme must be used within a ThemeProvider')
-    }
-    return context
-}
+import React, { useEffect } from 'react'
 
 export const ThemeProvider = ({ children }) => {
-    const [isDark, setIsDark] = useState(() => {
-        const saved = localStorage.getItem('theme')
-        return saved ? JSON.parse(saved) : true
-    })
-
     useEffect(() => {
-        localStorage.setItem('theme', JSON.stringify(isDark))
-        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
-    }, [isDark])
+        document.documentElement.setAttribute('data-theme', 'dark')
+    }, [])
 
-    const toggleTheme = () => setIsDark(!isDark)
-
-    return (
-        <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-            {children}
-        </ThemeContext.Provider>
-    )
+    return children
 }

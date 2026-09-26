@@ -1,4 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://vanmosapi.onrender.com/api';
+// Ver apiClient.js: mesmo fallback para '/api' relativo (proxy do Vite em dev).
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 export const auth = {
   getToken: () => localStorage.getItem('accessToken'),

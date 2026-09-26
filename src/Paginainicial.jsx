@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBolt, faMoneyBillTrendUp, faShield, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import { faPeopleGroup } from '@fortawesome/free-solid-svg-icons'
+import { faBolt, faMoneyBillTrendUp, faShield } from '@fortawesome/free-solid-svg-icons'
 
 import './Paginainicial.css'
 
@@ -27,13 +25,6 @@ const PaginaInicial = () => {
             <section className={`hero-section ${isVisible ? 'fade-in' : ''}`}>
                 <div className="hero-content">
                     <h1 className="vanmos-title">VANMOS</h1>
-                    <div className="hero-actions">
-                        <Link to="/motoristas" className="cta-btn pulse-btn">
-                            <FontAwesomeIcon icon={faPeopleGroup} style={{color: "#B197FC",}} /> 
-                            <span>Ver Motoristas</span>
-                            <FontAwesomeIcon icon={faArrowRight} className="arrow-icon" />
-                        </Link>
-                    </div>
                 </div>
                 
                 {/* Animated background elements */}
